@@ -79,21 +79,23 @@ export interface Article {
   href?: string;
 }
 
-// Titles render as plain text until real article URLs are supplied.
 export const ARTICLES: Article[] = [
   {
     year: "2020",
     title:
       "Using the Lightning Decision Jam to surface problems and prioritize a quarter",
+    href: "https://brenoaraujo.substack.com/p/using-the-lightning-decision-jam",
   },
   {
     year: "2017",
     title:
       "The Chinese Room and why chatbots will never hold a real conversation",
+    href: "https://brenoaraujo.substack.com/p/the-chinese-room-and-why-chatbots",
   },
   {
     year: "2017",
     title: "Why User Experience Makes or Breaks Your Product",
+    href: "https://brenoaraujo.substack.com/p/why-user-experience-makes-or-breaks",
   },
 ];
 

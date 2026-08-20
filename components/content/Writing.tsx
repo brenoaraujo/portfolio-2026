@@ -21,7 +21,15 @@ export function Writing({
   style,
   ...rest
 }: WritingProps) {
-  const Title = href ? "a" : "span";
+  const titleStyle: CSSProperties = {
+    fontFamily: "var(--font-serif)",
+    fontWeight: 700,
+    fontSize: "var(--type-title-size)",
+    lineHeight: "23px",
+    color: "var(--text-primary)",
+    textDecoration: "none",
+    textWrap: "pretty",
+  };
   return (
     <div
       style={{
@@ -47,20 +55,13 @@ export function Writing({
         >
           {year}
         </span>
-        <Title
-          href={href}
-          style={{
-            fontFamily: "var(--font-serif)",
-            fontWeight: 700,
-            fontSize: "var(--type-title-size)",
-            lineHeight: "23px",
-            color: "var(--text-primary)",
-            textDecoration: "none",
-            textWrap: "pretty",
-          }}
-        >
-          {title}
-        </Title>
+        {href ? (
+          <a href={href} target="_blank" rel="noreferrer" style={titleStyle}>
+            {title}
+          </a>
+        ) : (
+          <span style={titleStyle}>{title}</span>
+        )}
       </div>
       <div className="hairline" />
     </div>
