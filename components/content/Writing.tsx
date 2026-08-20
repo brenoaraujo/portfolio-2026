@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+import { EVENTS } from "@/lib/analytics-events";
 
 export interface WritingProps {
   /** Publication year, serif 16. */
@@ -56,7 +57,14 @@ export function Writing({
           {year}
         </span>
         {href ? (
-          <a href={href} target="_blank" rel="noreferrer" style={titleStyle}>
+          <a
+            href={href}
+            target="_blank"
+            rel="noreferrer"
+            style={titleStyle}
+            data-track={EVENTS.WRITING_CLICK}
+            data-track-title={title}
+          >
             {title}
           </a>
         ) : (

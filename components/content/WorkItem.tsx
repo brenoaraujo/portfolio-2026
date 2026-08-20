@@ -9,9 +9,14 @@ export interface WorkItemProps {
   title?: string;
   /** Renders the card as a link when provided. */
   href?: string;
+  /** Marks the study as not-yet-published: dims the plate and shows a chip so
+   * the card reads as non-clickable. */
+  inProgress?: boolean;
   /** Overrides the thumbnail height; omit to keep the source 585 : 389.7 ratio. */
   imageHeight?: number | string;
   style?: CSSProperties;
+  /** Passthrough for `data-track*` instrumentation attributes. */
+  [key: `data-${string}`]: string | undefined;
 }
 
 /**
@@ -23,6 +28,7 @@ export function WorkItem({
   eyebrow = "AI Product Design",
   title = "Onboarding for a new revenue streamline",
   href,
+  inProgress = false,
   imageHeight,
   style,
   ...rest
@@ -46,6 +52,8 @@ export function WorkItem({
     >
       <div
         style={{
+          position: "relative",
+          overflow: "hidden",
           height: imageHeight,
           aspectRatio: imageHeight ? undefined : "585 / 389.7",
           width: "100%",
@@ -56,7 +64,40 @@ export function WorkItem({
             ? `url(${image}) center / cover no-repeat`
             : "var(--color-gray-100)",
         }}
-      />
+      >
+        {inProgress ? (
+          <>
+            {/* Mute the screenshot so the card reads as not-yet-live. */}
+            <div
+              aria-hidden="true"
+              style={{
+                position: "absolute",
+                inset: 0,
+                background:
+                  "color-mix(in srgb, var(--background-primary) 55%, transparent)",
+              }}
+            />
+            <span
+              style={{
+                position: "absolute",
+                top: 12,
+                left: 12,
+                padding: "5px 10px",
+                borderRadius: 6,
+                background: "var(--background-primary)",
+                boxShadow: "inset 0 0 0 0.5px rgb(212,212,212)",
+                fontFamily: "var(--font-sans)",
+                fontSize: 12,
+                lineHeight: 1,
+                letterSpacing: "var(--type-label-ls)",
+                color: "var(--text-muted)",
+              }}
+            >
+              In progress
+            </span>
+          </>
+        ) : null}
+      </div>
       <div
         style={{
           display: "flex",

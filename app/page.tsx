@@ -8,6 +8,7 @@ import { Writing } from "@/components/content/Writing";
 import { WORK, ROLES, ARTICLES, CONTACT } from "@/lib/site";
 import { getPublishedSlugs } from "@/lib/work";
 import { TrackHomeView } from "@/components/analytics/TrackHomeView";
+import { EVENTS } from "@/lib/analytics-events";
 
 // Writing is shown; titles render as plain text until article URLs are added.
 const SHOW_WRITING = true;
@@ -83,7 +84,17 @@ export default function Home() {
               prototype quickly (Figma, code, or AI) to reduce ambiguity and help
               teams decide with less guesswork and more clarity. 
             </p>
-            <TextLink href={CONTACT.linkedin} external swap icon="/assets/linkedin.svg">Let&apos;s talk</TextLink>
+            <TextLink
+              href={CONTACT.linkedin}
+              external
+              swap
+              icon="/assets/linkedin.svg"
+              data-track={EVENTS.CTA_CLICK}
+              data-track-label="Let's talk"
+              data-track-location="hero"
+            >
+              Let&apos;s talk
+            </TextLink>
           </div>
         </section>
 
@@ -101,15 +112,22 @@ export default function Home() {
         >
           <SectionTitle >Recent work.</SectionTitle>
           <div className="work-grid">
-            {WORK.map((w) => (
-              <WorkItem
-                key={w.slug}
-                href={published.has(w.slug) ? `/work/${w.slug}` : undefined}
-                image={w.image}
-                eyebrow={w.eyebrow}
-                title={w.title}
-              />
-            ))}
+            {WORK.map((w) => {
+              const isPublished = published.has(w.slug);
+              return (
+                <WorkItem
+                  key={w.slug}
+                  href={isPublished ? `/work/${w.slug}` : undefined}
+                  inProgress={!isPublished}
+                  image={w.image}
+                  eyebrow={w.eyebrow}
+                  title={w.title}
+                  data-track={isPublished ? EVENTS.WORK_CARD_CLICK : undefined}
+                  data-track-slug={isPublished ? w.slug : undefined}
+                  data-track-title={isPublished ? w.title : undefined}
+                />
+              );
+            })}
           </div>
         </section>
 
@@ -138,7 +156,13 @@ export default function Home() {
             ))}
           </div>
           <div style={{ display: "flex", justifyContent: "flex-end", alignSelf: "stretch" }}>
-            <TextLink href={CONTACT.linkedin} external>
+            <TextLink
+              href={CONTACT.linkedin}
+              external
+              data-track={EVENTS.CTA_CLICK}
+              data-track-label="See full details on Linkedin"
+              data-track-location="experience"
+            >
               See full details on Linkedin
             </TextLink>
           </div>

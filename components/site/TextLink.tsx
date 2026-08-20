@@ -18,6 +18,8 @@ export interface TextLinkProps {
    */
   swap?: boolean;
   style?: CSSProperties;
+  /** Passthrough for `data-track*` instrumentation attributes. */
+  [key: `data-${string}`]: string | undefined;
 }
 
 /**

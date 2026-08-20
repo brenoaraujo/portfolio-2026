@@ -1,6 +1,7 @@
 import { CONTACT } from "@/lib/site";
 import { FooterVideo } from "@/components/site/FooterVideo";
 import { HoverIcon } from "@/components/site/HoverIcon";
+import { EVENTS } from "@/lib/analytics-events";
 
 // Footer background video. Light now; when a theme toggle is wired, swap to
 // monster-footer-dark.webm under [data-theme="dark"] (the file is already in
@@ -56,6 +57,8 @@ export function SiteFooter() {
                 className="foot-link"
                 target={external ? "_blank" : undefined}
                 rel={external ? "noreferrer" : undefined}
+                data-track={EVENTS.CONTACT_CLICK}
+                data-track-label={label}
                 style={{
                   fontFamily: "var(--font-serif)",
                   fontSize: "var(--type-serif-md-size)",

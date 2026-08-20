@@ -40,6 +40,7 @@ export function FooterVideo({ src }: { src: string }) {
   return (
     <video
       ref={ref}
+      className="footer-video"
       aria-hidden="true"
       tabIndex={-1}
       muted
