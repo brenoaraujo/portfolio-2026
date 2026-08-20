@@ -190,15 +190,57 @@ export function Outcome(props: { period?: string; title?: string; description?: 
   return <Experience {...props} />;
 }
 
+/** Serif-18 bold sub-heading — the default for markdown `h3` inside a section. */
+export function SubHeading({ children }: { children?: ReactNode }) {
+  return (
+    <h3
+      style={{
+        fontFamily: "var(--font-serif)",
+        fontWeight: 700,
+        fontSize: "var(--type-title-size)",
+        lineHeight: "23px",
+        color: "var(--text-primary)",
+      }}
+    >
+      {children}
+    </h3>
+  );
+}
+
+/** Bulleted list styled to the system — the default for markdown `ul`. */
+export function BodyList({ children }: { children?: ReactNode }) {
+  return (
+    <ul
+      style={{
+        margin: 0,
+        paddingLeft: 24,
+        display: "flex",
+        flexDirection: "column",
+        gap: 8,
+        fontFamily: "var(--font-sans)",
+        fontSize: 16,
+        lineHeight: "27px",
+        color: "var(--text-secondary)",
+      }}
+    >
+      {children}
+    </ul>
+  );
+}
+
 /** Components exposed to MDX: markdown elements + explicit blocks. */
 export const mdxComponents = {
   p: BodyText,
   a: ProseLink,
+  h3: SubHeading,
+  ul: BodyList,
+  li: ({ children }: { children?: ReactNode }) => <li style={{ textWrap: "pretty" }}>{children}</li>,
   strong: ({ children }: { children?: ReactNode }) => <strong style={{ fontWeight: 700 }}>{children}</strong>,
   em: ({ children }: { children?: ReactNode }) => <em>{children}</em>,
   CaseSection,
   Prose,
   PullQuote,
+  SubHeading,
   Figure,
   BeforeAfter,
   Outcomes,

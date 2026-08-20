@@ -2,46 +2,54 @@
 title: Raffle Landing Page Design System
 eyebrow: Design System
 years: 2025
-lead: I built a modular, block-based landing-page system so marketing could launch raffle campaigns themselves — more customization, far less developer burden, and something that actually scales.
+lead: "We were faced with the scalability issue: all client campaigns relied on just two hardcoded templates. Every time marketing needed changes, developers had to step in, which caused delays and friction. At the same time, clients were asking for more customization, pushing the marketing team to be more flexible, while the product team needed a faster way to launch campaigns."
 liveLink: https://contra.com/p/lLs3PcXq-raffle-landing-page-design-system?r=brenoaraujo
 liveLabel: See the full case study
 heroImage: /assets/work-raffle-design-system.png
 heroAlt: Raffle landing page design system for Ascend
 credits:
-  role: Product designer, web
+  role: Product designer, UX, web
   madeWith: Figma, shadcn/ui, Tailwind
   shipped: 2025
 published: true
 ---
 
-<CaseSection title="The problem">
-  <Prose>
-    Every client campaign ran on just two hardcoded templates. Any time marketing needed a change, a developer had to step in — which meant delays and friction. Marketing wanted flexibility; the product team wanted faster launches. The two pulled against each other, and neither could scale.
-  </Prose>
-</CaseSection>
+{/* Upload images to /public/assets/work/raffle-landing-design-system/ and I'll wire them in. */}
+
+<Prose>
+  This landing page showcases both the system and design work I created.
+
+  We start to design a **modular landing page system**, built in reusable blocks, that gave marketing and production teams more control and also making development easier to maintain and scale.
+</Prose>
 
 <CaseSection title="Approach">
   <Prose>
-    I started with the pages we already had, looking for the patterns and layouts that performed, and talked to marketing and production about which content they actually used and which they never touched.
+    The first step was to review old landing pages to identify any common trends and to gather insight into which layouts performed the best. Close collaboration with marketing and production was necessary to understand what kind of content is most often requested, what kind of content the clients are using least, and where the content could improve.
 
-    Then, working with engineering, I built reusable blocks in Figma aligned to shadcn/ui and Tailwind, on a token system that standardized spacing, colour, and typography. It shipped incrementally — real campaigns drove the improvements.
-
-    <PullQuote>Rather than rigid templates, pages are built from predefined, themeable blocks — flexibility without a design compromise.</PullQuote>
-
-    The library covers the whole page: hero, CTA, price grid, extra prizes, winners, image galleries, checkout, and more. Each block is variable-powered, so colour, spacing, and type flex per campaign without anyone editing code.
+    From there, I worked with engineering to identify common friction points during the build and align on a shared components system. Developers wanted to use ShadCN and Tailwind so I designed reusable blocks in Figma and set up a token-based system for spacing, colors, and typography to keep everything consistent and align with development. We launched it step by step, testing each block in real campaigns and using feedback to keep improving as we went.
   </Prose>
 </CaseSection>
 
-<CaseSection title="Outcomes">
+<CaseSection title="Predefined, themeable blocks">
+  <Prose>
+    For flexibility and consistency, instead of starting with one of two predefined templates, pages are built using predefined blocks. This gave both production and marketing teams a lot more freedom to mix and match layouts without breaking design rules or needing help from developers. Each component was powered by variables, which made it super easy to tweak colors, spacing, or text styles across campaigns. We included key blocks like Hero, CTA, Price Grid, Extra Prizes, Winners, Image Galleries, Checkout Modules, and more—everything needed to build a full, flexible landing page.
+  </Prose>
+</CaseSection>
+
+<CaseSection title="Outcome & Impact">
   <Outcomes>
-    <Outcome period="Launch time" title="Faster campaigns" description="Pages build quickly, with far less back-and-forth with the production team." />
-    <Outcome period="Clients" title="Happier" description="More customization means each campaign fits the charity behind it." />
-    <Outcome period="Engineering" title="Less strain" description="Engineers work on system-wide improvements instead of one-off requests." />
+    <Outcome period="Faster launch times" title="Quicker builds" description="Pages can now be built more quickly, cutting down on the back-and-forth between clients and the production team." />
+    <Outcome period="Happier clients" title="More customization" description="Expanded customization options help better meet each client's campaign needs." />
+    <Outcome period="Less strain on developers" title="System over one-offs" description="Engineers can now focus on improvements that benefit all clients, rather than spending time on one-off campaign requests." />
   </Outcomes>
 </CaseSection>
 
-<CaseSection title="What's next">
+<CaseSection title="What's Next">
   <Prose>
-    Wire in performance analytics for data-driven A/B testing, extend the system with new layouts as campaigns teach us what works, and document it so internal teams can adopt it end to end.
+    Integrate performance analytics into blocks for **data-driven A/B testing**.
+
+    Extend the system with **new layout options** based on campaign insights.
+
+    Document usage and train internal teams for full adoption.
   </Prose>
 </CaseSection>
