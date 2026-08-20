@@ -17,7 +17,11 @@ export interface ExperienceProps {
 const EASE = "var(--ease-standard)";
 
 // Plate treatment shared by frames and preview (spec §"Plate treatment").
+// maxWidth:none opts out of Tailwind preflight's `img { max-width: 100% }`,
+// which would otherwise clamp the 325px preview to its ~252px cell and make
+// `cover` crop the sides.
 const PLATE: CSSProperties = {
+  maxWidth: "none",
   objectFit: "cover",
   objectPosition: "top left",
   borderRadius: 12,
