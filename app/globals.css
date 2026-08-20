@@ -245,3 +245,102 @@ body {
   text-decoration: underline;
   text-underline-offset: 2px;
 }
+
+/* Hover-icon microinteraction — a small svg peeks in from above and settles
+   into the link's top-right corner on hover, tilted a touch to the right.
+   Subtle by design: 13px, opacity + a short slide, no scale or shadow. The svg
+   rides in as a mask so it takes the text colour. See HoverIcon.tsx. */
+.nav-item,
+.text-link,
+.foot-link {
+  position: relative;
+}
+.hover-icon {
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  width: 13px;
+  height: 13px;
+  background-color: currentColor;
+  -webkit-mask: var(--hover-icon) center / contain no-repeat;
+  mask: var(--hover-icon) center / contain no-repeat;
+  opacity: 0;
+  transform: translateY(-7px) rotate(0deg);
+  transform-origin: bottom left;
+  pointer-events: none;
+  transition:
+    opacity var(--duration-fast) var(--ease-standard),
+    transform var(--duration-base) var(--ease-standard);
+}
+.nav-item:hover .hover-icon,
+.text-link:hover .hover-icon,
+.foot-link:hover .hover-icon {
+  opacity: 1;
+  transform: translateY(0) rotate(12deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hover-icon {
+    transform: none;
+    transition: opacity var(--duration-fast) var(--ease-standard);
+  }
+  .nav-item:hover .hover-icon,
+  .text-link:hover .hover-icon,
+  .foot-link:hover .hover-icon {
+    transform: none;
+  }
+}
+
+/* Hero "Let's talk" icon swap — the arrow and the link icon share one slot: on
+   hover the arrow drops away with a tilt while the icon turns upright into its
+   place, as if the two were spokes on a slowly rotating wheel. */
+.text-link__swap {
+  position: relative;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+.text-link__swap-arrow,
+.text-link__swap-icon {
+  position: absolute;
+  inset: 0;
+  transition:
+    opacity var(--duration-fast) var(--ease-standard),
+    transform var(--duration-base) var(--ease-standard);
+}
+.text-link__swap-arrow {
+  opacity: 1;
+  transform: translateY(0) rotate(0deg);
+}
+.text-link__swap-icon {
+  width: 14px;
+  height: 14px;
+  margin: 1px; /* centre the 14px icon in the 16px arrow slot */
+  background-color: currentColor;
+  -webkit-mask: var(--hover-icon) center / contain no-repeat;
+  mask: var(--hover-icon) center / contain no-repeat;
+  opacity: 0;
+  transform: rotate(-35deg);
+  transform-origin: center;
+}
+.text-link:hover .text-link__swap-arrow {
+  opacity: 0;
+  transform: translateY(6px) rotate(40deg);
+}
+.text-link:hover .text-link__swap-icon {
+  opacity: 1;
+  transform: rotate(0deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .text-link__swap-arrow,
+  .text-link__swap-icon {
+    transition: opacity var(--duration-fast) var(--ease-standard);
+    transform: none;
+  }
+  .text-link:hover .text-link__swap-arrow,
+  .text-link:hover .text-link__swap-icon {
+    transform: none;
+  }
+}

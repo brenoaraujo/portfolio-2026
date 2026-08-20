@@ -1,5 +1,6 @@
 import { CONTACT } from "@/lib/site";
 import { FooterVideo } from "@/components/site/FooterVideo";
+import { HoverIcon } from "@/components/site/HoverIcon";
 
 // Footer background video. Light now; when a theme toggle is wired, swap to
 // monster-footer-dark.webm under [data-theme="dark"] (the file is already in
@@ -48,7 +49,7 @@ export function SiteFooter() {
             Enjoy.
           </h2>
           <div style={{ display: "flex", flexDirection: "row", gap: 43, alignItems: "center", flexWrap: "wrap" }}>
-            {CONTACT.links.map(({ label, href, external }) => (
+            {CONTACT.links.map(({ label, href, external, icon }) => (
               <a
                 key={label}
                 href={href}
@@ -65,6 +66,7 @@ export function SiteFooter() {
                 }}
               >
                 {label}
+                <HoverIcon src={icon} />
               </a>
             ))}
           </div>
