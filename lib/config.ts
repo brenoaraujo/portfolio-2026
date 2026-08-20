@@ -1,7 +1,7 @@
 /** Canonical site URL — the custom domain. Used for metadata, sitemap, robots.
-    If the domain isn't connected yet, social/sitemap URLs point here regardless
-    (that's the launch target); swap only if the canonical domain changes. */
-export const SITE_URL = "https://brenoaraujo.com.br";
+    Uses the www host because Vercel serves www as primary (apex 308-redirects
+    to www); keeping canonical/sitemap/OG on www avoids a redirect hop. */
+export const SITE_URL = "https://www.brenoaraujo.com.br";
 
 export const SITE_NAME = "Breno Araujo";
 export const SITE_TITLE = "Breno Araujo — Product designer";
