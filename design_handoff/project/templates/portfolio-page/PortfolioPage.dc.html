@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<!-- @template name="Portfolio page" description="One-page designer portfolio: header, intro, work grid, experience, writing, display footer." -->
+<helmet>
+<script src="./ds-base.js"></script>
+<style>*{margin:0;padding:0;box-sizing:border-box}body{background:rgb(253,251,250)}a{color:rgb(100,99,96)}a:hover{color:rgb(0,0,0)}</style>
+</helmet>
+<div style="width:1440px;margin:0 auto;background:rgb(253,251,250);display:flex;flex-direction:column;gap:8px;align-items:center;overflow:hidden">
+<div style="width:1200px;display:flex;flex-direction:column;gap:80px;padding:40px 0;align-items:flex-end">
+<div style="display:flex;flex-direction:row;gap:24px;align-items:center;height:52px;align-self:stretch">
+<x-import component-from-global-scope="BrenoAraujoPortfolioDesignSystem_ea4905.Profile" image="../../assets/breno-profile.png" hint-size="173px,52px"></x-import>
+<x-import component-from-global-scope="BrenoAraujoPortfolioDesignSystem_ea4905.Divider" hint-size="100%,1px"></x-import>
+<div style="display:flex;flex-direction:row;gap:32px;align-items:center;flex-shrink:0">
+<x-import component-from-global-scope="BrenoAraujoPortfolioDesignSystem_ea4905.NavItem" hint-size="32px,23px">Work</x-import>
+<x-import component-from-global-scope="BrenoAraujoPortfolioDesignSystem_ea4905.NavItem" hint-size="60px,23px">About me</x-import>
+<x-import component-from-global-scope="BrenoAraujoPortfolioDesignSystem_ea4905.NavItem" hint-size="56px,23px">Let's talk</x-import>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:32px;align-items:flex-start;width:705px;align-self:flex-start">
+<p style="font-family:'Noto Serif',Georgia,serif;font-weight:400;font-size:34px;line-height:39px;color:rgb(0,0,0);text-wrap:pretty">I'm a product designer based in Vancouver, designing since doing tableless layouts was vibe coding.</p>
+<p style="font-family:'DM Sans',system-ui,sans-serif;font-size:18px;line-height:27px;color:rgb(102,102,102);text-wrap:pretty">I listen first, gather as much context and data as I can, then prototype quickly (Figma, code, or AI) to reduce ambiguity and help teams decide with less guesswork and more clarity. For nearly two decades, I've designed products end-to-end, built the design systems underneath them, and now prototype in code. Engineers get answers instead of specs.</p>
+<x-import component-from-global-scope="BrenoAraujoPortfolioDesignSystem_ea4905.TextLink" hint-size="98px,23px">Let's talk</x-import>
+</div>
+<div style="display:flex;flex-direction:column;gap:24px;align-items:flex-start;align-self:stretch">
+<x-import component-from-global-scope="BrenoAraujoPortfolioDesignSystem_ea4905.SectionTitle" weight="{{ 400 }}" hint-size="180px,39px">Recent work.</x-import>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;align-self:stretch">
+<x-import component-from-global-scope="BrenoAraujoPortfolioDesignSystem_ea4905.WorkItem" image="../../assets/work-onboarding.png" eyebrow="User Flow and UI" title="Onboarding for a new revenue streamline" hint-size="100%,461px"></x-import>
+<x-import component-from-global-scope="BrenoAraujoPortfolioDesignSystem_ea4905.WorkItem" image="../../assets/work-raffle-design-system.png" eyebrow="Design System" title="Raffle Landing Page Design System" hint-size="100%,461px"></x-import>
+<x-import component-from-global-scope="BrenoAraujoPortfolioDesignSystem_ea4905.WorkItem" image="../../assets/work-ticket-app.png" eyebrow="Mobile App" title="On-Site Ticket Sales App" hint-size="100%,461px"></x-import>
+<x-import component-from-global-scope="BrenoAraujoPortfolioDesignSystem_ea4905.WorkItem" image="../../assets/work-website-redesign.png" eyebrow="Web Design" title="Website Redesign" hint-size="100%,461px"></x-import>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:48px;align-items:flex-start;align-self:stretch">
+<x-import component-from-global-scope="BrenoAraujoPortfolioDesignSystem_ea4905.SectionTitle" hint-size="140px,39px">Experience</x-import>
+<div style="display:flex;flex-direction:column;gap:32px;align-self:stretch">
+<x-import component-from-global-scope="BrenoAraujoPortfolioDesignSystem_ea4905.Experience" period="2023-2026" title="Senior Product Designer, Ascend" description="Setting design direction across point-of-sale, checkout, design systems, and a marketing operations platform." hint-size="100%,104px"></x-import>
+<x-import component-from-global-scope="BrenoAraujoPortfolioDesignSystem_ea4905.Experience" period="2023-2026" title="Lead Designer, VanHack" description="Designing both sides of a talent marketplace — 500K+ engineers, and the recruiters hiring them." hint-size="100%,104px"></x-import>
+<x-import component-from-global-scope="BrenoAraujoPortfolioDesignSystem_ea4905.Experience" period="2023-2026" title="Senior Product Designer, Hotmart" description="Designing the analytics product every team used to monitor its indicators, built with Data Science" hint-size="100%,104px"></x-import>
+<x-import component-from-global-scope="BrenoAraujoPortfolioDesignSystem_ea4905.Experience" period="2023-2026" title="Lead Product Designer, Siteware" description="Owning the core product for KPIs, goals, and action plans, as the company's first designer." hint-size="100%,104px"></x-import>
+</div>
+<div style="display:flex;justify-content:flex-end;align-self:stretch">
+<x-import component-from-global-scope="BrenoAraujoPortfolioDesignSystem_ea4905.TextLink" hint-size="220px,23px">See full details on Linkedin</x-import>
+</div>
+</div>
+<sc-if value="{{ showWriting }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-direction:column;gap:48px;align-items:flex-start;align-self:stretch">
+<x-import component-from-global-scope="BrenoAraujoPortfolioDesignSystem_ea4905.SectionTitle" subtitle="Older stuff, still proud of it" hint-size="314px,39px">Writing </x-import>
+<div style="display:flex;flex-direction:column;gap:24px;align-self:stretch">
+<x-import component-from-global-scope="BrenoAraujoPortfolioDesignSystem_ea4905.Writting" year="2020" title="Using the Lightning Decision Jam to surface problems and prioritize a quarter" hint-size="100%,80px"></x-import>
+<x-import component-from-global-scope="BrenoAraujoPortfolioDesignSystem_ea4905.Writting" year="2017" title="The Chinese Room and why chatbots will never hold a real conversation" hint-size="100%,80px"></x-import>
+<x-import component-from-global-scope="BrenoAraujoPortfolioDesignSystem_ea4905.Writting" year="2017" title="Why User Experience Makes or Breaks Your Product" hint-size="100%,80px"></x-import>
+</div>
+</div>
+</sc-if>
+</div>
+<div style="position:relative;height:809px;align-self:stretch;background:rgb(245,245,245)">
+<div style="position:absolute;left:0;top:0;right:0;height:198px;background:linear-gradient(180deg,rgb(253,251,250) 0%,rgba(253,251,250,0) 100%)"></div>
+<div style="position:absolute;left:119px;top:179.6px;width:1200px;height:350px;display:flex;flex-direction:column;gap:62px;justify-content:center;align-items:flex-start">
+<h2 style="font-family:'Noto Serif',Georgia,serif;font-weight:700;font-size:106.42979431152344px;line-height:87.5px;letter-spacing:-0.07em;color:rgb(0,0,0)">Design<br>Connect<br>Enjoy.</h2>
+<div style="display:flex;flex-direction:row;gap:43px;align-items:center">
+<a href="#" style="font-family:'Noto Serif',Georgia,serif;font-size:18px;line-height:1;white-space:nowrap;color:rgb(0,0,0);text-decoration:none">Email</a>
+<a href="#" style="font-family:'Noto Serif',Georgia,serif;font-size:18px;line-height:1;white-space:nowrap;color:rgb(0,0,0);text-decoration:none">Linkedin</a>
+<a href="#" style="font-family:'Noto Serif',Georgia,serif;font-size:18px;line-height:1;white-space:nowrap;color:rgb(0,0,0);text-decoration:none">Instagram</a>
+<a href="#" style="font-family:'Noto Serif',Georgia,serif;font-size:18px;line-height:1;white-space:nowrap;color:rgb(0,0,0);text-decoration:none">X</a>
+</div>
+</div>
+<span style="position:absolute;left:119px;top:673.6px;font-family:'Noto Serif',Georgia,serif;font-size:14px;line-height:1;color:rgb(102,102,102)">© 2026 Breno Araujo</span>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showWriting&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Sections&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    return { showWriting: this.props.showWriting ?? true };
+  }
+}
+</script>
+</body>
+</html>
