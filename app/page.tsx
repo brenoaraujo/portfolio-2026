@@ -7,6 +7,7 @@ import { Experience } from "@/components/content/Experience";
 import { Writing } from "@/components/content/Writing";
 import { WORK, ROLES, ARTICLES, CONTACT } from "@/lib/site";
 import { getPublishedSlugs } from "@/lib/work";
+import { TrackHomeView } from "@/components/analytics/TrackHomeView";
 
 // Writing is shown; titles render as plain text until article URLs are added.
 const SHOW_WRITING = true;
@@ -17,6 +18,7 @@ export default function Home() {
   const published = new Set(getPublishedSlugs());
   return (
     <>
+      <TrackHomeView />
       <div className="page-column">
         <SiteHeader />
 
@@ -43,15 +45,14 @@ export default function Home() {
             <p
               style={{
                 fontFamily: "var(--font-serif)",
-                fontWeight: 400,
-                fontSize: "var(--type-lead-size)",
+                fontWeight: 800,
+                fontSize: "32px",
                 lineHeight: "var(--type-lead-lh)",
                 color: "var(--text-primary)",
                 textWrap: "pretty",
               }}
             >
-              I&apos;m a product designer based in Vancouver, designing since doing
-              tableless layouts was vibe coding.
+              I&apos;m a product designer based in Vancouver, designing since tableless layouts were vibe coding.
             </p>
             <p
               style={{
@@ -62,12 +63,22 @@ export default function Home() {
                 textWrap: "pretty",
               }}
             >
-              I listen first, gather as much context and data as I can, then
-              prototype quickly (Figma, code, or AI) to reduce ambiguity and help
-              teams decide with less guesswork and more clarity. For nearly two
-              decades, I&apos;ve designed products end-to-end, built the design
+              For nearly two decades, I&apos;ve designed products end-to-end, built the design
               systems underneath them, and now prototype in code. Engineers get
               answers instead of specs.
+            </p>
+            <p
+              style={{
+                fontFamily: "var(--font-sans)",
+                fontSize: "var(--type-body-size)",
+                lineHeight: "var(--type-body-lh)",
+                color: "var(--text-secondary)",
+                textWrap: "pretty",
+              }}
+            >
+              My default move is to listen first, gather as much context and data as I can, then
+              prototype quickly (Figma, code, or AI) to reduce ambiguity and help
+              teams decide with less guesswork and more clarity. 
             </p>
             <TextLink href="/#lets-talk">Let&apos;s talk</TextLink>
           </div>
@@ -85,7 +96,7 @@ export default function Home() {
             scrollMarginTop: 40,
           }}
         >
-          <SectionTitle weight={400}>Recent work.</SectionTitle>
+          <SectionTitle >Recent work.</SectionTitle>
           <div className="work-grid">
             {WORK.map((w) => (
               <WorkItem
