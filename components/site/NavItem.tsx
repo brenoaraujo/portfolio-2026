@@ -1,10 +1,13 @@
 import type { CSSProperties, ReactNode } from "react";
+import { HoverIcon } from "@/components/site/HoverIcon";
 
 export interface NavItemProps {
   children?: ReactNode;
   href?: string;
   /** Underlines the current section. @default false */
   active?: boolean;
+  /** Path to the svg that peeks into the top-right corner on hover. */
+  icon?: string;
   style?: CSSProperties;
 }
 
@@ -13,6 +16,7 @@ export function NavItem({
   children = "Work",
   href = "#",
   active = false,
+  icon,
   style,
   ...rest
 }: NavItemProps) {
@@ -35,6 +39,7 @@ export function NavItem({
       {...rest}
     >
       {children}
+      {icon ? <HoverIcon src={icon} /> : null}
     </a>
   );
 }

@@ -1,4 +1,5 @@
 import { CONTACT } from "@/lib/site";
+import { HoverIcon } from "@/components/site/HoverIcon";
 
 /**
  * Compact case-study footer: a closing rule, "Let's talk" with a dry aside, the
@@ -43,7 +44,7 @@ export function CaseStudyFooter() {
         </span>
       </div>
       <div style={{ display: "flex", flexDirection: "row", gap: 43, alignItems: "center", flexWrap: "wrap" }}>
-        {CONTACT.links.map(({ label, href, external }) => (
+        {CONTACT.links.map(({ label, href, external, icon }) => (
           <a
             key={label}
             href={href}
@@ -60,6 +61,7 @@ export function CaseStudyFooter() {
             }}
           >
             {label}
+            <HoverIcon src={icon} />
           </a>
         ))}
       </div>

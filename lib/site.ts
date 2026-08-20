@@ -125,15 +125,15 @@ export const ARTICLES: Article[] = [
 export const CONTACT = {
   linkedin: "https://www.linkedin.com/in/brenoaraujobh",
   links: [
-    { label: "Email", href: "mailto:brenoaraujobh@gmail.com", external: false },
-    { label: "Linkedin", href: "https://www.linkedin.com/in/brenoaraujobh", external: true },
-    { label: "Instagram", href: "https://www.instagram.com/brenoaraujobh/", external: true },
-    { label: "X", href: "https://x.com/brenoaraujo", external: true },
+    { label: "Email", href: "mailto:brenoaraujobh@gmail.com", external: false, icon: "/assets/email.svg" },
+    { label: "Linkedin", href: "https://www.linkedin.com/in/brenoaraujobh", external: true, icon: "/assets/linkedin.svg" },
+    { label: "Instagram", href: "https://www.instagram.com/brenoaraujobh/", external: true, icon: "/assets/instagram.svg" },
+    { label: "X", href: "https://x.com/brenoaraujo", external: true, icon: "/assets/x.svg" },
   ],
 } as const;
 
 export const NAV = [
-  { label: "Work", href: "/#work", external: false },
-  { label: "Experience", href: "/#experience", external: false },
-  { label: "Let's talk", href: CONTACT.linkedin, external: true },
+  { label: "Work", href: "/#work", external: false, icon: "/assets/pen.svg" },
+  { label: "Experience", href: "/#experience", external: false, icon: "/assets/experience.svg" },
+  { label: "Let's talk", href: CONTACT.linkedin, external: true, icon: "/assets/linkedin.svg" },
 ] as const;

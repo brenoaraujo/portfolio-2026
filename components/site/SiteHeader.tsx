@@ -24,8 +24,8 @@ export function SiteHeader() {
       <Profile href="/" />
       <Divider />
       <nav className="site-nav" style={{ display: "flex", flexDirection: "row", gap: 32, alignItems: "center", flexShrink: 0 }}>
-        {NAV.map(({ label, href }) => (
-          <NavItem key={label} href={href}>
+        {NAV.map(({ label, href, icon }) => (
+          <NavItem key={label} href={href} icon={icon}>
             {label}
           </NavItem>
         ))}
