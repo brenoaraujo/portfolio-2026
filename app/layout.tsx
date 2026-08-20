@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Noto_Serif, DM_Sans, DM_Mono } from "next/font/google";
 import { Amplitude } from "@/components/analytics/Amplitude";
+import { Smartlook } from "@/components/analytics/Smartlook";
 import "./globals.css";
 
 // Noto Serif carries voice; DM Sans carries information; DM Mono is present in
@@ -43,6 +44,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full">
         <Amplitude />
+        <Smartlook />
         {children}
       </body>
     </html>
