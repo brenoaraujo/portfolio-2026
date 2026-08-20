@@ -97,15 +97,13 @@ export const ARTICLES: Article[] = [
   },
 ];
 
-/**
- * Contact links. Instagram is omitted until a handle is provided; add it back
- * to `links` when ready.
- */
+/** Contact links, in the footer's source order: Email · Linkedin · Instagram · X. */
 export const CONTACT = {
   linkedin: "https://www.linkedin.com/in/brenoaraujobh",
   links: [
     { label: "Email", href: "mailto:brenoaraujobh@gmail.com", external: false },
     { label: "Linkedin", href: "https://www.linkedin.com/in/brenoaraujobh", external: true },
+    { label: "Instagram", href: "https://www.instagram.com/brenoaraujobh/", external: true },
     { label: "X", href: "https://x.com/brenoaraujo", external: true },
   ],
 } as const;
