@@ -11,10 +11,6 @@ function isVideo(src: string) {
   return /\.(mp4|webm|mov)(\?|$)/i.test(src);
 }
 
-function videoType(src: string) {
-  return /\.webm(\?|$)/i.test(src) ? "video/webm" : "video/mp4";
-}
-
 /**
  * Autoplaying, muted, looping video with no controls and no poster — a moving
  * screenshot, not a player. Prefers a .webm source, falls back to the original.
@@ -28,15 +24,19 @@ export function CaseVideo({
   hero?: boolean;
   style?: CSSProperties;
 }) {
+  // MDX references the .webm; serve it first and fall back to a same-named .mp4
+  // (H.264) for Safari, which doesn't reliably play VP9/WebM.
+  const webm = src.replace(/\.(mp4|mov)(\?|$)/i, ".webm$2");
+  const mp4 = src.replace(/\.(webm|mov)(\?|$)/i, ".mp4$2");
   return (
     <video
       autoPlay
       muted
       loop
       playsInline
-      // Hero loads eagerly; inline clips defer so a page of videos doesn't
-      // download all at once. Browsers also delay offscreen autoplay.
-      preload={hero ? "metadata" : "none"}
+      // "metadata" so the element gets its dimensions and can autoplay; the
+      // clips are small (~1-2MB) after WebM/MP4 compression.
+      preload="metadata"
       aria-hidden="true"
       tabIndex={-1}
       style={{
@@ -47,7 +47,8 @@ export function CaseVideo({
         ...style,
       }}
     >
-      <source src={src} type={videoType(src)} />
+      <source src={webm} type="video/webm" />
+      <source src={mp4} type="video/mp4" />
     </video>
   );
 }

@@ -68,8 +68,9 @@ export default async function CaseStudyPage({
           flexDirection: "column",
           gap: 32,
           alignItems: "flex-start",
+          width: "100%",
           maxWidth: "var(--measure-prose)",
-          alignSelf: "flex-start",
+          alignSelf: "center",
         }}
       >
         <span

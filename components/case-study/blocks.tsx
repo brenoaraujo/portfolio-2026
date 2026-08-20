@@ -25,7 +25,11 @@ export function CaseSection({
         flexDirection: "column",
         gap: 48,
         alignItems: "flex-start",
-        alignSelf: "stretch",
+        // Text column keeps the 705px measure but sits centred in the page;
+        // media blocks (hero, Media, BeforeAfter) stay full-width.
+        width: "100%",
+        maxWidth: "var(--measure-prose)",
+        alignSelf: "center",
       }}
     >
       <h2
