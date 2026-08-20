@@ -44,7 +44,7 @@ export function TextLink({
         style={{
           fontFamily: "var(--font-sans)",
           fontWeight: 400,
-          fontSize: "var(--type-body-size)",
+          fontSize: "14px",
           lineHeight: 1,
           whiteSpace: "nowrap",
           color: "var(--text-link)",
