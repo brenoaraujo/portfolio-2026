@@ -133,7 +133,7 @@ export const CONTACT = {
 } as const;
 
 export const NAV = [
-  { label: "Work", href: "/#work" },
-  { label: "Experience", href: "/#experience" },
-  { label: "Let's talk", href: "/#lets-talk" },
+  { label: "Work", href: "/#work", external: false },
+  { label: "Experience", href: "/#experience", external: false },
+  { label: "Let's talk", href: CONTACT.linkedin, external: true },
 ] as const;

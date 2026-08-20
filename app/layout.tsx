@@ -39,6 +39,14 @@ export const metadata: Metadata = {
   description: SITE_DESCRIPTION,
   applicationName: SITE_NAME,
   authors: [{ name: SITE_NAME }],
+  icons: {
+    icon: [
+      { url: "/assets/favicon-16.png", sizes: "16x16", type: "image/png" },
+      { url: "/assets/favicon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/assets/favicon-48.png", sizes: "48x48", type: "image/png" },
+    ],
+    apple: [{ url: "/assets/favicon-180.png", sizes: "180x180", type: "image/png" }],
+  },
   openGraph: {
     type: "website",
     siteName: SITE_NAME,

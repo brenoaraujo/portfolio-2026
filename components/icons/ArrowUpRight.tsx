@@ -25,7 +25,7 @@ export function ArrowUpRight({ size = 16, color, style, ...rest }: ArrowUpRightP
       style={{ display: "block", flexShrink: 0, color: color ?? "var(--icon-ink)", ...style }}
       {...rest}
     >
-      <g stroke="currentColor" strokeWidth="0.8" strokeLinecap="square">
+      <g stroke="currentColor" strokeWidth="1.2" strokeLinecap="square">
         <path d="M4.667 11.333 11.333 4.667" />
         <path d="M5.778 4.667h5.555v5.556" />
       </g>

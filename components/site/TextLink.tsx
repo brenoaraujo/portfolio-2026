@@ -54,7 +54,7 @@ export function TextLink({
       >
         {children}
       </span>
-      {arrow ? <ArrowUpRight color="var(--text-link)" /> : null}
+      {arrow ? <ArrowUpRight color="#DC0606" /> : null}
     </a>
   );
 }
