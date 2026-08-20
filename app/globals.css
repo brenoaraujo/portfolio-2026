@@ -1,26 +1,120 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Design tokens — adopted verbatim from the handoff (Portfolio.fig).
+   Load order mirrors design-system/styles.css. These files are the source of
+   truth for every colour, type and spacing value; components bind to them by
+   name (--text-primary, --type-body-size, …) rather than to literals.
+   Dark-mode tokens live in fig-tokens.css but are intentionally left unwired. */
+@import "./tokens/fig-tokens.css";
+@import "./tokens/palette.css";
+@import "./tokens/typography.css";
+@import "./tokens/layout.css";
+
+/* Expose a small set of Tailwind utilities mapped onto the tokens, for markup
+   authored with classes rather than inline styles. */
+@theme {
+  --color-paper: var(--background-primary);
+  --color-surface: var(--background-secondary);
+  --color-ink: var(--text-primary);
+  --color-body: var(--text-secondary);
+  --color-link: var(--text-link);
+  --color-eyebrow: var(--text-muted);
+  --color-icon: var(--icon-ink);
+  --color-line: var(--border-default);
+
+  --font-serif: var(--font-noto-serif), ui-serif, Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-dm-sans), -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  --radius-avatar: 8px;
+  --radius-thumb: 12px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+html {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--background-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+}
+
+/* The 1200px content column, centred, with page padding. Grids collapse and the
+   column gutters tighten on small screens — a first responsive pass; the M4
+   milestone refines type scaling and rhythm. */
+.page-column {
+  width: 100%;
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: 40px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+  align-items: flex-start;
+}
+
+.work-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  align-self: stretch;
+}
+
+@media (max-width: 768px) {
+  .page-column {
+    gap: 56px;
+  }
+  .work-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* The one line in the system: a zero-height rule drawn with an inset shadow. */
+.hairline {
+  height: 0;
+  width: 100%;
+  box-shadow:
+    inset 0 0 0 0.5px rgb(212, 212, 212),
+    0 0 0 0.5px rgb(212, 212, 212);
+}
+
+/* Motion and states — the only interactions the system defines: 120ms/200ms,
+   opacity and underline only. No lift, no scale, no shadow bloom.
+   (Ported from the source's inline handlers into CSS so components stay RSC.) */
+.nav-item {
+  transition: opacity var(--duration-fast) var(--ease-standard);
+}
+.nav-item:hover {
+  opacity: 0.6;
+}
+
+.text-link {
+  transition: color var(--duration-fast) var(--ease-standard);
+}
+.text-link:hover .text-link__label {
+  color: var(--text-primary);
+}
+
+.work-item {
+  transition: opacity var(--duration-base) var(--ease-standard);
+}
+.work-item:hover {
+  opacity: 0.82;
+}
+
+.foot-link {
+  transition: opacity var(--duration-fast) var(--ease-standard);
+}
+.foot-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
