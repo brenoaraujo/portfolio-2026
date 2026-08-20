@@ -48,7 +48,9 @@ export function CaseSection({
   );
 }
 
-/** Narrative column capped at the 705px measure; paragraphs 32px apart. */
+/** Narrative column capped at the 705px measure; paragraphs 32px apart.
+    Centres itself so a stand-alone Prose (an opening paragraph, not inside a
+    CaseSection) lines up with the centred section text. */
 export function Prose({ children }: { children: ReactNode }) {
   return (
     <div
@@ -56,7 +58,9 @@ export function Prose({ children }: { children: ReactNode }) {
         display: "flex",
         flexDirection: "column",
         gap: 32,
+        width: "100%",
         maxWidth: PROSE_MEASURE,
+        alignSelf: "center",
       }}
     >
       {children}
