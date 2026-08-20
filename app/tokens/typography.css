@@ -1,0 +1,48 @@
+/* Fonts are loaded via next/font (app/layout.tsx), which injects
+   --font-noto-serif / --font-dm-sans / --font-dm-mono. The aliases below keep
+   the component-facing vars stable. Two families carry the whole site: Noto
+   Serif for every heading, name and title; DM Sans for body, eyebrows and nav. */
+:root{
+  --font-serif:var(--font-noto-serif),ui-serif,Georgia,"Times New Roman",serif;
+  --font-sans:var(--font-dm-sans),-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --font-mono:var(--font-dm-mono),ui-monospace,SFMono-Regular,Menlo,monospace;
+
+  /* Display — footer statement */
+  --type-display-size:106.42979431152344px;
+  --type-display-lh:87.5px;
+  --type-display-ls:-0.07em;
+
+  /* Lead — introduction paragraph 1 */
+  --type-lead-size:34px;
+  --type-lead-lh:39px;
+
+  /* Section title */
+  --type-section-size:26px;
+  --type-section-lh:39px;
+
+  /* Item title (work card, experience, writing) */
+  --type-title-size:18px;
+  --type-title-lh:100%;
+
+  /* Serif 18 — name, section subtitle, footer links */
+  --type-serif-md-size:18px;
+  --type-serif-md-lh:23px;
+  --type-serif-md-ls:-0.05em;
+
+  /* Body — DM Sans 18 */
+  --type-body-size:18px;
+  --type-body-lh:27px;
+
+  /* Serif 16 — dates, years */
+  --type-meta-serif-size:16px;
+  --type-meta-serif-lh:100%;
+
+  /* Sans 14 — nav items, eyebrow labels */
+  --type-label-size:14px;
+  --type-label-lh:23px;
+  --type-label-ls:-0.05em;
+
+  /* Serif 14 — copyright */
+  --type-footnote-size:14px;
+  --type-footnote-lh:100%;
+}

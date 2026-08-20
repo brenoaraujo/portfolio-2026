@@ -1,69 +1,148 @@
-import Image from "next/image";
+import { SiteHeader } from "@/components/site/SiteHeader";
+import { SiteFooter } from "@/components/site/SiteFooter";
+import { SectionTitle } from "@/components/site/SectionTitle";
+import { TextLink } from "@/components/site/TextLink";
+import { WorkItem } from "@/components/content/WorkItem";
+import { Experience } from "@/components/content/Experience";
+import { Writing } from "@/components/content/Writing";
+import { WORK, ROLES, ARTICLES, CONTACT } from "@/lib/site";
+
+// The Writing section is built but stays hidden until the real article links
+// are confirmed (M2 issue). Flip to true once content is ready.
+const SHOW_WRITING = false;
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <>
+      <div className="page-column">
+        <SiteHeader />
+
+        {/* Introduction — this is the "about". No anchor: the nav points at Work
+            and Experience; the intro is simply the top of the page. */}
+        <section
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 56,
+            alignItems: "flex-start",
+            alignSelf: "stretch",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 32,
+              alignItems: "flex-start",
+              maxWidth: "var(--measure-prose)",
+            }}
           >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            <p
+              style={{
+                fontFamily: "var(--font-serif)",
+                fontWeight: 400,
+                fontSize: "var(--type-lead-size)",
+                lineHeight: "var(--type-lead-lh)",
+                color: "var(--text-primary)",
+                textWrap: "pretty",
+              }}
+            >
+              I&apos;m a product designer based in Vancouver, designing since doing
+              tableless layouts was vibe coding.
+            </p>
+            <p
+              style={{
+                fontFamily: "var(--font-sans)",
+                fontSize: "var(--type-body-size)",
+                lineHeight: "var(--type-body-lh)",
+                color: "var(--text-secondary)",
+                textWrap: "pretty",
+              }}
+            >
+              I listen first, gather as much context and data as I can, then
+              prototype quickly (Figma, code, or AI) to reduce ambiguity and help
+              teams decide with less guesswork and more clarity. For nearly two
+              decades, I&apos;ve designed products end-to-end, built the design
+              systems underneath them, and now prototype in code. Engineers get
+              answers instead of specs.
+            </p>
+            <TextLink href="/#lets-talk">Let&apos;s talk</TextLink>
+          </div>
+        </section>
+
+        {/* Recent work */}
+        <section
+          id="work"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 24,
+            alignItems: "flex-start",
+            alignSelf: "stretch",
+            scrollMarginTop: 40,
+          }}
+        >
+          <SectionTitle weight={400}>Recent work.</SectionTitle>
+          <div className="work-grid">
+            {WORK.map((w) => (
+              <WorkItem
+                key={w.slug}
+                href={`/work/${w.slug}`}
+                image={w.image}
+                eyebrow={w.eyebrow}
+                title={w.title}
+              />
+            ))}
+          </div>
+        </section>
+
+        {/* Experience */}
+        <section
+          id="experience"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 48,
+            alignItems: "flex-start",
+            alignSelf: "stretch",
+            scrollMarginTop: 40,
+          }}
+        >
+          <SectionTitle>Experience</SectionTitle>
+          <div style={{ display: "flex", flexDirection: "column", gap: 32, alignSelf: "stretch" }}>
+            {ROLES.map((r) => (
+              <Experience key={r.title} period={r.period} title={r.title} description={r.description} />
+            ))}
+          </div>
+          <div style={{ display: "flex", justifyContent: "flex-end", alignSelf: "stretch" }}>
+            <TextLink href={CONTACT.linkedin} external>
+              See full details on Linkedin
+            </TextLink>
+          </div>
+        </section>
+
+        {/* Writing — hidden until article links are confirmed */}
+        {SHOW_WRITING && (
+          <section
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 48,
+              alignItems: "flex-start",
+              alignSelf: "stretch",
+            }}
           >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+            <SectionTitle subtitle="Older stuff, still proud of it">Writing</SectionTitle>
+            <div style={{ display: "flex", flexDirection: "column", gap: 24, alignSelf: "stretch" }}>
+              {ARTICLES.map((a) => (
+                <Writing key={a.title} year={a.year} title={a.title} href={a.href} />
+              ))}
+            </div>
+          </section>
+        )}
+      </div>
+
+      <SiteFooter />
+    </>
   );
 }
