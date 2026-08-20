@@ -29,7 +29,6 @@ export function SiteFooter() {
         tabIndex={-1}
         autoPlay
         muted
-        loop
         playsInline
         preload="metadata"
         style={{
