@@ -128,7 +128,13 @@ export default function Home() {
           <SectionTitle>Experience</SectionTitle>
           <div style={{ display: "flex", flexDirection: "column", gap: 32, alignSelf: "stretch" }}>
             {ROLES.map((r) => (
-              <Experience key={r.title} period={r.period} title={r.title} description={r.description} />
+              <Experience
+                key={r.title}
+                period={r.period}
+                title={r.title}
+                description={r.description}
+                images={r.images}
+              />
             ))}
           </div>
           <div style={{ display: "flex", justifyContent: "flex-end", alignSelf: "stretch" }}>
