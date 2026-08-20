@@ -39,7 +39,7 @@ export function Writing({
           style={{
             fontFamily: "var(--font-serif)",
             fontWeight: 400,
-            fontSize: "var(--type-meta-serif-size)",
+            fontSize: 14,
             lineHeight: 1,
             whiteSpace: "nowrap",
             color: "var(--text-secondary)",

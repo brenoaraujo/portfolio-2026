@@ -39,7 +39,7 @@ export function Experience({
             style={{
               fontFamily: "var(--font-serif)",
               fontWeight: 400,
-              fontSize: "var(--type-meta-serif-size)",
+              fontSize: 14,
               lineHeight: 1,
               whiteSpace: "nowrap",
               color: "var(--text-secondary)",
@@ -64,8 +64,8 @@ export function Experience({
             style={{
               fontFamily: "var(--font-sans)",
               fontWeight: 400,
-              fontSize: "var(--type-body-size)",
-              lineHeight: "23px",
+              fontSize: 14,
+              lineHeight: "20px",
               color: "var(--text-secondary)",
               textWrap: "pretty",
             }}

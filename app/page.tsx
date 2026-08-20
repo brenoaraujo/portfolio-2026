@@ -7,9 +7,8 @@ import { Experience } from "@/components/content/Experience";
 import { Writing } from "@/components/content/Writing";
 import { WORK, ROLES, ARTICLES, CONTACT } from "@/lib/site";
 
-// The Writing section is built but stays hidden until the real article links
-// are confirmed (M2 issue). Flip to true once content is ready.
-const SHOW_WRITING = false;
+// Writing is shown; titles render as plain text until article URLs are added.
+const SHOW_WRITING = true;
 
 export default function Home() {
   return (
