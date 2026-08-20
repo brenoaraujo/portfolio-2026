@@ -1,41 +1,57 @@
 ---
-title: Onboarding for a new revenue streamline, cut from eleven screens to four.
+title: Onboarding for a new revenue streamline
 eyebrow: User Flow and UI
-years: 2024-2025
-lead: The team had a working funnel and no idea where it leaked. I rebuilt the flow around the two decisions a new seller actually makes, then prototyped it in code so we could argue with something real instead of with each other.
+years: 2026
+lead: In collaboration with VanHack, I redesigned employer onboarding to reach the aha moment fast — showing candidates who fit your role before signup, with every step to set up the account live and interactive.
+liveLink: https://contra.com/p/OBb6gPFY-onboarding-for-a-new-revenue-streamline?r=brenoaraujo
+liveLabel: See the full case study
 heroImage: /assets/work-onboarding.png
-heroAlt: Onboarding flow redesign
+heroAlt: Employer onboarding flow for VanHack
 credits:
-  role: Lead product designer
-  team: 1 PM · 3 engineers · 1 data scientist
-  madeWith: Figma, React, Amplitude
-  shipped: March 2025
+  role: Product designer, UX research
+  madeWith: Figma, Claude
+  shipped: 2026 — in progress
 published: true
 ---
 
-<CaseSection title="Where it leaked">
+<CaseSection title="A new way in">
   <Prose>
-    Sixty-one percent of sign-ups stopped on the payout step. Not because it was hard — because it arrived before anyone had a reason to trust us with a bank account. We were asking for the riskiest thing first.
+    For ten years, every VanHack customer was won the same way — by a person. A salesperson found them, pitched them, and closed them. The question we set out to test was whether self-serve subscription could open a new revenue stream: a product-led alternative to sales-led acquisition.
 
-    <PullQuote>So we moved the money question to the end, and let people see one real earnings number before we asked for anything.</PullQuote>
+    <PullQuote>Users won't invest effort until they've seen value.</PullQuote>
 
-    That reorder is the whole case study. Everything after it is craft: fewer fields, plainer labels, a progress model that tells the truth about what is left.
+    So the whole redesign is built to show value first, and ask for commitment last.
   </Prose>
 </CaseSection>
 
-<BeforeAfter
-  beforeSrc="/assets/work-ticket-app.png"
-  beforeAlt="The old eleven-screen flow"
-  beforeCaption="Before — eleven screens, payout on step three"
-  afterSrc="/assets/work-website-redesign.png"
-  afterAlt="The new four-screen flow"
-  afterCaption="After — four screens, payout last"
-/>
+<CaseSection title="The current state">
+  <Prose>
+    Employers filled out a seven-step, eleven-question form before they saw a single candidate match. Most people typed fake data just to get a preview, and the flow ended on a non-interactive candidate list and a "book a call" button — the opposite of a product that sells itself.
+  </Prose>
+</CaseSection>
 
-<CaseSection title="What happened">
-  <Outcomes>
-    <Outcome period="Completion" title="41% → 68%" description="Measured over eight weeks against the old funnel, same traffic mix." />
-    <Outcome period="Support tickets" title="Down by a third" description="Most of the drop came from the payout step no longer arriving cold." />
-    <Outcome period="Time to ship" title="Six weeks" description="The coded prototype went to engineering as the spec. No redlines." />
-  </Outcomes>
+<CaseSection title="Design approach">
+  <Prose>
+    I built the flow around two principles: speed to value, and progressive commitment.
+
+    **Search before signup.** The public talent pool is searchable straight from the marketing site, at zero commitment.
+
+    **A self-building role card.** Instead of a long intake form, the role assembles itself as you go, and an AI agent answers questions incrementally.
+
+    **A commitment ladder.** Signup and payment are deferred until the employer has already seen candidates worth paying for.
+  </Prose>
+</CaseSection>
+
+<CaseSection title="What we're measuring">
+  <Prose>
+    The work is in progress, and I owned the full scope — problem framing, the complete flow, every screen, a clickable prototype, and a design-system handoff wired into our AI tools. These are the signals we're watching.
+
+    **Time to first match.** How fast an employer sees a candidate who fits, before any signup.
+
+    **Signup-to-shortlist without a card.** Whether people can get to real value with no payment details.
+
+    **Trial-to-paid conversion.** How the two-path funnel converts across self-serve and sales.
+
+    **Revenue closed through the product.** The point of the whole exercise.
+  </Prose>
 </CaseSection>

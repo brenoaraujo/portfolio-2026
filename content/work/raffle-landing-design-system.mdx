@@ -1,41 +1,47 @@
 ---
 title: Raffle Landing Page Design System
 eyebrow: Design System
-years: ""
-lead: ""
+years: 2025
+lead: I built a modular, block-based landing-page system so marketing could launch raffle campaigns themselves — more customization, far less developer burden, and something that actually scales.
+liveLink: https://contra.com/p/lLs3PcXq-raffle-landing-page-design-system?r=brenoaraujo
+liveLabel: See the full case study
 heroImage: /assets/work-raffle-design-system.png
-heroAlt: Raffle landing page design system
+heroAlt: Raffle landing page design system for Ascend
 credits:
-  role: ""
-  team: ""
-  madeWith: ""
-  shipped: ""
-# Flip to true once the content below is written — then it builds, appears on
-# the home grid as a link, and joins the Next— rotation.
-published: false
+  role: Product designer, web
+  madeWith: Figma, shadcn/ui, Tailwind
+  shipped: 2025
+published: true
 ---
 
-<CaseSection title="Section heading">
+<CaseSection title="The problem">
   <Prose>
-    Opening paragraph — set up the problem in plain language.
-
-    <PullQuote>A single sentence that carries the turning point of the story.</PullQuote>
-
-    Follow-up paragraph — the craft, the decisions, what changed.
+    Every client campaign ran on just two hardcoded templates. Any time marketing needed a change, a developer had to step in — which meant delays and friction. Marketing wanted flexibility; the product team wanted faster launches. The two pulled against each other, and neither could scale.
   </Prose>
 </CaseSection>
 
-<BeforeAfter
-  beforeSrc="/assets/work-raffle-design-system.png"
-  beforeAlt="Before"
-  beforeCaption="Before — describe it"
-  afterSrc="/assets/work-raffle-design-system.png"
-  afterAlt="After"
-  afterCaption="After — describe it"
-/>
+<CaseSection title="Approach">
+  <Prose>
+    I started with the pages we already had, looking for the patterns and layouts that performed, and talked to marketing and production about which content they actually used and which they never touched.
 
-<CaseSection title="What happened">
+    Then, working with engineering, I built reusable blocks in Figma aligned to shadcn/ui and Tailwind, on a token system that standardized spacing, colour, and typography. It shipped incrementally — real campaigns drove the improvements.
+
+    <PullQuote>Rather than rigid templates, pages are built from predefined, themeable blocks — flexibility without a design compromise.</PullQuote>
+
+    The library covers the whole page: hero, CTA, price grid, extra prizes, winners, image galleries, checkout, and more. Each block is variable-powered, so colour, spacing, and type flex per campaign without anyone editing code.
+  </Prose>
+</CaseSection>
+
+<CaseSection title="Outcomes">
   <Outcomes>
-    <Outcome period="Metric" title="Result" description="One line of context for the number." />
+    <Outcome period="Launch time" title="Faster campaigns" description="Pages build quickly, with far less back-and-forth with the production team." />
+    <Outcome period="Clients" title="Happier" description="More customization means each campaign fits the charity behind it." />
+    <Outcome period="Engineering" title="Less strain" description="Engineers work on system-wide improvements instead of one-off requests." />
   </Outcomes>
+</CaseSection>
+
+<CaseSection title="What's next">
+  <Prose>
+    Wire in performance analytics for data-driven A/B testing, extend the system with new layouts as campaigns teach us what works, and document it so internal teams can adopt it end to end.
+  </Prose>
 </CaseSection>
