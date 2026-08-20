@@ -1,4 +1,5 @@
 import { CONTACT } from "@/lib/site";
+import { FooterVideo } from "@/components/site/FooterVideo";
 
 // Footer background video. Light now; when a theme toggle is wired, swap to
 // monster-footer-dark.webm under [data-theme="dark"] (the file is already in
@@ -24,24 +25,7 @@ export function SiteFooter() {
         overflow: "hidden",
       }}
     >
-      <video
-        aria-hidden="true"
-        tabIndex={-1}
-        autoPlay
-        muted
-        playsInline
-        preload="metadata"
-        style={{
-          position: "absolute",
-          inset: 0,
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          zIndex: 0,
-        }}
-      >
-        <source src={FOOTER_VIDEO} type="video/webm" />
-      </video>
+      <FooterVideo src={FOOTER_VIDEO} />
       <div
         aria-hidden="true"
         style={{
