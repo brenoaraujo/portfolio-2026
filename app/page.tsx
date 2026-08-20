@@ -83,7 +83,7 @@ export default function Home() {
               prototype quickly (Figma, code, or AI) to reduce ambiguity and help
               teams decide with less guesswork and more clarity. 
             </p>
-            <TextLink href="/#lets-talk">Let&apos;s talk</TextLink>
+            <TextLink href={CONTACT.linkedin} external>Let&apos;s talk</TextLink>
           </div>
         </section>
 
