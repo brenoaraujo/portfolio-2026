@@ -29,29 +29,9 @@ export function SiteFooter() {
           background: "var(--footer-fade)",
         }}
       />
-      <div
-        style={{
-          position: "relative",
-          width: "100%",
-          maxWidth: "var(--content-width)",
-          margin: "0 auto",
-          padding: "180px 24px 48px",
-          display: "flex",
-          flexDirection: "column",
-          minHeight: 640,
-        }}
-      >
+      <div className="footer-inner">
         <div style={{ display: "flex", flexDirection: "column", gap: 62, alignItems: "flex-start" }}>
-          <h2
-            style={{
-              fontFamily: "var(--font-serif)",
-              fontWeight: 700,
-              fontSize: "var(--type-display-size)",
-              lineHeight: "var(--type-display-lh)",
-              letterSpacing: "var(--type-display-ls)",
-              color: "var(--text-primary)",
-            }}
-          >
+          <h2 className="footer-statement">
             Design
             <br />
             Connect

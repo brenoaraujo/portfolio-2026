@@ -102,6 +102,73 @@ body {
   }
 }
 
+/* Résumé / writing / outcome rows: 1fr 2fr 1fr on desktop (the empty third
+   column gives right-hand air); stack to a single column on mobile. */
+.list-row-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  gap: 24px;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .list-row-grid {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}
+
+/* Header: never let the name + nav collide. On narrow screens the row stacks —
+   name on top, nav beneath — and the hairline is dropped. */
+@media (max-width: 600px) {
+  .site-header {
+    flex-direction: column;
+    align-items: flex-start;
+    height: auto !important;
+    gap: 16px;
+  }
+  .site-header [role="separator"] {
+    display: none;
+  }
+  .site-nav {
+    gap: 24px;
+  }
+}
+
+/* Footer display statement scales with the viewport instead of overflowing. */
+.footer-statement {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: clamp(56px, 12vw, 106.43px);
+  line-height: 0.85;
+  letter-spacing: var(--type-display-ls);
+  color: var(--text-primary);
+}
+
+.footer-inner {
+  position: relative;
+  width: 100%;
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: 180px 24px 48px;
+  display: flex;
+  flex-direction: column;
+  min-height: 640px;
+}
+
+@media (max-width: 768px) {
+  .footer-inner {
+    padding: 96px 24px 40px;
+    min-height: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-column {
+    padding: 32px 20px;
+  }
+}
+
 /* The one line in the system: a zero-height rule drawn with an inset shadow. */
 .hairline {
   height: 0;

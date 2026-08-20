@@ -33,7 +33,7 @@ export function Experience({
       }}
       {...rest}
     >
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr 1fr", gap: 24, width: "100%" }}>
+      <div className="list-row-grid">
         <div style={{ display: "flex", flexDirection: "column", gap: 12, paddingBottom: 21 }}>
           <span
             style={{
