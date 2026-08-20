@@ -6,11 +6,15 @@ import { WorkItem } from "@/components/content/WorkItem";
 import { Experience } from "@/components/content/Experience";
 import { Writing } from "@/components/content/Writing";
 import { WORK, ROLES, ARTICLES, CONTACT } from "@/lib/site";
+import { getPublishedSlugs } from "@/lib/work";
 
 // Writing is shown; titles render as plain text until article URLs are added.
 const SHOW_WRITING = true;
 
 export default function Home() {
+  // Only link work cards that have a published case study; the rest show as
+  // non-clickable cards until their MDX is written and published.
+  const published = new Set(getPublishedSlugs());
   return (
     <>
       <div className="page-column">
@@ -86,7 +90,7 @@ export default function Home() {
             {WORK.map((w) => (
               <WorkItem
                 key={w.slug}
-                href={`/work/${w.slug}`}
+                href={published.has(w.slug) ? `/work/${w.slug}` : undefined}
                 image={w.image}
                 eyebrow={w.eyebrow}
                 title={w.title}

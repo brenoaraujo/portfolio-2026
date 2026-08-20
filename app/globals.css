@@ -69,11 +69,35 @@ body {
   align-self: stretch;
 }
 
+.credits-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 24px;
+}
+
+.before-after {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+
 @media (max-width: 768px) {
   .page-column {
     gap: 56px;
   }
   .work-grid {
+    grid-template-columns: 1fr;
+  }
+  .credits-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .before-after {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .credits-grid {
     grid-template-columns: 1fr;
   }
 }
