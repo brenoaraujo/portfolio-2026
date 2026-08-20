@@ -1,5 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
 import { Experience } from "@/components/content/Experience";
+import { Media } from "@/components/case-study/Media";
 
 /* ---------------------------------------------------------------------------
    Case-study body blocks. The fixed chrome (intro, hero, credits, next, footer)
@@ -243,6 +244,7 @@ export const mdxComponents = {
   SubHeading,
   Figure,
   BeforeAfter,
+  Media,
   Outcomes,
   Outcome,
 };

@@ -5,6 +5,7 @@ import { SiteHeader } from "@/components/site/SiteHeader";
 import { TextLink } from "@/components/site/TextLink";
 import { CaseStudyFooter } from "@/components/case-study/CaseStudyFooter";
 import { Credits } from "@/components/case-study/Credits";
+import { HeroMedia } from "@/components/case-study/Media";
 import { mdxComponents } from "@/components/case-study/blocks";
 import {
   hasCaseStudy,
@@ -114,20 +115,8 @@ export default async function CaseStudyPage({
         ) : null}
       </section>
 
-      {/* Hero */}
-      {meta.heroImage ? (
-        <div
-          role="img"
-          aria-label={meta.heroAlt}
-          style={{
-            alignSelf: "stretch",
-            aspectRatio: "1200 / 700",
-            borderRadius: 12,
-            boxShadow: "inset 0 0 0 1px rgb(212,212,212)",
-            background: `url(${meta.heroImage}) center / cover no-repeat`,
-          }}
-        />
-      ) : null}
+      {/* Hero — video (autoplay, no controls) if set, otherwise the image */}
+      <HeroMedia video={meta.heroVideo} image={meta.heroImage} alt={meta.heroAlt} />
 
       <Credits {...meta.credits} />
 

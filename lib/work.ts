@@ -18,6 +18,8 @@ export interface CaseStudyMeta {
   liveLink?: string;
   liveLabel?: string;
   heroImage: string;
+  /** Optional hero video (autoplay, muted, loop, no controls). Takes priority. */
+  heroVideo?: string;
   heroAlt?: string;
   credits: {
     role?: string;
@@ -65,6 +67,7 @@ export function getCaseStudyMeta(slug: string): CaseStudyMeta {
     liveLink: data.liveLink,
     liveLabel: data.liveLabel ?? "See the live flow",
     heroImage: data.heroImage ?? fallback?.image ?? "",
+    heroVideo: data.heroVideo,
     heroAlt: data.heroAlt ?? data.title ?? fallback?.title,
     credits: data.credits ?? {},
     published: data.published ?? true,
