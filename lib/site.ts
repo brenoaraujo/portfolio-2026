@@ -43,6 +43,8 @@ export interface Role {
   period: string;
   title: string;
   description: string;
+  /** Fan thumbnails shown on hover of the row (a/b/c per company). */
+  images?: string[];
 }
 
 export const ROLES: Role[] = [
@@ -51,24 +53,44 @@ export const ROLES: Role[] = [
     title: "Senior Product Designer, Ascend",
     description:
       "Setting design direction across point-of-sale, checkout, design systems, and a marketing operations platform.",
+    images: [
+      "/assets/experience_1_a.png",
+      "/assets/experience_1_b.png",
+      "/assets/experience_1_c.png",
+    ],
   },
   {
     period: "2023-2026",
     title: "Lead Designer, VanHack",
     description:
       "Designing both sides of a talent marketplace — 500K+ engineers, and the recruiters hiring them.",
+    images: [
+      "/assets/experience_2_a.png",
+      "/assets/experience_2_b.png",
+      "/assets/experience_2_c.png",
+    ],
   },
   {
     period: "2023-2026",
     title: "Senior Product Designer, Hotmart",
     description:
       "Designing the analytics product every team used to monitor its indicators, built with Data Science.",
+    images: [
+      "/assets/experience_3_a.png",
+      "/assets/experience_3_b.png",
+      "/assets/experience_3_c.png",
+    ],
   },
   {
     period: "2023-2026",
     title: "Lead Product Designer, Siteware",
     description:
       "Owning the core product for KPIs, goals, and action plans, as the company's first designer.",
+    images: [
+      "/assets/experience_4_a.png",
+      "/assets/experience_4_b.png",
+      "/assets/experience_4_c.png",
+    ],
   },
 ];
 

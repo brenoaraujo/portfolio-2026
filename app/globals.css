@@ -116,6 +116,10 @@ body {
     grid-template-columns: 1fr;
     gap: 4px;
   }
+  /* The hover fan is a pointer interaction — hide it on touch/stacked layouts. */
+  .exp-fan-cell {
+    display: none;
+  }
 }
 
 /* Header: never let the name + nav collide. On narrow screens the row stacks —
