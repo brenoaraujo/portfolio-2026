@@ -19,7 +19,10 @@ export default function Home() {
   return (
     <>
       <TrackHomeView />
-      <div className="page-column">
+      <main id="main" className="page-column">
+        <h1 className="sr-only">
+          Breno Araujo — product designer and design engineer in Vancouver
+        </h1>
         <SiteHeader />
 
         {/* Introduction — this is the "about". No anchor: the nav points at Work
@@ -154,7 +157,7 @@ export default function Home() {
             </div>
           </section>
         )}
-      </div>
+      </main>
 
       <SiteFooter />
     </>

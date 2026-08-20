@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Noto_Serif, DM_Sans, DM_Mono } from "next/font/google";
 import { Amplitude } from "@/components/analytics/Amplitude";
 import { Smartlook } from "@/components/analytics/Smartlook";
+import { SITE_URL, SITE_NAME, SITE_TITLE, SITE_DESCRIPTION } from "@/lib/config";
 import "./globals.css";
 
 // Noto Serif carries voice; DM Sans carries information; DM Mono is present in
@@ -30,10 +31,27 @@ const dmMono = DM_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://portfolio-2026-one-steel.vercel.app"),
-  title: "Breno Araujo — Product designer",
-  description:
-    "I'm a product designer based in Vancouver. I listen first, gather context, then prototype quickly to reduce ambiguity.",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: SITE_TITLE,
+    template: "%s — Breno Araujo",
+  },
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  authors: [{ name: SITE_NAME }],
+  openGraph: {
+    type: "website",
+    siteName: SITE_NAME,
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    url: SITE_URL,
+    locale: "en_CA",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -45,6 +63,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full">
         <Amplitude />
         <Smartlook />
+        <a href="#main" className="skip-link">
+          Skip to content
+        </a>
         {children}
       </body>
     </html>
