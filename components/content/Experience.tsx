@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, type CSSProperties } from "react";
+import { track, EVENTS } from "@/lib/analytics";
 
 export interface ExperienceProps {
   /** Date range, serif 16 in the first column. */
@@ -70,13 +71,25 @@ export function Experience({
 
   const rowHandlers = hasFan
     ? {
-        onMouseEnter: () => setHoveredRow(true),
+        onMouseEnter: () => {
+          setHoveredRow(true);
+          track(EVENTS.EXPERIENCE_ROW_HOVER, { company: title });
+        },
         onMouseLeave: () => {
           setHoveredRow(false);
           setActiveFrame(null);
         },
       }
     : {};
+
+  // A frame becomes active on hover/focus — the moment a visitor actually
+  // engages a thumbnail. Fire once here (shared by pointer and keyboard).
+  const activateFrame = (i: number) => {
+    setActiveFrame(i);
+    setLastFrame(i);
+    setHoveredRow(true);
+    track(EVENTS.EXPERIENCE_THUMBNAIL_HOVER, { company: title, index: i });
+  };
 
   const count = images?.length ?? 0;
 
@@ -159,18 +172,16 @@ export function Experience({
                     alt={`${title} — thumbnail ${i + 1}`}
                     tabIndex={0}
                     style={frameStyle}
-                    onMouseEnter={() => {
-                      setActiveFrame(i);
-                      setLastFrame(i);
-                      setHoveredRow(true);
-                    }}
+                    onMouseEnter={() => activateFrame(i)}
                     onMouseLeave={() => setActiveFrame(null)}
-                    onFocus={() => {
-                      setActiveFrame(i);
-                      setLastFrame(i);
-                      setHoveredRow(true);
-                    }}
+                    onFocus={() => activateFrame(i)}
                     onBlur={() => setActiveFrame(null)}
+                    onClick={() =>
+                      track(EVENTS.EXPERIENCE_THUMBNAIL_CLICK, {
+                        company: title,
+                        index: i,
+                      })
+                    }
                   />
                 );
               })}

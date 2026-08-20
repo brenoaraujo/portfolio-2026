@@ -122,20 +122,39 @@ body {
   }
 }
 
-/* Header: never let the name + nav collide. On narrow screens the row stacks —
-   name on top, nav beneath — and the hairline is dropped. */
+/* Header: name + hairline + nav in a row. Layout lives here (not inline) so the
+   responsive rules below can actually override it. */
+.site-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 24px;
+  height: 52px;
+  align-self: stretch;
+}
+.site-nav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 32px;
+  flex-shrink: 0;
+}
+
+/* On narrow screens the row stacks — name on top, nav beneath — the hairline is
+   dropped, and the nav is allowed to wrap so it never overflows the viewport. */
 @media (max-width: 600px) {
   .site-header {
     flex-direction: column;
     align-items: flex-start;
-    height: auto !important;
+    height: auto;
     gap: 16px;
   }
   .site-header [role="separator"] {
     display: none;
   }
   .site-nav {
-    gap: 24px;
+    gap: 20px;
+    flex-wrap: wrap;
   }
 }
 
@@ -165,6 +184,14 @@ body {
   .footer-inner {
     padding: 96px 24px 40px;
     min-height: 0;
+  }
+}
+
+/* The wide monster video crops badly on a narrow phone — drop it below the
+   header's stack breakpoint and let the paper (--background-secondary) show. */
+@media (max-width: 600px) {
+  .footer-video {
+    display: none;
   }
 }
 

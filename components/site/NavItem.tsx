@@ -9,6 +9,8 @@ export interface NavItemProps {
   /** Path to the svg that peeks into the top-right corner on hover. */
   icon?: string;
   style?: CSSProperties;
+  /** Passthrough for `data-track*` instrumentation attributes. */
+  [key: `data-${string}`]: string | undefined;
 }
 
 /** Header navigation link — DM Sans 14, tight tracking, fades to 60% on hover. */

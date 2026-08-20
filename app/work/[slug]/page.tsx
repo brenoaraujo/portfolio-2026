@@ -2,11 +2,13 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { compileMDX } from "next-mdx-remote/rsc";
 import { SiteHeader } from "@/components/site/SiteHeader";
+import { SiteFooter } from "@/components/site/SiteFooter";
 import { TextLink } from "@/components/site/TextLink";
-import { CaseStudyFooter } from "@/components/case-study/CaseStudyFooter";
 import { Credits } from "@/components/case-study/Credits";
 import { HeroMedia } from "@/components/case-study/Media";
 import { mdxComponents } from "@/components/case-study/blocks";
+import { TrackCaseStudyView } from "@/components/analytics/TrackCaseStudyView";
+import { EVENTS } from "@/lib/analytics-events";
 import {
   hasCaseStudy,
   getPublishedSlugs,
@@ -61,8 +63,10 @@ export default async function CaseStudyPage({
   const next = getNextCaseStudy(slug);
 
   return (
-    <main id="main" className="page-column">
-      <SiteHeader />
+    <>
+      <main id="main" className="page-column">
+        <TrackCaseStudyView slug={slug} title={meta.title} />
+        <SiteHeader />
 
       {/* Intro */}
       <section
@@ -113,7 +117,14 @@ export default async function CaseStudyPage({
           </p>
         ) : null}
         {meta.liveLink ? (
-          <TextLink href={meta.liveLink} external>
+          <TextLink
+            href={meta.liveLink}
+            external
+            data-track={EVENTS.CTA_CLICK}
+            data-track-label={meta.liveLabel}
+            data-track-location="case-study"
+            data-track-slug={slug}
+          >
             {meta.liveLabel}
           </TextLink>
         ) : null}
@@ -132,13 +143,20 @@ export default async function CaseStudyPage({
       {/* Next project */}
       {next ? (
         <div style={{ display: "flex", justifyContent: "flex-end", alignSelf: "stretch" }}>
-          <TextLink href={`/work/${next.slug}`} arrow>
+          <TextLink
+            href={`/work/${next.slug}`}
+            arrow
+            data-track={EVENTS.NEXT_PROJECT_CLICK}
+            data-track-slug={next.slug}
+            data-track-title={next.title}
+          >
             {`Next — ${next.title}`}
           </TextLink>
         </div>
       ) : null}
 
-      <CaseStudyFooter />
-    </main>
+      </main>
+      <SiteFooter />
+    </>
   );
 }

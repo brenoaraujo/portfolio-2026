@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Noto_Serif, DM_Sans, DM_Mono } from "next/font/google";
 import { Amplitude } from "@/components/analytics/Amplitude";
 import { Smartlook } from "@/components/analytics/Smartlook";
+import { TrackClicks } from "@/components/analytics/TrackClicks";
+import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
 import { SITE_URL, SITE_NAME, SITE_TITLE, SITE_DESCRIPTION } from "@/lib/config";
 import "./globals.css";
 
@@ -71,6 +73,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full">
         <Amplitude />
         <Smartlook />
+        <GoogleAnalytics />
+        <TrackClicks />
         <a href="#main" className="skip-link">
           Skip to content
         </a>
