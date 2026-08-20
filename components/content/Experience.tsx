@@ -186,7 +186,10 @@ export function Experience({
                   zIndex: 70,
                   pointerEvents: "none",
                   bottom: 26,
-                  left: count * 18 + 112 - 325,
+                  // Open up-and-left: the preview's right edge tucks against the
+                  // fan's left frames (with a small overlap) so it stays well
+                  // inside the column and can't be clipped at the page's right.
+                  left: -(325 - 20),
                   opacity: activeFrame !== null ? 1 : 0,
                   transform: activeFrame !== null ? "translateY(0)" : "translateY(6px)",
                   transition: `opacity 180ms ${EASE}, transform 220ms ${EASE}`,
