@@ -11,6 +11,10 @@ function isVideo(src: string) {
   return /\.(mp4|webm|mov)(\?|$)/i.test(src);
 }
 
+function videoType(src: string) {
+  return /\.webm(\?|$)/i.test(src) ? "video/webm" : "video/mp4";
+}
+
 /**
  * Autoplaying, muted, looping video with no controls and no poster — a moving
  * screenshot, not a player. Prefers a .webm source, falls back to the original.
@@ -24,7 +28,6 @@ export function CaseVideo({
   hero?: boolean;
   style?: CSSProperties;
 }) {
-  const webm = src.replace(/\.(mp4|mov)(\?|$)/i, ".webm$2");
   return (
     <video
       autoPlay
@@ -44,8 +47,7 @@ export function CaseVideo({
         ...style,
       }}
     >
-      {webm !== src ? <source src={webm} type="video/webm" /> : null}
-      <source src={src} type="video/mp4" />
+      <source src={src} type={videoType(src)} />
     </video>
   );
 }
