@@ -75,41 +75,38 @@ export const ROLES: Role[] = [
 export interface Article {
   year: string;
   title: string;
-  href: string;
+  /** Article URL. Omit to render the title as plain text (no link) for now. */
+  href?: string;
 }
 
-// Writing stays hidden on the page until the real article links are confirmed.
 export const ARTICLES: Article[] = [
   {
     year: "2020",
     title:
       "Using the Lightning Decision Jam to surface problems and prioritize a quarter",
-    href: "#",
+    href: "https://brenoaraujo.substack.com/p/using-the-lightning-decision-jam",
   },
   {
     year: "2017",
     title:
       "The Chinese Room and why chatbots will never hold a real conversation",
-    href: "#",
+    href: "https://brenoaraujo.substack.com/p/the-chinese-room-and-why-chatbots",
   },
   {
     year: "2017",
     title: "Why User Experience Makes or Breaks Your Product",
-    href: "#",
+    href: "https://brenoaraujo.substack.com/p/why-user-experience-makes-or-breaks",
   },
 ];
 
-/**
- * Contact links. Email is wired; social URLs are placeholders — confirm the
- * real handles before launch (tracked in the M5 content proofread issue).
- */
+/** Contact links, in the footer's source order: Email · Linkedin · Instagram · X. */
 export const CONTACT = {
-  linkedin: "#",
+  linkedin: "https://www.linkedin.com/in/brenoaraujobh",
   links: [
     { label: "Email", href: "mailto:brenoaraujobh@gmail.com", external: false },
-    { label: "Linkedin", href: "#", external: true },
-    { label: "Instagram", href: "#", external: true },
-    { label: "X", href: "#", external: true },
+    { label: "Linkedin", href: "https://www.linkedin.com/in/brenoaraujobh", external: true },
+    { label: "Instagram", href: "https://www.instagram.com/brenoaraujobh/", external: true },
+    { label: "X", href: "https://x.com/brenoaraujo", external: true },
   ],
 } as const;
 
