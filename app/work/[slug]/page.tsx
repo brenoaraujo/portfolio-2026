@@ -30,11 +30,14 @@ export async function generateMetadata({
   if (!hasCaseStudy(slug)) return {};
   const meta = getCaseStudyMeta(slug);
   return {
-    title: `${meta.title} — Breno Araujo`,
+    // The root layout's title template appends " — Breno Araujo".
+    title: meta.title,
     description: meta.lead,
     openGraph: {
+      type: "article",
       title: meta.title,
       description: meta.lead,
+      url: `/work/${slug}`,
       images: meta.heroImage ? [{ url: meta.heroImage }] : undefined,
     },
   };
@@ -58,7 +61,7 @@ export default async function CaseStudyPage({
   const next = getNextCaseStudy(slug);
 
   return (
-    <div className="page-column">
+    <main id="main" className="page-column">
       <SiteHeader />
 
       {/* Intro */}
@@ -136,6 +139,6 @@ export default async function CaseStudyPage({
       ) : null}
 
       <CaseStudyFooter />
-    </div>
+    </main>
   );
 }

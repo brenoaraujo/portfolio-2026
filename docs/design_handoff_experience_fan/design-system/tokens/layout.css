@@ -1,0 +1,26 @@
+/* Geometry, spacing and layout constants from the Handoff frames.
+   fig-tokens.css carries the raw Figma spacing scale as unitless floats
+   (--spacing-4 … --spacing-80); these are the px-ready aliases. */
+:root{
+  --space-4:4px;--space-8:8px;--space-9:9px;--space-12:12px;--space-16:16px;
+  --space-20:20px;--space-24:24px;--space-30:30px;--space-32:32px;--space-40:40px;
+  --space-43:43px;--space-48:48px;--space-56:56px;--space-62:62px;--space-64:64px;--space-80:80px;
+
+  --radius-avatar:8px;
+  --radius-thumb:12px;
+
+  --hairline:0.5px;
+  --hairline-color:var(--color-line);
+  --border-thumb:inset 0 0 0 1px rgb(212,212,212); /* @kind shadow */
+  --icon-stroke:0.8px;
+
+  --page-width:1440px;
+  --content-width:1200px;
+  --measure-prose:705px;
+  --grid-thirds:1fr 2fr 1fr; /* @kind other */
+  --grid-work:1fr 1fr; /* @kind other */
+
+  --ease-standard:cubic-bezier(0.2,0,0.2,1); /* @kind other */
+  --duration-fast:120ms; /* @kind other */
+  --duration-base:200ms; /* @kind other */
+}
