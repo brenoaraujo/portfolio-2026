@@ -11,6 +11,7 @@ import { NAV } from "@/lib/site";
 export function SiteHeader() {
   return (
     <header
+      className="site-header"
       style={{
         display: "flex",
         flexDirection: "row",
@@ -22,7 +23,7 @@ export function SiteHeader() {
     >
       <Profile href="/" />
       <Divider />
-      <nav style={{ display: "flex", flexDirection: "row", gap: 32, alignItems: "center", flexShrink: 0 }}>
+      <nav className="site-nav" style={{ display: "flex", flexDirection: "row", gap: 32, alignItems: "center", flexShrink: 0 }}>
         {NAV.map(({ label, href }) => (
           <NavItem key={label} href={href}>
             {label}

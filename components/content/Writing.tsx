@@ -42,7 +42,7 @@ export function Writing({
       }}
       {...rest}
     >
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr 1fr", gap: 24, width: "100%" }}>
+      <div className="list-row-grid">
         <span
           style={{
             fontFamily: "var(--font-serif)",
