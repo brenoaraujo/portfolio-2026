@@ -28,6 +28,7 @@ const dmMono = DM_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://portfolio-2026-one-steel.vercel.app"),
   title: "Breno Araujo — Product designer",
   description:
     "I'm a product designer based in Vancouver. I listen first, gather context, then prototype quickly to reduce ambiguity.",
