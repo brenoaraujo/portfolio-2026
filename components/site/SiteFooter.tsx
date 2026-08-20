@@ -1,11 +1,17 @@
 import { CONTACT } from "@/lib/site";
 
+// Footer background video. Light now; when a theme toggle is wired, swap to
+// monster-footer-dark.webm under [data-theme="dark"] (the file is already in
+// /public/assets/). Kept as a webm-only background per the source ("MP4 to WEBM
+// monster").
+const FOOTER_VIDEO = "/assets/monster-footer-light.webm";
+
 /**
  * Home footer — the loudest the voice ever gets: "Design / Connect / Enjoy." in
  * the 106px display serif, contact links 62px below, copyright at the bottom.
- * A 198px paper→transparent fade sits over the secondary surface (the source's
- * background video is substituted by the flat surface until a real file exists).
- * Rebuilt from the source's absolute layout into normal flow so it can go fluid.
+ * A looping background video sits behind a 198px paper→transparent fade, so the
+ * page dissolves into the motion. Rebuilt from the source's absolute layout
+ * into normal flow so it can go fluid.
  */
 export function SiteFooter() {
   return (
@@ -18,6 +24,25 @@ export function SiteFooter() {
         overflow: "hidden",
       }}
     >
+      <video
+        aria-hidden="true"
+        tabIndex={-1}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        style={{
+          position: "absolute",
+          inset: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          zIndex: 0,
+        }}
+      >
+        <source src={FOOTER_VIDEO} type="video/webm" />
+      </video>
       <div
         aria-hidden="true"
         style={{
@@ -26,6 +51,7 @@ export function SiteFooter() {
           top: 0,
           right: 0,
           height: 198,
+          zIndex: 1,
           background: "var(--footer-fade)",
         }}
       />

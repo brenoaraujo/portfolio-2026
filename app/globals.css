@@ -147,6 +147,7 @@ body {
 
 .footer-inner {
   position: relative;
+  z-index: 1;
   width: 100%;
   max-width: var(--content-width);
   margin: 0 auto;
