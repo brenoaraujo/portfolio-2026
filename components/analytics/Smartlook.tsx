@@ -3,6 +3,11 @@
 import { useEffect } from "react";
 import smartlook from "smartlook-client";
 
+// Smartlook project key, read from the environment so it isn't hardcoded in
+// source. Public client-side key — set NEXT_PUBLIC_SMARTLOOK_KEY in .env.local
+// and in the Vercel project.
+const SMARTLOOK_KEY = process.env.NEXT_PUBLIC_SMARTLOOK_KEY;
+
 // Module-level guard so init runs once for the app's lifetime (survives
 // re-renders and Fast Refresh).
 let inited = false;
@@ -14,9 +19,9 @@ let inited = false;
  */
 export function Smartlook() {
   useEffect(() => {
-    if (inited || smartlook.initialized()) return;
+    if (!SMARTLOOK_KEY || inited || smartlook.initialized()) return;
     inited = true;
-    smartlook.init("75361479432312a449390dee3f6899b5013fdefe", { region: "eu" });
+    smartlook.init(SMARTLOOK_KEY, { region: "eu" });
   }, []);
 
   return null;
