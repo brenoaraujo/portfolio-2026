@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Noto_Serif, DM_Sans, DM_Mono } from "next/font/google";
+import { AnalyticsOptOut } from "@/components/analytics/AnalyticsOptOut";
 import { Amplitude } from "@/components/analytics/Amplitude";
 import { Smartlook } from "@/components/analytics/Smartlook";
 import { TrackClicks } from "@/components/analytics/TrackClicks";
@@ -71,6 +72,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${notoSerif.variable} ${dmSans.variable} ${dmMono.variable} h-full`}
     >
       <body className="min-h-full">
+        <AnalyticsOptOut />
         <Amplitude />
         <Smartlook />
         <GoogleAnalytics />

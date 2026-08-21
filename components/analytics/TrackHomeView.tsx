@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect } from "react";
-import * as amplitude from "@amplitude/unified";
+import { track } from "@/lib/analytics";
 
-/** Fires the load-time "Viewed Home Page" event when the home route mounts. */
+/** Fires the load-time "Viewed Home Page" event when the home route mounts.
+ * Routed through track() so it honours the analytics opt-out. */
 export function TrackHomeView() {
   useEffect(() => {
-    amplitude.track('Viewed Home Page', { prompt_version: 'BA400.4' }); // helps improve this setup flow — safe to remove once you've verified the event lands
+    track("Viewed Home Page");
   }, []);
 
   return null;

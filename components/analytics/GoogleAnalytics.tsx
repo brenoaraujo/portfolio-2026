@@ -24,6 +24,15 @@ export function GoogleAnalytics() {
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
+          try {
+            var _sp = new URLSearchParams(location.search);
+            var _a = _sp.get('analytics');
+            if (_a === 'off') localStorage.setItem('ba-analytics-optout', '1');
+            if (_a === 'on') localStorage.removeItem('ba-analytics-optout');
+            if (localStorage.getItem('ba-analytics-optout') === '1') {
+              window['ga-disable-${GA_ID}'] = true;
+            }
+          } catch (e) {}
           gtag('config', '${GA_ID}');
         `}
       </Script>
