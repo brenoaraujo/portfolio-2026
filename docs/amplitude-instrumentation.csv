@@ -1,0 +1,15 @@
+Event Name,Type,Trigger,Properties,Source File,Mechanism,Notes
+Viewed Home Page,Page view,Home route mounts,(none),components/analytics/TrackHomeView.tsx,Manual track(),Renamed from a setup event; prompt_version prop removed
+Viewed Case Study,Page view,A case-study route mounts,slug; title,components/analytics/TrackCaseStudyView.tsx,Manual track(),
+Clicked Nav Link,Click,Header nav item clicked (Work / Experience / Let's talk),label,components/site/SiteHeader.tsx,data-track delegation,
+Clicked CTA,Click,"""Let's talk"" or ""See full details on Linkedin"" clicked",label; location; slug,app/page.tsx; app/work/[slug]/page.tsx,data-track delegation,"location = hero | experience | case-study. Case-study live-link variant currently never renders (Contra links removed)"
+Clicked Work Card,Click,A published work card clicked,slug; title,app/page.tsx (WorkItem),data-track delegation,Only published cards carry the attribute; the in-progress card does not fire
+Clicked Writing Link,Click,A Writing article title clicked,title,components/content/Writing.tsx,data-track delegation,Only rows that have an href
+Clicked Contact Link,Click,Footer contact link clicked (Email / Linkedin / Instagram / X),label,components/site/SiteFooter.tsx,data-track delegation,
+Clicked Next Project,Click,"""Next — <title>"" link clicked on a case study",slug; title,app/work/[slug]/page.tsx,data-track delegation,
+Hovered Experience Row,Hover,Mouse enters an experience row that has thumbnails,company,components/content/Experience.tsx,Manual track(),Fires once per mouse-enter; funnel step before thumbnail engagement
+Hovered Experience Thumbnail,Hover/Focus,A thumbnail frame is hovered or keyboard-focused,company; index,components/content/Experience.tsx,Manual track(),index is 0-based within the fan
+Clicked Experience Thumbnail,Click,A thumbnail frame is clicked,company; index,components/content/Experience.tsx,Manual track(),Thumbnails are not links; click is tracked for intent only
+[Amplitude Autocapture],Auto,All page views and element interactions captured automatically,(varies by autocapture),components/analytics/Amplitude.tsx,initAll autocapture:true,Supplements the named events above with generic auto-tracked events
+[Session Replay],Auto,100% of sessions recorded,n/a,components/analytics/Amplitude.tsx,initAll sessionReplay sampleRate:1,No consent gate yet — consider one before wide promotion
+[Opt-out],Config,Owner traffic excluded when localStorage ba-analytics-optout=1,n/a,lib/analytics.ts; components/analytics/AnalyticsOptOut.tsx,analyticsEnabled() guard,"Set via ?analytics=off (undo with ?analytics=on); also disables Smartlook and GA"

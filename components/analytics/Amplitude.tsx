@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import * as amplitude from "@amplitude/unified";
+import { analyticsEnabled } from "@/lib/analytics";
 
 // Amplitude ingestion key, read from the environment so it isn't hardcoded in
 // source. It's a public client-side key (it still ships in the browser bundle,
@@ -16,7 +17,7 @@ let initialized = false;
 /** Client-only Amplitude bootstrap. Mounted once in the root layout. */
 export function Amplitude() {
   useEffect(() => {
-    if (initialized || !AMPLITUDE_API_KEY) return;
+    if (initialized || !AMPLITUDE_API_KEY || !analyticsEnabled()) return;
     initialized = true;
     amplitude.initAll(AMPLITUDE_API_KEY, {
       analytics: { autocapture: true },

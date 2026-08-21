@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import smartlook from "smartlook-client";
+import { analyticsEnabled } from "@/lib/analytics";
 
 // Smartlook project key, read from the environment so it isn't hardcoded in
 // source. Public client-side key — set NEXT_PUBLIC_SMARTLOOK_KEY in .env.local
@@ -19,7 +20,7 @@ let inited = false;
  */
 export function Smartlook() {
   useEffect(() => {
-    if (!SMARTLOOK_KEY || inited || smartlook.initialized()) return;
+    if (!SMARTLOOK_KEY || !analyticsEnabled() || inited || smartlook.initialized()) return;
     inited = true;
     smartlook.init(SMARTLOOK_KEY, { region: "eu" });
   }, []);
