@@ -29,13 +29,13 @@ export const WORK: WorkEntry[] = [
     slug: "on-site-ticket-sales-app",
     image: "/assets/work-ticket-app.png",
     eyebrow: "Mobile App",
-    title: "On-Site Ticket Sales App",
+    title: "Ticket sales for stadium volunteers",
   },
   {
-    slug: "website-redesign",
-    image: "/assets/work-website-redesign.png",
-    eyebrow: "Web Design",
-    title: "Website Redesign",
+    slug: "change-it",
+    image: "/assets/work-changeit.png",
+    eyebrow: "UX & Conversion",
+    title: "Streamlining game-day sign-up",
   },
 ];
 
