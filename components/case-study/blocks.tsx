@@ -152,6 +152,7 @@ export function Figure({
             lineHeight: 1,
             letterSpacing: "-0.05em",
             color: "var(--text-muted)",
+            textAlign: "center",
           }}
         >
           {caption}
@@ -197,6 +198,40 @@ export function Outcomes({ children }: { children: ReactNode }) {
 
 export function Outcome(props: { period?: string; title?: string; description?: string }) {
   return <Experience {...props} />;
+}
+
+/** A light-gray summary plate that sits right under the credits: an eyebrow
+    label, then a short recap. Keeps the prose measure so it lines up with the
+    centred body. Content is authored as markdown inside <TLDR>. */
+export function TLDR({ label = "TL;DR", children }: { label?: string; children?: ReactNode }) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 16,
+        width: "100%",
+        maxWidth: PROSE_MEASURE,
+        alignSelf: "center",
+        padding: 32,
+        borderRadius: 12,
+        background: "var(--color-gray-100)",
+      }}
+    >
+      <span
+        style={{
+          fontFamily: "var(--font-sans)",
+          fontSize: 14,
+          lineHeight: 1,
+          letterSpacing: "-0.05em",
+          color: "var(--text-muted)",
+        }}
+      >
+        {label}
+      </span>
+      {children}
+    </div>
+  );
 }
 
 /** Serif-18 bold sub-heading — the default for markdown `h3` inside a section. */
@@ -248,6 +283,7 @@ export const mdxComponents = {
   em: ({ children }: { children?: ReactNode }) => <em>{children}</em>,
   CaseSection,
   Prose,
+  TLDR,
   PullQuote,
   SubHeading,
   Figure,

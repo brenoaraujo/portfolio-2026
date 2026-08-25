@@ -79,6 +79,7 @@ export function Media({
             lineHeight: 1,
             letterSpacing: "-0.05em",
             color: "var(--text-muted)",
+            textAlign: "center",
           }}
         >
           {caption}
