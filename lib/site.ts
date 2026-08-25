@@ -17,7 +17,7 @@ export const WORK: WorkEntry[] = [
     slug: "onboarding-revenue-streamline",
     image: "/assets/work-onboarding.png",
     eyebrow: "User Flow and UI",
-    title: "Onboarding for a new revenue streamline",
+    title: "Onboarding for a new revenue stream",
   },
   {
     slug: "raffle-landing-design-system",
