@@ -60,7 +60,7 @@ export const ROLES: Role[] = [
     ],
   },
   {
-    period: "2023-2026",
+    period: "2019-2023",
     title: "Lead Designer, VanHack",
     description:
       "Designing both sides of a talent marketplace — 500K+ engineers, and the recruiters hiring them.",
@@ -71,7 +71,7 @@ export const ROLES: Role[] = [
     ],
   },
   {
-    period: "2023-2026",
+    period: "2019-2019",
     title: "Senior Product Designer, Hotmart",
     description:
       "Designing the analytics product every team used to monitor its indicators, built with Data Science.",
@@ -82,7 +82,7 @@ export const ROLES: Role[] = [
     ],
   },
   {
-    period: "2023-2026",
+    period: "2012-2019",
     title: "Lead Product Designer, Siteware",
     description:
       "Owning the core product for KPIs, goals, and action plans, as the company's first designer.",
