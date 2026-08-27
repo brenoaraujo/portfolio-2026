@@ -29,6 +29,23 @@ export const VARIANTS: Record<string, Variant> = {
   //   ],
   //   order: ["invoice", "sales-commission", "onboarding-revenue-streamline"],
   // },
+
+  yocale: {
+    title:
+      "I design the flows businesses actually adopt — booking, payments, and the systems that hold them together.",
+    description: [
+      "For nearly two decades I've owned product design end-to-end — research, wireframes, high-fidelity UI, prototyping, and the design system underneath it all. Most recently that's meant designing across a platform running $8M+ a year in transactions for 500+ businesses, partnering directly with engineering (Figma, shadcn/ui, Tailwind) to keep every design implementation-ready.",
+      "My default move is to listen first, gather as much context and data as I can, then prototype quickly (Figma, code, or AI) to reduce ambiguity and help teams decide with less guesswork and more clarity.",
+    ],
+    order: [
+      "raffle-landing-design-system",
+      "onboarding-revenue-streamline",
+      "change-it",
+      "invoice",
+      "on-site-ticket-sales-app",
+      "sales-commission",
+    ],
+  },
 };
 
 /** Look up a variant by company slug (case-insensitive). */
