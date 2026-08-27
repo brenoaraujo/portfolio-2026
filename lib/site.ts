@@ -37,6 +37,18 @@ export const WORK: WorkEntry[] = [
     eyebrow: "UX & Conversion",
     title: "Streamlining game-day sign-up",
   },
+  {
+    slug: "sales-commission",
+    image: "/assets/work/sales-commission/1.png",
+    eyebrow: "UX/UI design",
+    title: "Replacing the commission spreadsheet",
+  },
+  {
+    slug: "invoice",
+    image: "/assets/work/invoice-management/1.png",
+    eyebrow: "Finance",
+    title: "Invoice Management",
+  },
 ];
 
 export interface Role {

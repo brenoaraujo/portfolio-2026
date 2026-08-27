@@ -1,6 +1,7 @@
 import type { CSSProperties, ReactNode } from "react";
 import { Experience } from "@/components/content/Experience";
 import { Media } from "@/components/case-study/Media";
+import { BeforeAfterSlider } from "@/components/case-study/BeforeAfterSlider";
 
 /* ---------------------------------------------------------------------------
    Case-study body blocks. The fixed chrome (intro, hero, credits, next, footer)
@@ -288,6 +289,7 @@ export const mdxComponents = {
   SubHeading,
   Figure,
   BeforeAfter,
+  BeforeAfterSlider,
   Media,
   Outcomes,
   Outcome,

@@ -1,40 +1,30 @@
 ---
-title: Onboarding for a new revenue stream
-eyebrow: User Flow and UI
+title: Invoice Management
+eyebrow: Finance
 years: 2026
-lead: In collaboration with Vanhack, I redesigned employer onboarding to reach the aha moment fast, showing candidates who fit your role before signup, with every step to set up the account live and interactive.
-heroVideo: /assets/work/onboarding-revenue-streamline/1.webm
-heroImage: /assets/work/onboarding-revenue-streamline/2.png
-heroAlt: Employer onboarding flow for VanHack
+lead: "Designed an invoice management system for Ascend's finance team, replacing a manual spreadsheet process that touched 500+ customer accounts every month. Each account runs multiple raffle events under its own contract terms, so the hard part wasn't the interface, it was productizing the billing rules themselves: minimum charges, per-event fees, and terms that differ for every customer."
+heroImage: /assets/work/invoice-management/1.png
+heroAlt: Invoice Management
 credits:
-  role: Product designer, UX research, AI visual design
-  madeWith: Figma, Claude
+  role: Product designer, UX research
+  madeWith: Figma, User Flow, User Interviews
   shipped: 2026
 published: true
 ---
 
-{/* Upload images to /public/assets/work/onboarding-revenue-streamline/ and I'll wire them in. */}
+{/* Upload images to /public/assets/work/invoice-management/ and I'll wire them in. */}
 
 <Prose>
-  VanHack had always acquired customers through sales, but we were testing whether the product itself could create enough value upfront to support a self-serve subscription model. 
-  
-  The existing onboarding asked first-time employers to complete a 7-step, 11-question job-posting form before seeing useful candidate matches, so many users entered fake data just to access the product. 
-  
-  I redesigned the flow around speed to value and progressive commitment: employers could start exploring candidates immediately, build a role through their search behavior, and sign up only when they had something worth saving. 
-  
-  The outcome was an end-to-end clickable prototype and design-system handoff to help the team validate whether product-led onboarding could become a new revenue stream without hurting the existing sales motion.
+  Ascend runs raffle and 50/50 campaigns for 500+ organizations. Each account runs several draws a month, and each one has its own contract with its own billing rules. 
+  Finance was reconciling all of it in spreadsheets: pulling event totals, checking them against contract terms, deciding what belonged on which invoice, then rebuilding the same work the next month.
+I designed a single place for that work. Events flow in from the API and land on the account they belong to. Finance confirms what actually ran, excludes what shouldn't be billed this cycle, and groups the rest into one invoice per account. The hard part was productizing the rules: minimum charges, per-event fees, and contract terms that differ for every customer. Instead of automating a calculation the finance team couldn't yet verify, I put the billing rules on the account and gave every event an explicit state, so nothing reaches an invoice without someone confirming it.
+
 </Prose>
-<BeforeAfterSlider
-  beforeSrc="/assets/work/onboarding-revenue-streamline/profile-before.png"
-  afterSrc="/assets/work/onboarding-revenue-streamline/profile-after.png"
-  beforeAlt="The original candidate profile"
-  afterAlt="The redesigned candidate profile"
-  caption="Drag to compare the original and redesigned candidate profile."
-/>
-<Media src="/assets/work/onboarding-revenue-streamline/2.png" alt="" />
-<Media src="/assets/work/onboarding-revenue-streamline/3.png" alt="The role card become a profile matching engine with signals" caption="The role card become a profile matching engine with signals" />
-<Media src="/assets/work/onboarding-revenue-streamline/4.png" alt="" />
-<Media src="/assets/work/onboarding-revenue-streamline/5.png" alt="" />
+
+<Media src="/assets/work/invoice-management/2.png" alt="" />
+<Media src="/assets/work/invoice-management/3.png" alt="" />
+<Media src="/assets/work/invoice-management/4.png" alt="" />
+
 
 
 {/*

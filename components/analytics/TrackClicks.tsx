@@ -1,7 +1,17 @@
 "use client";
 
 import { useEffect } from "react";
-import { track } from "@/lib/analytics";
+import posthog from "posthog-js";
+import { analyticsEnabled, track } from "@/lib/analytics";
+
+const POSTHOG_EVENTS: Record<string, string> = {
+  "Clicked Nav Link": "navigation_link_clicked",
+  "Clicked CTA": "contact_cta_clicked",
+  "Clicked Work Card": "case_study_opened",
+  "Clicked Writing Link": "writing_link_clicked",
+  "Clicked Contact Link": "contact_link_clicked",
+  "Clicked Next Project": "next_case_study_clicked",
+};
 
 /**
  * Global click instrumentation. Listens once at the document level and fires an
@@ -28,6 +38,11 @@ export function TrackClicks() {
         props[name.charAt(0).toLowerCase() + name.slice(1)] = el.dataset[key] ?? "";
       }
       track(event, props);
+
+      const posthogEvent = POSTHOG_EVENTS[event];
+      if (posthogEvent && analyticsEnabled()) {
+        posthog.capture(posthogEvent, props);
+      }
     }
 
     // Capture phase so we still log the click even if a handler stops bubbling.
