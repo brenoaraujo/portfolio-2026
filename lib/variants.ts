@@ -30,6 +30,23 @@ export const VARIANTS: Record<string, Variant> = {
   //   order: ["invoice", "sales-commission", "onboarding-revenue-streamline"],
   // },
 
+  instrumentl: {
+    title:
+      "I turn financial and compliance complexity into interfaces non-finance teams can actually trust.",
+    description: [
+      "I've spent the last few years designing the financial and operational backbone of a platform that moves $8M+ a year through 500+ nonprofits, sports teams, and charities — including productizing the billing rules behind a multi-account invoicing system for finance teams, and replacing a spreadsheet-based commission process spanning five roles with a single automated source of truth.",
+      "My default move on data-dense, multi-stakeholder problems is to find the states and rules underneath the complexity, then prototype fast (Figma, code, or AI) so the team can see it and decide with less guesswork.",
+    ],
+    order: [
+      "invoice",
+      "sales-commission",
+      "raffle-landing-design-system",
+      "change-it",
+      "on-site-ticket-sales-app",
+      "onboarding-revenue-streamline",
+    ],
+  },
+
   yocale: {
     title:
       "I design the flows businesses actually adopt — booking, payments, and the systems that hold them together.",
