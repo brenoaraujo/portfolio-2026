@@ -12,6 +12,24 @@ export interface WorkEntry {
   title: string;
 }
 
+export interface HomeContent {
+  /** The big serif line at the top of the page. */
+  title: string;
+  /** Body paragraphs under the title. */
+  paragraphs: string[];
+}
+
+/** Default home hero copy. Per-application variants override this — see
+ *  lib/variants.ts. */
+export const HOME: HomeContent = {
+  title:
+    "I'm a product designer based in Vancouver, designing since tableless layouts were vibe coding.",
+  paragraphs: [
+    "For nearly two decades, I've designed products end-to-end, built the design systems underneath them, and now prototype in code. Engineers get answers instead of specs.",
+    "My default move is to listen first, gather as much context and data as I can, then prototype quickly (Figma, code, or AI) to reduce ambiguity and help teams decide with less guesswork and more clarity.",
+  ],
+};
+
 export const WORK: WorkEntry[] = [
   {
     slug: "onboarding-revenue-streamline",
