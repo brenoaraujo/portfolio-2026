@@ -12,10 +12,17 @@ function reportMissing(variable: string) {
   }
 }
 
+// This module runs before React mounts, so it fires before AnalyticsOptOut's
+// effect has had a chance to persist the flag. Check the URL directly too, so
+// the *first* `?analytics=off` load is honoured and doesn't leak a pageview.
+const optedOutViaUrl =
+  typeof window !== "undefined" &&
+  new URLSearchParams(window.location.search).get("analytics") === "off";
+
 // Respect the site-wide opt-out (?analytics=off) the same way Amplitude,
 // Smartlook and GA do — don't initialise PostHog for opted-out browsers so the
 // owner's own traffic stays out of every vendor, not just some of them.
-if (!analyticsEnabled()) {
+if (optedOutViaUrl || !analyticsEnabled()) {
   // no-op: this browser opted out
 } else if (!posthogKey) {
   reportMissing("NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN");
