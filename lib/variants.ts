@@ -47,6 +47,23 @@ export const VARIANTS: Record<string, Variant> = {
     ],
   },
 
+  durable: {
+    title:
+      "I design AI-native product experiences and prototype them directly in code, not just in Figma.",
+    description: [
+      "Most recently I designed and built, in Cursor, an AI-guided landing-page builder for Ascend Fundraising: a step-by-step, prompt-driven flow that turns a client's answers into a real, shippable page. I built it on my own initiative before AI tooling was part of the company's process, and it validated the concept well enough that engineering rebuilt it for production. On a separate project with VanHack, I designed an AI agent, Vanna, that fills gaps in a job description one question at a time instead of demanding a form up front, as part of a broader product-led onboarding redesign that's now in build.",
+      "Alongside that, I've built and documented full design systems — tokens, components, and code-level handoff for engineering — so the patterns I create keep scaling past the feature they started in. My default move on any ambiguous AI or UX problem is the same: prototype fast, in Figma, code, or directly with the model, so the team can see it and decide with less guesswork.",
+    ],
+    order: [
+      "raffle-landing-design-system",
+      "onboarding-revenue-streamline",
+      "on-site-ticket-sales-app",
+      "invoice",
+      "change-it",
+      "sales-commission",
+    ],
+  },
+
   yocale: {
     title:
       "I design the flows businesses actually adopt — booking, payments, and the systems that hold them together.",
