@@ -64,6 +64,23 @@ export const VARIANTS: Record<string, Variant> = {
     ],
   },
 
+  evismart: {
+    title:
+      "I get in front of users before I open Figma, then build the AI-assisted workflow that turns what I learn into shipped design.",
+    description: [
+      "At Ascend Fundraising, I redesigned a point-of-sale app used by two very different groups in the same product: professional sales staff and volunteers who rotate in game to game with almost no training, selling fast in a loud stadium. There was no research practice in place, so I built one myself, borrowing a POS terminal to run think-aloud usability sessions with the people who actually sell. I turned what I learned into a redesigned failure path, clearer system feedback, and a lighter data-entry step, then took every screen to dev-ready specs and shipped it alongside a third-party development studio.",
+      "I also design inside AI-assisted workflows, not just around them. When Ascend needed a way for non-profit clients to configure their own fundraising pages, I judged a requested PDF to be the wrong interaction and instead designed and built a guided, AI-powered page builder myself in Cursor, before AI tooling was common at the company. The prototype validated the concept well enough that engineering rebuilt it for production, and it's now in active client use.",
+    ],
+    order: [
+      "on-site-ticket-sales-app",
+      "raffle-landing-design-system",
+      "onboarding-revenue-streamline",
+      "invoice",
+      "change-it",
+      "sales-commission",
+    ],
+  },
+
   wenco: {
     title:
       "I own end-to-end UX for complex, workflow-heavy products — research, systems, and the judgment calls in between.",
