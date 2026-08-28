@@ -64,6 +64,23 @@ export const VARIANTS: Record<string, Variant> = {
     ],
   },
 
+  wenco: {
+    title:
+      "I own end-to-end UX for complex, workflow-heavy products — research, systems, and the judgment calls in between.",
+    description: [
+      "At Ascend Fundraising I redesigned a point-of-sale ticket-sales app used by two very different user groups in the same interface: trained sales staff and volunteers who rotate in game to game with almost no training, selling fast in a loud stadium. The company had no research practice in place, so I built one myself: I borrowed a POS terminal and ran think-aloud usability sessions with the people who actually sell, then used what I learned to redesign the failure states, system feedback, and information hierarchy each group needed differently, without splitting the product in two.",
+      "I also own systems, not just screens. I mapped, built, and documented a full design system for Ascend's landing-page product that the team kept as the foundation after I changed teams. On a separate, more recent project with VanHack, I owned an employer-onboarding redesign end-to-end, from problem framing through a clickable prototype and a structured engineering handoff, pressure-testing the strategy directly with the CEO and CTO rather than a design manager — the kind of ambiguous, independently-owned work this role calls for.",
+    ],
+    order: [
+      "on-site-ticket-sales-app",
+      "raffle-landing-design-system",
+      "onboarding-revenue-streamline",
+      "invoice",
+      "change-it",
+      "sales-commission",
+    ],
+  },
+
   yocale: {
     title:
       "I design the flows businesses actually adopt — booking, payments, and the systems that hold them together.",
