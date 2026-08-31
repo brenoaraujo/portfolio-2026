@@ -31,17 +31,25 @@ export const HOME: HomeContent = {
 };
 
 export const WORK: WorkEntry[] = [
-  {
-    slug: "onboarding-revenue-streamline",
-    image: "/assets/work-onboarding.png",
-    eyebrow: "User Flow and UI",
-    title: "Onboarding for a new revenue stream",
+    {
+    slug: "change-it",
+    image: "/assets/work-changeit.png",
+    eyebrow: "UX & Conversion",
+    title: "Streamlining game-day sign-up",
   },
+  
+
   {
     slug: "raffle-landing-design-system",
     image: "/assets/work-raffle-design-system.png",
     eyebrow: "Design System",
     title: "Raffle Landing Page Design System",
+  },
+    {
+    slug: "onboarding-revenue-streamline",
+    image: "/assets/work-onboarding.png",
+    eyebrow: "User Flow and UI",
+    title: "Onboarding for a new revenue stream",
   },
   {
     slug: "on-site-ticket-sales-app",
@@ -49,12 +57,7 @@ export const WORK: WorkEntry[] = [
     eyebrow: "Mobile App",
     title: "Ticket sales for stadium volunteers",
   },
-  {
-    slug: "change-it",
-    image: "/assets/work-changeit.png",
-    eyebrow: "UX & Conversion",
-    title: "Streamlining game-day sign-up",
-  },
+
   {
     slug: "sales-commission",
     image: "/assets/work/sales-commission/1.png",
