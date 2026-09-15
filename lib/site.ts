@@ -23,10 +23,9 @@ export interface HomeContent {
  *  lib/variants.ts. */
 export const HOME: HomeContent = {
   title:
-    "I'm a product designer based in Vancouver, designing since tableless layouts were vibe coding.",
+    "Product designer focused on making products better for users, businesses, and engineers.",
   paragraphs: [
-    "For nearly two decades, I've designed products end-to-end, built the design systems underneath them, and now prototype in code. Engineers get answers instead of specs.",
-    "My default move is to listen first, gather as much context and data as I can, then prototype quickly (Figma, code, or AI) to reduce ambiguity and help teams decide with less guesswork and more clarity.",
+    "For nearly two decades, I've designed products and built design systems that scale with them. AI now sits at the center of my workflow, helping teams move from idea to clarity faster."
   ],
 };
 

@@ -62,7 +62,7 @@ export function HomeView({ variant }: { variant?: Variant }) {
               style={{
                 fontFamily: "var(--font-serif)",
                 fontWeight: 800,
-                fontSize: "32px",
+                fontSize: "42px",
                 lineHeight: "var(--type-lead-lh)",
                 color: "var(--text-primary)",
                 textWrap: "pretty",
