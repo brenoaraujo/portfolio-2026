@@ -15,8 +15,7 @@
     "next-mdx-remote": "^6.0.0",
     "posthog-js": "^1.422.0",
     "react": "19.2.8",
-    "react-dom": "19.2.8",
-    "smartlook-client": "^10.0.0"
+    "react-dom": "19.2.8"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

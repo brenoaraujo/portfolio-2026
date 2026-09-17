@@ -6,7 +6,7 @@ import { ANALYTICS_OPTOUT_KEY } from "@/lib/analytics";
 /**
  * Reads `?analytics=off|on` from the URL and persists an opt-out flag in
  * localStorage, then strips the param from the address bar. Mounted first in
- * the layout so the flag is written before Amplitude/Smartlook decide whether
+ * the layout so the flag is written before Amplitude decides whether
  * to initialise. This is how the site owner excludes their own traffic: load
  * the site once per browser/device with `?analytics=off` (undo with `=on`).
  */

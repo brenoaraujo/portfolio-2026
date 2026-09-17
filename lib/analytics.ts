@@ -4,7 +4,7 @@ export { EVENTS } from "@/lib/analytics-events";
 export type { EventName } from "@/lib/analytics-events";
 
 /**
- * localStorage flag that suppresses ALL analytics (Amplitude, Smartlook, GA)
+ * localStorage flag that suppresses ALL analytics (Amplitude, GA)
  * for this browser. Set it by loading the site with `?analytics=off` and clear
  * it with `?analytics=on` — this is how the site owner keeps their own traffic
  * out of the data without touching each vendor's dashboard.
