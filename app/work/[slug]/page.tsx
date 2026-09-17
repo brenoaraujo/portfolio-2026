@@ -35,6 +35,8 @@ export async function generateMetadata({
     // The root layout's title template appends " — Breno Araujo".
     title: meta.title,
     description: meta.lead,
+    // Per-page canonical; resolves against metadataBase to the full URL.
+    alternates: { canonical: `/work/${slug}` },
     openGraph: {
       type: "article",
       title: meta.title,

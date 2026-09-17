@@ -41,6 +41,9 @@ export const metadata: Metadata = {
   description: SITE_DESCRIPTION,
   applicationName: SITE_NAME,
   authors: [{ name: SITE_NAME }],
+  // Resolves against metadataBase → https://www.brenoaraujo.com/. Per-page
+  // metadata overrides this with its own path (see app/work/[slug]/page.tsx).
+  alternates: { canonical: "/" },
   icons: {
     icon: [
       { url: "/assets/favicon-16.png", sizes: "16x16", type: "image/png" },
