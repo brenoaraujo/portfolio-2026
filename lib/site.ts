@@ -23,9 +23,9 @@ export interface HomeContent {
  *  lib/variants.ts. */
 export const HOME: HomeContent = {
   title:
-    "Product designer focused on making products better for users, businesses, and engineers.",
+    "Designing for people, businesses, and engineers.",
   paragraphs: [
-    "For nearly two decades, I've designed products and built design systems that scale with them. AI now sits at the center of my workflow, helping teams move from idea to clarity faster."
+    "Senior Product Designer with 16+ years designing complex B2B SaaS and regulated products. I lead hands-on UI and interaction design from customer research through shipped implementation, partnering closely with product and engineering."
   ],
 };
 
