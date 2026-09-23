@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import posthog from "posthog-js";
-import { analyticsEnabled } from "@/lib/analytics";
+import { track } from "@/lib/analytics";
 
 export default function GlobalError({
   error,
@@ -12,7 +11,8 @@ export default function GlobalError({
   reset: () => void;
 }>) {
   useEffect(() => {
-    if (analyticsEnabled()) posthog.captureException(error);
+    // GA4's standard exception event; description is truncated by GA to 100 chars.
+    track("exception", { description: error.message, fatal: true, digest: error.digest });
   }, [error]);
 
   return (

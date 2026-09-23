@@ -1,8 +1,7 @@
 "use client";
 
 import { useCallback, useRef, useState, type CSSProperties } from "react";
-import posthog from "posthog-js";
-import { analyticsEnabled } from "@/lib/analytics";
+import { track } from "@/lib/analytics";
 
 const PLATE: CSSProperties = {
   display: "block",
@@ -45,9 +44,9 @@ export function BeforeAfterSlider({
   const hasCapturedInteractionRef = useRef(false);
 
   const captureInteraction = useCallback((interaction_method: "pointer" | "keyboard") => {
-    if (hasCapturedInteractionRef.current || !analyticsEnabled()) return;
+    if (hasCapturedInteractionRef.current) return;
     hasCapturedInteractionRef.current = true;
-    posthog.capture("before_after_comparison_started", { interaction_method });
+    track("before_after_comparison_started", { interaction_method });
   }, []);
 
   const setFromClientX = useCallback((clientX: number) => {

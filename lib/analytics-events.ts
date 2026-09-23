@@ -1,8 +1,8 @@
 /**
- * Semantic Amplitude event names — the analytics contract. Kept in a pure
- * module (no SDK import) so both server and client components can reference the
- * constants without pulling the browser-only Amplitude SDK into a server
- * bundle. Change these names deliberately: dashboards and funnels key off them.
+ * Semantic event names — the analytics contract. Kept in a pure module (no SDK
+ * import) so both server and client components can reference the constants.
+ * `track()` normalises these to GA4's snake_case before sending. Change them
+ * deliberately: GA dashboards and funnels key off the derived event names.
  */
 export const EVENTS = {
   NAV_CLICK: "Clicked Nav Link",
