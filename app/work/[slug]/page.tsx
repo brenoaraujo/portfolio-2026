@@ -97,7 +97,7 @@ export default async function CaseStudyPage({
           style={{
             fontFamily: "var(--font-serif)",
             fontWeight: 400,
-            fontSize: "var(--type-lead-size)",
+            fontSize: "34px",
             lineHeight: "var(--type-lead-lh)",
             color: "var(--text-primary)",
             textWrap: "pretty",
