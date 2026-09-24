@@ -112,7 +112,7 @@ export function HomeView({ variant }: { variant?: Variant }) {
             scrollMarginTop: 40,
           }}
         >
-          <SectionTitle>Recent work.</SectionTitle>
+          <SectionTitle>Selected work.</SectionTitle>
           <div className="work-grid">
             {work.map((w) => {
               const isPublished = published.has(w.slug);
