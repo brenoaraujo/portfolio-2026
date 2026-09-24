@@ -9,7 +9,7 @@ import { BeforeAfterSlider } from "@/components/case-study/BeforeAfterSlider";
    with. Markdown inside <Prose> is mapped by mdxComponents below.
 --------------------------------------------------------------------------- */
 
-const PROSE_MEASURE = "var(--measure-prose)"; // 648px
+const PROSE_MEASURE = "var(--measure-prose)"; // 705px
 
 /** A titled section: serif-26 heading, then its content, 48px apart. */
 export function CaseSection({
@@ -26,7 +26,7 @@ export function CaseSection({
         flexDirection: "column",
         gap: 48,
         alignItems: "flex-start",
-        // Text column keeps the 648px measure but sits centred in the page;
+        // Text column keeps the 705px measure but sits centred in the page;
         // media blocks (hero, Media, BeforeAfter) stay full-width.
         width: "100%",
         maxWidth: "var(--measure-prose)",
@@ -49,7 +49,7 @@ export function CaseSection({
   );
 }
 
-/** Narrative column capped at the 648px measure; paragraphs 32px apart.
+/** Narrative column capped at the 705px measure; paragraphs 32px apart.
     Centres itself so a stand-alone Prose (an opening paragraph, not inside a
     CaseSection) lines up with the centred section text. */
 export function Prose({ children }: { children: ReactNode }) {
