@@ -55,14 +55,16 @@ export function HomeView({ variant }: { variant?: Variant }) {
               flexDirection: "column",
               gap: 32,
               alignItems: "flex-start",
-              maxWidth: "var(--measure-prose)",
+              // Homepage-only: tighter than the shared --measure-prose (705px)
+              // so the lead headline breaks more evenly.
+              maxWidth: 648,
             }}
           >
             <p
+              className="home-lead"
               style={{
                 fontFamily: "var(--font-serif)",
                 fontWeight: 800,
-                fontSize: "42px",
                 lineHeight: "var(--type-lead-lh)",
                 color: "var(--text-primary)",
                 textWrap: "pretty",

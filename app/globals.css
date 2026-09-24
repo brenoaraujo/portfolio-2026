@@ -102,6 +102,17 @@ body {
   }
 }
 
+/* Home lead headline: 42px on desktop, tightened to 32px on mobile. Kept in
+   CSS (not inline) so the media query can override it. */
+.home-lead {
+  font-size: 42px;
+}
+@media (max-width: 768px) {
+  .home-lead {
+    font-size: 32px;
+  }
+}
+
 /* Résumé / writing / outcome rows: 1fr 2fr 1fr on desktop (the empty third
    column gives right-hand air); stack to a single column on mobile. */
 .list-row-grid {
