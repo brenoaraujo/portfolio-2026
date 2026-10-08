@@ -11,7 +11,7 @@ import { BeforeAfterSlider } from "@/components/case-study/BeforeAfterSlider";
 
 const PROSE_MEASURE = "var(--measure-prose)"; // 705px
 
-/** A titled section: serif-26 heading, then its content, 48px apart. */
+/** A titled section: serif-26 (weight 400) heading, then its content, 48px apart. */
 export function CaseSection({
   title,
   children,
@@ -36,7 +36,7 @@ export function CaseSection({
       <h2
         style={{
           fontFamily: "var(--font-serif)",
-          fontWeight: 700,
+          fontWeight: 400,
           fontSize: "var(--type-section-size)",
           lineHeight: "39px",
           color: "var(--text-primary)",
@@ -86,15 +86,18 @@ export function BodyText({ children }: { children?: ReactNode }) {
   );
 }
 
-/** Serif 26/39 pull-quote — the default for markdown blockquote inside Prose. */
+/** Serif 26/39 pull-quote. Same size as a section heading but set in the
+    secondary colour so it reads as an aside, not a title — the default for
+    markdown blockquote inside Prose. */
 export function PullQuote({ children }: { children?: ReactNode }) {
   return (
     <p
       style={{
         fontFamily: "var(--font-serif)",
+        fontWeight: 400,
         fontSize: "var(--type-section-size)",
         lineHeight: "39px",
-        color: "var(--text-primary)",
+        color: "var(--text-secondary)",
         textWrap: "pretty",
       }}
     >
@@ -235,13 +238,13 @@ export function TLDR({ label = "TL;DR", children }: { label?: string; children?:
   );
 }
 
-/** Serif-18 bold sub-heading — the default for markdown `h3` inside a section. */
+/** Serif-18 sub-heading (weight 400) — the default for markdown `h3` inside a section. */
 export function SubHeading({ children }: { children?: ReactNode }) {
   return (
     <h3
       style={{
         fontFamily: "var(--font-serif)",
-        fontWeight: 700,
+        fontWeight: 400,
         fontSize: "var(--type-title-size)",
         lineHeight: "23px",
         color: "var(--text-primary)",

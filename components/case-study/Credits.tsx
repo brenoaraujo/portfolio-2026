@@ -48,7 +48,7 @@ export function Credits({ role, team, madeWith, shipped }: CreditsData) {
             <span
               style={{
                 fontFamily: "var(--font-serif)",
-                fontWeight: 700,
+                fontWeight: 400,
                 fontSize: "var(--type-title-size)",
                 lineHeight: "23px",
                 color: "var(--text-primary)",

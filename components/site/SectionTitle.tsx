@@ -1,39 +1,67 @@
 import type { CSSProperties, ReactNode } from "react";
 
 export interface SectionTitleProps {
+  /** Two-digit index shown as a small red superscript, e.g. "01". */
+  number?: string;
   children?: ReactNode;
-  /** Optional serif-18 aside beside the title, e.g. "Older stuff, still proud of it". */
+  /** Optional Noto Serif aside shown under the hairline, left-aligned. */
   subtitle?: ReactNode;
-  /** 400 for "Recent work.", 700 for "Experience" / "Writing". @default 700 */
-  weight?: 400 | 700;
   id?: string;
   style?: CSSProperties;
 }
 
-/** Serif 26 section heading with an optional muted aside on the same baseline. */
+/**
+ * Numbered section header (home page): a small brand-red index, a large
+ * uppercase DM Sans title, a full-width hairline, then an optional serif
+ * subtitle beneath. Spans the section width. figma 324:1499.
+ */
 export function SectionTitle({
-  children = "Recent work.",
+  number,
+  children,
   subtitle,
-  weight = 700,
   style,
   ...rest
 }: SectionTitleProps) {
   return (
     <div
-      style={{ display: "flex", flexDirection: "row", gap: 8, alignItems: "center", ...style }}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 12,
+        alignSelf: "stretch",
+        width: "100%",
+        ...style,
+      }}
       {...rest}
     >
-      <span
+      <div
         style={{
-          fontFamily: "var(--font-serif)",
-          fontWeight: weight,
-          fontSize: "var(--type-section-size)",
-          lineHeight: "39px",
-          color: "var(--text-primary)",
+          display: "flex",
+          flexDirection: "row",
+          gap: 6,
+          alignItems: "flex-start",
+          alignSelf: "stretch",
+          borderBottom: "1px solid var(--border-default)",
         }}
       >
-        {children}
-      </span>
+        {number ? (
+          <span
+            style={{
+              fontFamily: "var(--font-sans)",
+              fontWeight: 700,
+              fontSize: "var(--type-section-num-size)",
+              lineHeight: 1,
+              letterSpacing: "var(--type-section-num-ls)",
+              color: "var(--accent-brand)",
+            }}
+          >
+            {number}
+          </span>
+        ) : null}
+        <span className="section-heading-clip">
+          <span className="section-heading">{children}</span>
+        </span>
+      </div>
       {subtitle ? (
         <span
           style={{
@@ -42,7 +70,6 @@ export function SectionTitle({
             fontSize: "var(--type-serif-md-size)",
             lineHeight: "23px",
             letterSpacing: "var(--type-serif-md-ls)",
-            whiteSpace: "nowrap",
             color: "var(--text-secondary)",
           }}
         >

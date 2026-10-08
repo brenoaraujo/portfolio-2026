@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { compileMDX } from "next-mdx-remote/rsc";
 import { SiteHeader } from "@/components/site/SiteHeader";
-import { SiteFooter } from "@/components/site/SiteFooter";
+import { HomeFooter } from "@/components/site/HomeFooter";
 import { TextLink } from "@/components/site/TextLink";
 import { Credits } from "@/components/case-study/Credits";
 import { HeroMedia } from "@/components/case-study/Media";
@@ -68,7 +68,7 @@ export default async function CaseStudyPage({
     <>
       <main id="main" className="page-column">
         <TrackCaseStudyView slug={slug} title={meta.title} />
-        <SiteHeader />
+        <SiteHeader backLink />
 
       {/* Intro */}
       <section
@@ -110,7 +110,7 @@ export default async function CaseStudyPage({
             style={{
               fontFamily: "var(--font-sans)",
               fontSize: 16,
-              lineHeight: "23px",
+              lineHeight: "27px",
               color: "var(--text-secondary)",
               textWrap: "pretty",
             }}
@@ -158,7 +158,7 @@ export default async function CaseStudyPage({
       ) : null}
 
       </main>
-      <SiteFooter />
+      <HomeFooter />
     </>
   );
 }

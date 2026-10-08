@@ -2,7 +2,8 @@
 :root{
   --color-black:rgb(0,0,0);
   --color-white:rgb(255,255,255);
-  --color-paper:rgb(253,251,250);
+  --color-paper:rgb(235,230,224); /* warm beige paper (matches bg.webp) */
+  --color-brand-red:rgb(224,51,9); /* #e03309 — poster display, section numbers, arrows */
   --color-gray-900:rgb(30,30,30);
   --color-gray-600:rgb(102,102,102);
   --color-stone-600:rgb(100,99,96);
@@ -15,6 +16,7 @@
      background/primary, border/default, surface/card, surface/overlay). */
   --text-muted:var(--color-ink-60);
   --text-link:var(--color-stone-600);
+  --accent-brand:var(--color-brand-red); /* reserved accent: display words, section numbers, arrow glyphs */
   --text-footnote:var(--color-gray-600);
   --surface-page:var(--color-paper);
   --border-hairline:var(--color-line);

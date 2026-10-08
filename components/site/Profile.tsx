@@ -15,7 +15,7 @@ export interface ProfileProps {
  */
 export function Profile({
   name = "Breno Araujo.",
-  image = "/assets/breno-profile.png",
+  image = "/assets/breno-profile.webp",
   href,
   style,
   ...rest

@@ -34,6 +34,10 @@ html {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   scroll-behavior: smooth;
+  /* Guard against stray horizontal scroll (e.g. the oversized poster on small
+     screens). `clip` — not `hidden` — so it doesn't break the case-study sticky
+     header. */
+  overflow-x: clip;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -42,10 +46,58 @@ html {
   }
 }
 
+/* Paper feel: the photographic crinkled-paper texture (22KB webp) pinned to the
+   viewport so it spans the long page without stretching, plus a fine tileable
+   grain multiplied on top for extra tooth. Sections with their own surface
+   colour sit above and hide the texture, as intended. */
 body {
-  background: var(--background-primary);
+  background-color: var(--background-primary);
+  /* Flat grain paper (no fold lines), tiled at natural size over the long page. */
+  background-image: url("/assets/bg.webp");
+  background-repeat: repeat;
+  background-size: 788px auto;
+  background-position: center top;
   color: var(--text-primary);
   font-family: var(--font-sans);
+}
+
+/* Numbered section title. The uppercase word is intentionally cropped at the
+   baseline by the rule beneath it (an editorial detail from the comp: in Figma
+   the title sits in a short overflow-clipped box). `text-box: trim-both` removes
+   the font's half-leading so the glyph tops sit flush with the top edge; the
+   negative bottom margin then pulls the clip box up into the letters, cropping
+   the bottom sliver. Tune the crop with --section-heading-crop. */
+.section-heading-clip {
+  display: inline-block;
+  overflow: hidden;
+  font-size: var(--type-section-title-size);
+  line-height: 0;
+  vertical-align: bottom;
+}
+.section-heading {
+  display: block;
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 1em;
+  line-height: 1;
+  letter-spacing: var(--type-section-title-ls);
+  text-transform: uppercase;
+  color: var(--text-primary);
+  text-box: trim-both cap alphabetic;
+  margin-bottom: calc(-1 * var(--section-heading-crop, 0.08em));
+}
+/* Fallback for engines without text-box-trim (e.g. Firefox): a short fixed clip
+   over a slightly taller line box crops the baseline instead. */
+@supports not (text-box: trim-both cap alphabetic) {
+  .section-heading-clip {
+    height: 0.82em;
+    line-height: 1.25;
+  }
+  .section-heading {
+    text-box: initial;
+    line-height: 1.25;
+    margin-bottom: 0;
+  }
 }
 
 /* The 1200px content column, centred, with page padding. Grids collapse and the
@@ -64,9 +116,19 @@ body {
 
 .work-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 32px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
   align-self: stretch;
+}
+@media (max-width: 900px) {
+  .work-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 560px) {
+  .work-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .credits-grid {
@@ -85,9 +147,6 @@ body {
   .page-column {
     gap: 56px;
   }
-  .work-grid {
-    grid-template-columns: 1fr;
-  }
   .credits-grid {
     grid-template-columns: 1fr 1fr;
   }
@@ -102,14 +161,309 @@ body {
   }
 }
 
-/* Home lead headline: 42px on desktop, tightened to 32px on mobile. Kept in
-   CSS (not inline) so the media query can override it. */
-.home-lead {
-  font-size: 42px;
+/* ── Hero (M2) ──────────────────────────────────────────────────────────────
+   Poster word flanked by two short justified intro blocks, a CTA row, a left
+   dot-grid rail and two rotated geo-coordinate edge labels. The rail + labels
+   are decorative and desktop-only. figma 324:1522. */
+.hero {
+  position: relative;
+  align-self: stretch;
+  padding-block: 16px 8px;
 }
-@media (max-width: 768px) {
-  .home-lead {
-    font-size: 32px;
+/* Left-aligned column positioned right-of-centre, mirroring the Figma frame
+   (hero at ~50% of the content width). margin collapses toward the right / full
+   width as the viewport narrows, so it never overflows. */
+.hero-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  width: min(460px, 100%);
+  margin-left: clamp(0px, 50%, calc(100% - 460px));
+}
+.hero-intro {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 19px;
+  color: var(--text-primary);
+  text-align: justify;
+  max-width: 260px;
+  text-wrap: pretty;
+  margin: 0;
+}
+
+/* Poster word — live brand-red text (DM Sans Bold, kept as text for SEO/a11y)
+   over the exported transparent gradient-map shadow (shadow.svg). The box keeps
+   the Figma 444×167 aspect; the text size/offset are tunable vars so the live
+   glyphs register with the shadow's. */
+.poster {
+  --pw: clamp(220px, 40vw, 311px);
+  --poster-fs: 0.247; /* font-size ÷ width */
+  --poster-x: 0.5%; /* live-text left offset */
+  --poster-y: -1%; /* live-text top offset */
+  /* Salmon light-ink plate colour (same tint as the closing headline). */
+  --poster-salmon: color-mix(in srgb, var(--accent-brand) 42%, var(--color-paper));
+  position: relative;
+  width: var(--pw);
+  aspect-ratio: 444 / 167;
+  margin: 0;
+}
+.poster__shadow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  z-index: 0;
+  pointer-events: none;
+  /* Blend the shadow into the paper (as the Figma hard-light layer does) so it
+     reads soft instead of a hard salmon slab. */
+  mix-blend-mode: hard-light;
+}
+.poster__text {
+  position: absolute;
+  z-index: 1;
+  top: var(--poster-y);
+  left: var(--poster-x);
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: calc(var(--pw) * var(--poster-fs));
+  line-height: 0.74;
+  letter-spacing: -0.09em;
+  text-transform: uppercase;
+  color: var(--accent-brand);
+}
+.poster__text > span {
+  display: block;
+}
+/* Salmon light-ink plate — a duplicate of the key text sitting behind it,
+   offset so it peeks out as a rough double-print (same effect as the closing
+   "…utopia." headline). It inherits .poster__text's typography; PosterInk sets
+   its transform (resting offset + cursor slip). */
+.poster__light {
+  z-index: 0; /* behind the key text (z-index 1), above the shadow */
+  color: var(--poster-salmon);
+  -webkit-text-stroke: 2.6px var(--poster-salmon);
+  paint-order: stroke fill;
+  filter: url(#poster-rough-l);
+  pointer-events: none;
+  user-select: none;
+  will-change: transform;
+}
+
+.hero-cta {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  width:260px;
+}
+.hero-link {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  color: var(--text-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: opacity var(--duration-fast) var(--ease-standard);
+}
+.hero-link:hover {
+  opacity: 0.6;
+}
+
+/* Vertical geo-coordinates at the page edges, centred on the hero. On reveal a
+   line globe draws in (JS) and the city name decodes. Monospace keeps the decode
+   from shifting the layout; the name's space is reserved at rest. */
+.edge-coords {
+  display: contents;
+}
+.edge-loc {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 20;
+  padding: 10px;
+  cursor: default;
+  -webkit-tap-highlight-color: transparent;
+  /* Grid ornament beside the coordinate, both vertically centered. The grid
+     always hugs the outer page edge (DOM order grid → coord; the right side is
+     reversed so the grid lands on the far-right edge). */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+.edge-loc--left {
+  left: calc((100% - 100vw) / 2 + 4px);
+}
+.edge-loc--right {
+  right: calc((100% - 100vw) / 2 + 4px);
+  flex-direction: row-reverse;
+}
+.edge-loc:focus-visible {
+  outline: 2px solid var(--accent-brand);
+  outline-offset: 6px;
+}
+.edge-cap {
+  display: block;
+  writing-mode: vertical-rl;
+  -webkit-text-orientation: sideways;
+  text-orientation: sideways;
+  font-family: ui-monospace, Menlo, "SFMono-Regular", monospace;
+  font-size: 13px;
+  line-height: 1.7;
+  letter-spacing: 0.02em;
+  color: var(--text-secondary);
+  white-space: pre;
+}
+.edge-loc--left .edge-cap {
+  transform: rotate(180deg);
+}
+.edge-coord {
+  display: block;
+}
+/* City name: inner line, hidden at rest but space reserved (no layout shift). */
+.edge-name {
+  display: block;
+  font-weight: 600;
+  color: var(--text-primary);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.edge-name.show {
+  opacity: 1;
+}
+.edge-name .ch {
+  display: inline-block;
+}
+.edge-name .ch.off {
+  opacity: 0;
+}
+.edge-name .ch.hot {
+  color: var(--accent-brand);
+}
+/* Globe — absolutely placed outside the text column, no layout shift. */
+.edge-globe {
+  position: absolute;
+  display: block;
+  overflow: visible;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+.edge-globe.on {
+  opacity: 1;
+  pointer-events: auto;
+}
+/* GLOBE_POSITION = 'start': globe draws below the coordinate on both sides, so
+   the dot-grid ornament can sit above the coordinate on both sides. */
+.edge-loc--left .edge-globe,
+.edge-loc--right .edge-globe {
+  top: 100%;
+  left: 50%;
+  margin-left: -32px;
+}
+/* Dot-grid ornament (2 cols × 13 rows of 12px cells), stacked directly above the
+   coordinate inside .edge-loc so the two read as one group. */
+.edge-ornament {
+  flex-shrink: 0;
+  width: 24px;
+  height: 156px;
+  background-image:
+    linear-gradient(to right, #c7c2bb 1px, transparent 1px),
+    linear-gradient(to bottom, #c7c2bb 1px, transparent 1px);
+  background-size: 12px 12px;
+  border-right: 1px solid #c7c2bb;
+  border-bottom: 1px solid #c7c2bb;
+  pointer-events: none;
+}
+@media (max-width: 1024px) {
+  .edge-loc {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .edge-globe,
+  .edge-name {
+    transition: opacity 0.2s ease;
+  }
+}
+/* Below the decor breakpoint, centre the hero column at full width so the poster
+   never gets pushed past the viewport, and trim the poster font ratio so the
+   longest word fits the tighter column (the echo reads a touch larger, as in the
+   comp). */
+@media (max-width: 900px) {
+  .hero-inner {
+    width: 100%;
+    margin-left: 0;
+    align-items: flex-start;
+  }
+  .poster {
+    --pw: min(66vw, 300px);
+    --poster-fs: 0.215;
+  }
+  /* Justified text looks gappy in a narrow column — left-align on small screens. */
+  .hero-intro {
+    text-align: left;
+    max-width: min(300px, 100%);
+  }
+}
+
+/* Primary CTA (Button.tsx) — the two Figma pill SVGs (default + hover, each with
+   its own shade/shape/grain/shadow baked in) as the background, crossfaded on
+   hover, with the label + red arrow as live text on top. */
+/* The button box is sized to the PILL only (height ≈ pill height); the SVG's
+   bottom-right shadow overflows below. That way the pill's vertical centre is the
+   element's centre, so the CTA row can align "Let's talk" and "Should I hire?"
+   to the same baseline. */
+.cta-button {
+  position: relative;
+  display: inline-block;
+  width: 150px;
+  height: 43px;
+  text-decoration: none;
+}
+.cta-button__bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  transition: opacity var(--duration-base) var(--ease-standard);
+}
+.cta-button__bg--hover {
+  opacity: 0;
+}
+.cta-button:hover .cta-button__bg--default {
+  opacity: 0;
+}
+.cta-button:hover .cta-button__bg--hover {
+  opacity: 1;
+}
+/* Live label + arrow, centred on the pill. */
+.cta-button__face {
+  position: absolute;
+  left: 17%;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  pointer-events: none;
+}
+.cta-button__label {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1;
+  color: var(--text-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .cta-button__bg {
+    transition: none;
   }
 }
 
@@ -143,12 +497,104 @@ body {
   height: 52px;
   align-self: stretch;
 }
+
+/* Case-study pages only: pin the header to the top as the page scrolls. Sticky
+   (not fixed) so it stays in flow — no content jump and no manual offset. The
+   paper background covers content scrolling underneath. */
+.site-header--sticky {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--background-primary);
+}
 .site-nav {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 32px;
   flex-shrink: 0;
+}
+
+/* Home header: wordmark · centered three-square motif · email, no hairline.
+   3-column grid so the ornament stays centered regardless of the side widths. */
+.site-header--home {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+}
+/* Three squares with the Figma's uneven rhythm: 40px gap, then 12px. */
+.site-ornament {
+  justify-self: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-shrink: 0;
+}
+.site-ornament > span {
+  width: 9px;
+  height: 9px;
+  background: #c7c2bb;
+}
+.site-ornament > span:not(:first-child) {
+  margin-left: 12px;
+}
+.site-ornament > span:nth-child(2) {
+  margin-left: 40px;
+}
+.site-email {
+  justify-self: end;
+  flex-shrink: 0;
+  /* Button reset — it's a <button> (copies to clipboard) styled as the old link. */
+  appearance: none;
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: var(--type-label-size);
+  line-height: 23px;
+  letter-spacing: var(--type-label-ls);
+  white-space: nowrap;
+  color: var(--text-primary);
+  text-decoration: none;
+  cursor: pointer;
+  transition: opacity var(--duration-fast) var(--ease-standard);
+}
+.site-email:hover {
+  opacity: 0.6;
+}
+
+/* Clipboard toast — flashed when the header email is copied. */
+.copy-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  z-index: 100;
+  transform: translateX(-50%) translateY(8px);
+  padding: 10px 16px;
+  background: var(--text-primary);
+  color: var(--color-paper);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  border-radius: 8px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.2s var(--ease-standard),
+    transform 0.2s var(--ease-standard);
+}
+.copy-toast--show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .copy-toast {
+    transition: opacity 0.2s var(--ease-standard);
+    transform: translateX(-50%);
+  }
 }
 
 /* On narrow screens the row stacks — name on top, nav beneath — the hairline is
@@ -166,6 +612,340 @@ body {
   .site-nav {
     gap: 20px;
     flex-wrap: wrap;
+  }
+  /* Home header: stack into a single left-aligned column — wordmark, then the
+     email directly beneath it (aligned under the name, past the avatar). The
+     centered ornament is dropped on mobile. */
+  .site-header--home {
+    grid-template-columns: 1fr;
+    height: auto;
+    gap: 6px;
+    justify-items: start;
+  }
+  .site-header--home .site-ornament {
+    display: none;
+  }
+  .site-header--home .site-email {
+    justify-self: start;
+    margin-left: 64px; /* avatar (52) + gap (12) → aligns under the name */
+  }
+}
+
+/* ── Closing + footer (M5) ───────────────────────────────────────────────── */
+/* Base = stacked flow (mobile + tablet ≤1024). Desktop (≥1025) uses an absolute
+   layout in container-query units to match the Figma design — see that block. */
+.closing {
+  width: 100%;
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: 56px 24px;
+}
+.closing__stage {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  align-items: flex-start;
+}
+.closing__collage,
+.closing__frames {
+  display: none;
+}
+.closing__collage {
+  z-index: 0;
+}
+.closing__frames {
+  z-index: 41;
+}
+/* Mobile/tablet: bring back the scattered photo wall below the headline, scaled
+   to the column width. The photos position by % within this box, so a relative
+   box with the collage's aspect ratio reproduces the pile at any size. The
+   crop-mark frames stay off (they're a desktop hover affordance). */
+@media (max-width: 1024px) {
+  .closing__collage {
+    display: block;
+    position: relative;
+    width: 100%;
+    max-width: 360px;
+    margin-top: 16px;
+    align-self: center;
+    aspect-ratio: 501.9 / 690.4;
+  }
+}
+
+.photo {
+  position: absolute;
+  transform-origin: center;
+  transition:
+    transform 0.34s cubic-bezier(0.2, 0.8, 0.2, 1),
+    filter 0.34s ease;
+  filter: drop-shadow(0 0 0 rgba(0, 0, 0, 0));
+  outline: none;
+}
+.photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.photo .hit {
+  position: absolute;
+  inset: 0;
+  pointer-events: auto;
+  cursor: default;
+}
+.photo.sel {
+  transform: translate(0, -4px) rotate(calc(-0.45 * var(--a))) scale(1.03);
+  filter: drop-shadow(0 9px 12px rgba(20, 18, 20, 0.28));
+}
+
+.frame {
+  position: absolute;
+  opacity: 0;
+  transform: rotate(var(--a));
+  transform-origin: center;
+  transition:
+    transform 0.34s cubic-bezier(0.2, 0.8, 0.2, 1),
+    opacity 0.12s ease;
+}
+.frame.sel {
+  opacity: 1;
+  transform: translate(0, -4px) rotate(calc(0.55 * var(--a))) scale(1.03);
+}
+.frame .marks {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.frame .m {
+  transition: transform 0.38s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.frame:not(.sel) .m.tl {
+  transform: translate(-7px, -7px);
+}
+.frame:not(.sel) .m.tr {
+  transform: translate(7px, -7px);
+}
+.frame:not(.sel) .m.bl {
+  transform: translate(-7px, 7px);
+}
+.frame:not(.sel) .m.br {
+  transform: translate(7px, 7px);
+}
+.frame .halo {
+  stroke: var(--color-paper);
+  stroke-width: 3.2;
+  fill: none;
+  stroke-linecap: square;
+}
+.frame .ink {
+  stroke: var(--text-primary);
+  stroke-width: 0.9;
+  fill: none;
+  stroke-linecap: square;
+}
+.crop__slug {
+  position: absolute;
+  left: 4px;
+  bottom: 100%;
+  margin-bottom: 4px;
+  font-family: ui-monospace, Menlo, "SFMono-Regular", monospace;
+  font-size: 9px;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  white-space: pre;
+  background: var(--color-paper);
+  padding: 2px 4px 2px 3px;
+}
+.crop__slug .ch {
+  display: inline-block;
+}
+.crop__slug .ch.off {
+  opacity: 0;
+}
+.crop__slug .ch.hot {
+  color: var(--accent-brand);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* No lift and no slide; marks + slug simply fade in. */
+  .photo {
+    transition: filter 0.12s ease;
+  }
+  .photo.sel {
+    transform: none;
+  }
+  .frame {
+    transition: opacity 0.12s ease;
+  }
+  .frame.sel {
+    transform: rotate(var(--a));
+  }
+  .frame:not(.sel) .m.tl,
+  .frame:not(.sel) .m.tr,
+  .frame:not(.sel) .m.bl,
+  .frame:not(.sel) .m.br {
+    transform: none;
+  }
+}
+/* Halftone portrait — exported with a transparent background, so the dotted
+   figure sits directly on the paper with no box. */
+.closing__photo {
+  display: block;
+  width: clamp(240px, 60vw, 320px);
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+.closing__about {
+  margin: 0;
+  width: 100%;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 19px;
+  color: var(--text-primary);
+  text-wrap: pretty;
+}
+
+/* "light the fire of my utopia." — two live ink plates. The red plate is the
+   real heading; the light salmon plate is an aria-hidden copy behind it that
+   registers on scroll and slips with the cursor (JS sets its transform). Rough
+   edges come from SVG displacement filters (see HomeClosing). */
+.utopia {
+  --uw: min(84vw, 340px);
+  --utopia-fs: 0.2;
+  --utopia-salmon: color-mix(in srgb, var(--accent-brand) 42%, var(--color-paper));
+  position: relative;
+  width: var(--uw);
+  aspect-ratio: 490 / 269;
+  margin: 0;
+}
+.utopia__plate {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: calc(var(--uw) * var(--utopia-fs));
+  line-height: 0.78;
+  letter-spacing: -0.09em;
+  white-space: nowrap;
+}
+.utopia__plate .ln {
+  display: block;
+}
+.utopia__ind {
+  padding-left: 0.36em;
+}
+.utopia__plate--red {
+  z-index: 1;
+  color: var(--accent-brand);
+  filter: url(#utopia-rough-r);
+}
+.utopia__plate--light {
+  z-index: 0;
+  color: var(--utopia-salmon);
+  -webkit-text-stroke: 2.6px var(--utopia-salmon);
+  paint-order: stroke fill;
+  filter: url(#utopia-rough-l);
+  will-change: transform;
+}
+
+.home-footer {
+  width: 100%;
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: 22px 24px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  border-top: 1px solid var(--border-default);
+  border-bottom: 1px solid var(--border-default);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 19px;
+  color: var(--text-primary);
+}
+.home-footer__center {
+  text-align: center;
+}
+.home-footer__link {
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: opacity var(--duration-fast) var(--ease-standard);
+}
+.home-footer__link:hover {
+  opacity: 0.6;
+}
+/* Desktop (≥1025): absolute layout in container-query units. Coordinates are the
+   Figma design values (content width 1200) ÷ 12, so 1cqw ≈ 1% of the content box
+   and the whole section scales uniformly with it. Matches the design export. */
+@media (min-width: 1025px) {
+  .closing {
+    padding: 40px 24px 0;
+    /* The query container lives here (not on the stage) so the stage's own
+       min-height below can resolve cqw against this width — an element can't
+       query its own size, which made 61.8cqw fall back to the viewport and
+       left a ~180px gap before the footer. */
+    container-type: inline-size;
+  }
+  .closing__stage {
+    display: block;
+    position: relative;
+    /* Fits the lowest print (~61.8cqw) plus a small gap before the footer. */
+    min-height: calc(61.8cqw + 32px);
+  }
+  .closing__photo {
+    position: absolute;
+    left: 1.08cqw;
+    top: 7.42cqw;
+    width: 33.83cqw;
+  }
+  .closing__about {
+    position: absolute;
+    left: 45.33cqw;
+    top: 0;
+    width: 46.83cqw;
+    columns: 2;
+    column-gap: 5.5cqw;
+    font-size: 1.167cqw;
+    line-height: 1.583cqw;
+    text-align: justify;
+    pointer-events: none;
+  }
+  .utopia {
+    position: absolute;
+    left: 26cqw;
+    top: 15.75cqw;
+    width: 42.08cqw;
+    --uw: 42.08cqw;
+    --utopia-fs: 0.2;
+    z-index: 20;
+    pointer-events: none;
+  }
+  .closing__collage,
+  .closing__frames {
+    display: block;
+    position: absolute;
+    left: 56.5cqw;
+    top: 13.92cqw;
+    width: 41.83cqw;
+    aspect-ratio: 501.9 / 690.4;
+    pointer-events: none;
+  }
+  .closing__collage {
+    z-index: 0;
+  }
+  .closing__frames {
+    z-index: 41;
   }
 }
 
@@ -210,6 +990,18 @@ body {
   .page-column {
     padding: 32px 20px;
   }
+}
+
+/* Keyboard focus — a visible brand-red ring for every interactive element (the
+   hover-only affordances are invisible to keyboard users otherwise). */
+:focus-visible {
+  outline: 2px solid var(--accent-brand);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+/* Reveal the work-card title on keyboard focus too, not just hover. */
+.work-item--link:focus-visible .work-item__overlay {
+  opacity: 1;
 }
 
 /* Accessibility: visually-hidden content kept available to screen readers. */
@@ -269,11 +1061,80 @@ body {
   color: var(--text-primary);
 }
 
+/* Work card — sharp 3:2 image plate; eyebrow + title hidden until hover. */
 .work-item {
+  position: relative;
+  display: block;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  background: var(--color-gray-100);
+  text-decoration: none;
+  color: inherit;
+}
+.work-item__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--duration-base) var(--ease-standard);
+}
+.work-item__img--empty {
+  background: var(--color-gray-100);
+}
+.work-item__overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 4px;
+  padding: 20px;
+  background: linear-gradient(to top, rgba(26, 20, 20, 0.74), rgba(26, 20, 20, 0) 55%);
+  opacity: 0;
   transition: opacity var(--duration-base) var(--ease-standard);
 }
-.work-item:hover {
-  opacity: 0.82;
+.work-item:hover .work-item__overlay {
+  opacity: 1;
+}
+.work-item--link:hover .work-item__img {
+  transform: scale(1.04);
+}
+.work-item__eyebrow {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1;
+  letter-spacing: var(--type-label-ls);
+  color: rgba(255, 255, 255, 0.78);
+}
+.work-item__title {
+  font-family: var(--font-sans);
+  font-size: 18px;
+  line-height: 1.15;
+  color: #fff;
+  text-wrap: pretty;
+}
+.work-item__chip {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 5px 10px;
+  border-radius: 6px;
+  background: var(--background-primary);
+  box-shadow: inset 0 0 0 0.5px rgb(212, 212, 212);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  line-height: 1;
+  letter-spacing: var(--type-label-ls);
+  color: var(--text-muted);
+}
+@media (prefers-reduced-motion: reduce) {
+  .work-item__img,
+  .work-item__overlay {
+    transition: none;
+  }
+  .work-item--link:hover .work-item__img {
+    transform: none;
+  }
 }
 
 .foot-link {
