@@ -628,6 +628,9 @@ body {
   .site-header--home .site-email {
     justify-self: start;
     margin-left: 64px; /* avatar (52) + gap (12) → aligns under the name */
+    /* Pull it up so it sits right under the name, beside the avatar, instead of
+       below the whole 52px profile block. */
+    margin-top: -18px;
   }
 }
 
@@ -884,6 +887,17 @@ body {
 }
 .home-footer__link:hover {
   opacity: 0.6;
+}
+/* Mobile footer: the three columns get cramped and truncate, so drop the
+   centered name and let the two lines share the width. Placed after the base
+   rule above so it wins (media queries add no specificity). */
+@media (max-width: 600px) {
+  .home-footer {
+    grid-template-columns: 1fr auto;
+  }
+  .home-footer__center {
+    display: none;
+  }
 }
 /* Desktop (≥1025): absolute layout in container-query units. Coordinates are the
    Figma design values (content width 1200) ÷ 12, so 1cqw ≈ 1% of the content box
