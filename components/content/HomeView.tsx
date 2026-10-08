@@ -1,7 +1,10 @@
 import { SiteHeader } from "@/components/site/SiteHeader";
-import { SiteFooter } from "@/components/site/SiteFooter";
+import { HomeClosing } from "@/components/content/HomeClosing";
+import { EdgeCoordinates } from "@/components/hero/EdgeCoordinates";
+import { PosterInk } from "@/components/hero/PosterInk";
 import { SectionTitle } from "@/components/site/SectionTitle";
 import { TextLink } from "@/components/site/TextLink";
+import { Button } from "@/components/site/Button";
 import { WorkItem } from "@/components/content/WorkItem";
 import { Experience } from "@/components/content/Experience";
 import { Writing } from "@/components/content/Writing";
@@ -23,6 +26,7 @@ const SHOW_WRITING = true;
 export function HomeView({ variant }: { variant?: Variant }) {
   const title = variant?.title ?? HOME.title;
   const paragraphs = variant?.description ?? HOME.paragraphs;
+  const display = HOME.display;
   const work = orderedWork(variant?.order);
 
   // Only link work cards that have a published case study; the rest show as
@@ -38,65 +42,62 @@ export function HomeView({ variant }: { variant?: Variant }) {
         </h1>
         <SiteHeader />
 
-        {/* Introduction — this is the "about". No anchor: the nav points at Work
-            and Experience; the intro is simply the top of the page. */}
-        <section
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 56,
-            alignItems: "flex-start",
-            alignSelf: "stretch",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 32,
-              alignItems: "flex-start",
-              // Homepage-only: tighter than the shared --measure-prose (705px)
-              // so the lead headline breaks more evenly.
-              maxWidth: 648,
-            }}
-          >
-            <p
-              className="home-lead"
-              style={{
-                fontFamily: "var(--font-serif)",
-                fontWeight: 800,
-                lineHeight: "var(--type-lead-lh)",
-                color: "var(--text-primary)",
-                textWrap: "pretty",
-              }}
-            >
-              {title}
-            </p>
+        {/* Hero — poster word flanked by two short justified intro blocks, a CTA
+            row, a decorative dot-grid rail and two geo-coordinate edge labels.
+            No anchor: the nav points at Work and Experience. */}
+        <section className="hero">
+          <EdgeCoordinates />
+
+          <div className="hero-inner">
+            <p className="hero-intro">{title}</p>
+
+            {/* Poster word — live red text (SEO + a11y) over the exported Figma
+                gradient-map shadow (shadow.svg, transparent). Three CMY ink
+                plates behind the key text give it a cursor-driven print
+                misregistration (see PosterInk). */}
+            <div className="poster">
+              <img
+                className="poster__shadow"
+                src="/assets/shadow.svg"
+                alt=""
+                aria-hidden="true"
+                width={444}
+                height={167}
+              />
+              <PosterInk words={display.split(" ")} />
+              <p className="poster__text">
+                {display.split(" ").map((word) => (
+                  <span key={word}>{word}</span>
+                ))}
+              </p>
+            </div>
+
             {paragraphs.map((text, i) => (
-              <p
-                key={i}
-                style={{
-                  fontFamily: "var(--font-sans)",
-                  fontSize: "var(--type-body-size)",
-                  lineHeight: "var(--type-body-lh)",
-                  color: "var(--text-secondary)",
-                  textWrap: "pretty",
-                }}
-              >
+              <p key={i} className="hero-intro">
                 {text}
               </p>
             ))}
-            <TextLink
-              href={CONTACT.linkedin}
-              external
-              swap
-              icon="/assets/linkedin.svg"
-              data-track={EVENTS.CTA_CLICK}
-              data-track-label="Let's talk"
-              data-track-location="hero"
-            >
-              Let&apos;s talk
-            </TextLink>
+
+            <div className="hero-cta">
+              <Button
+                href={CONTACT.linkedin}
+                external
+                label="Let's talk"
+                ariaLabel="Let's talk on LinkedIn"
+                data-track={EVENTS.CTA_CLICK}
+                data-track-label="Let's talk on LinkedIn"
+                data-track-location="hero"
+              />
+              {/*<a
+                href="#experience"
+                className="hero-link"
+                data-track={EVENTS.NAV_CLICK}
+                data-track-label="Should I hire?"
+                data-track-location="hero"
+              >
+                Should I hire?
+              </a>*/}
+            </div>
           </div>
         </section>
 
@@ -112,15 +113,16 @@ export function HomeView({ variant }: { variant?: Variant }) {
             scrollMarginTop: 40,
           }}
         >
-          <SectionTitle>Selected work.</SectionTitle>
+          <SectionTitle number="01">Work</SectionTitle>
           <div className="work-grid">
-            {work.map((w) => {
+            {work.map((w, i) => {
               const isPublished = published.has(w.slug);
               return (
                 <WorkItem
                   key={w.slug}
                   href={isPublished ? `/work/${w.slug}` : undefined}
                   inProgress={!isPublished}
+                  priority={i === 0}
                   image={w.image}
                   eyebrow={w.eyebrow}
                   title={w.title}
@@ -145,7 +147,7 @@ export function HomeView({ variant }: { variant?: Variant }) {
             scrollMarginTop: 40,
           }}
         >
-          <SectionTitle>Experience</SectionTitle>
+          <SectionTitle number="02">Experience</SectionTitle>
           <div style={{ display: "flex", flexDirection: "column", gap: 32, alignSelf: "stretch" }}>
             {ROLES.map((r) => (
               <Experience
@@ -181,7 +183,7 @@ export function HomeView({ variant }: { variant?: Variant }) {
               alignSelf: "stretch",
             }}
           >
-            <SectionTitle subtitle="Older stuff, still proud of it">Writing</SectionTitle>
+            <SectionTitle number="03" subtitle="Older stuff, still proud of it">Writing</SectionTitle>
             <div style={{ display: "flex", flexDirection: "column", gap: 24, alignSelf: "stretch" }}>
               {ARTICLES.map((a) => (
                 <Writing key={a.title} year={a.year} title={a.title} href={a.href} />
@@ -191,7 +193,7 @@ export function HomeView({ variant }: { variant?: Variant }) {
         )}
       </main>
 
-      <SiteFooter />
+      <HomeClosing />
     </>
   );
 }

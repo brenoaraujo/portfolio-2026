@@ -1,32 +1,49 @@
 import { Profile } from "@/components/site/Profile";
 import { NavItem } from "@/components/site/NavItem";
 import { Divider } from "@/components/site/Divider";
-import { NAV } from "@/lib/site";
+import { ArrowLeft } from "@/components/icons/ArrowLeft";
+import { CopyEmail } from "@/components/site/CopyEmail";
+import { CONTACT } from "@/lib/site";
 import { EVENTS } from "@/lib/analytics-events";
 
 /**
- * Header: Profile + hairline + three nav anchors. Not sticky — it scrolls away
- * with the page. Nav hrefs are root-relative (/#work …) so they also resolve
- * from a case-study page.
+ * Header. Two layouts share the same hairline treatment:
+ *
+ * - Home (default): Profile · centered dot ornament · email, right-aligned. The
+ *   ornament echoes the old hero rail, moved here to free the hero edges for the
+ *   coordinate globe reveal.
+ * - Case-study pages (`backLink`): a "← Back to work" link in place of the
+ *   Profile, then the hairline and the three nav anchors. Sticky to the top.
  */
-export function SiteHeader() {
+export function SiteHeader({ backLink = false }: { backLink?: boolean }) {
+  if (backLink) {
+    return (
+      <header className="site-header site-header--sticky">
+        <NavItem
+          href="/#work"
+          data-track={EVENTS.NAV_CLICK}
+          data-track-label="Back to work"
+          style={{ fontSize: 18 }}
+        >
+          <span style={{ display: "inline-flex", alignItems: "center", gap: 2 }}>
+            <ArrowLeft size={24} color="currentColor" />
+            Back to work
+          </span>
+        </NavItem>
+        <Divider />
+      </header>
+    );
+  }
+
   return (
-    <header className="site-header">
+    <header className="site-header site-header--home">
       <Profile href="/" />
-      <Divider />
-      <nav className="site-nav">
-        {NAV.map(({ label, href, icon }) => (
-          <NavItem
-            key={label}
-            href={href}
-            icon={icon}
-            data-track={EVENTS.NAV_CLICK}
-            data-track-label={label}
-          >
-            {label}
-          </NavItem>
-        ))}
-      </nav>
+      <span className="site-ornament" aria-hidden="true">
+        <span />
+        <span />
+        <span />
+      </span>
+      <CopyEmail email={CONTACT.email} />
     </header>
   );
 }

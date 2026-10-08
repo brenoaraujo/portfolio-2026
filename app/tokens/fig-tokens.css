@@ -4,7 +4,7 @@
 :root {
   --accent-primary: rgb(0,0,0); /* @kind color */
   --background-accent: rgb(0,0,0); /* @kind color */
-  --background-primary: rgb(253,251,250); /* @kind color */
+  --background-primary: rgb(235,230,224); /* @kind color — warm beige paper (matches bg.webp) */
   --background-secondary: rgb(245,245,245); /* @kind color */
   --border-default: rgb(212,212,212); /* @kind color */
   --border-strong: rgb(0,0,0); /* @kind color */

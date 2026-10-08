@@ -1,16 +1,24 @@
 /* Fonts are loaded via next/font (app/layout.tsx), which injects
-   --font-noto-serif / --font-dm-sans / --font-dm-mono. The aliases below keep
-   the component-facing vars stable. Two families carry the whole site: Noto
-   Serif for every heading, name and title; DM Sans for body, eyebrows and nav. */
+   --font-noto-serif / --font-dm-sans. The aliases below keep the component-facing
+   vars stable. Two families carry the whole site: DM Sans for the display word,
+   titles, body and nav; Noto Serif for the serif accents (dates, subtitles). */
 :root{
   --font-serif:var(--font-noto-serif),ui-serif,Georgia,"Times New Roman",serif;
   --font-sans:var(--font-dm-sans),-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-  --font-mono:var(--font-dm-mono),ui-monospace,SFMono-Regular,Menlo,monospace;
 
   /* Display — footer statement */
   --type-display-size:106.42979431152344px;
   --type-display-lh:87.5px;
   --type-display-ls:-0.07em;
+
+  /* Section title — numbered uppercase heading (DM Sans Regular). */
+  --type-section-title-size:clamp(28px,5vw,38.77px);
+  --type-section-title-lh:1;
+  --type-section-title-ls:-0.05em;
+
+  /* Section number — 01 / 02 / 03 (DM Sans Bold, brand red). */
+  --type-section-num-size:14px;
+  --type-section-num-ls:-0.09em;
 
   /* Lead — introduction paragraph 1 */
   --type-lead-size:42px;

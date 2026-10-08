@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
-import { Noto_Serif, DM_Sans, DM_Mono } from "next/font/google";
+import { Noto_Serif, DM_Sans } from "next/font/google";
 import { AnalyticsOptOut } from "@/components/analytics/AnalyticsOptOut";
 import { TrackClicks } from "@/components/analytics/TrackClicks";
 import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
 import { SITE_URL, SITE_NAME, SITE_TITLE, SITE_DESCRIPTION } from "@/lib/config";
 import "./globals.css";
 
-// Noto Serif carries voice; DM Sans carries information; DM Mono is present in
-// the source file but unused inside the Handoff frames.
+// Noto Serif carries voice (serif accents); DM Sans carries everything else.
 const notoSerif = Noto_Serif({
   variable: "--font-noto-serif",
   subsets: ["latin"],
@@ -16,20 +15,16 @@ const notoSerif = Noto_Serif({
   display: "swap",
 });
 
+// 700 carries the poster display word ("PRODUCT DESIGNER") and the red section
+// numbers; 400/500 remain for body, nav and section titles.
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
   subsets: ["latin"],
-  weight: ["400", "500"],
+  weight: ["400", "500", "700"],
   style: ["normal", "italic"],
   display: "swap",
 });
 
-const dmMono = DM_Mono({
-  variable: "--font-dm-mono",
-  subsets: ["latin"],
-  weight: ["400"],
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -70,7 +65,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${notoSerif.variable} ${dmSans.variable} ${dmMono.variable} h-full`}
+      className={`${notoSerif.variable} ${dmSans.variable} h-full`}
     >
       <body className="min-h-full">
         <AnalyticsOptOut />
