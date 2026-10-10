@@ -189,3 +189,113 @@ export const NAV = [
   { label: "Experience", href: "/#experience", external: false, icon: "/assets/experience.svg" },
   { label: "Let's talk", href: CONTACT.linkedin, external: true, icon: "/assets/linkedin.svg" },
 ] as const;
+
+/* ───────────────────────── Homepage redesign (editorial bento) ─────────────
+   Content transcribed from the design handoff (Portfolio Home.dc.html). The old
+   HOME / WORK / ROLES above still feed the legacy HomeView until it's removed. */
+
+export const BENTO_NAV = [
+  { label: "Work", href: "#work" },
+  { label: "Experience", href: "#experience" },
+  { label: "Writing", href: "#writing" },
+  { label: "Off the clock", href: "#off" },
+] as const;
+
+export const BENTO_HERO = {
+  eyebrowLeft: "Product designer & design engineer",
+  eyebrowRight: "16 yrs · B2B SaaS",
+  headline: "I design complex B2B products that people, businesses and engineers all agree on.",
+  subcopy:
+    "Hands-on UI and interaction design, from customer research through shipped implementation. Recently shaped the design direction for point-of-sale, checkout and design systems at Ascend.",
+  shippedLabel: "Shipped Globally at",
+  shippedAt: ["Ascend", "VanHack", "Medimap", "Hotmart", "Prova Fácil", "Siteware", "Estado de Minas"],
+} as const;
+
+export const BENTO_PILL = "Open to product design roles";
+
+export const NOW_LIST = [
+  { k: "Designing", v: "VanHack's new employer onboarding for subscription growth" },
+  { k: "Exploring", v: "AI-assisted prototyping, from prompt to PR" },
+  { k: "Learning", v: "AI-driven development to build and ship my own lil apps" },
+  { k: "Playing", v: "Drums, badly, on Sunday mornings" },
+] as const;
+
+/** kind drives the hover thumbnail: animated (changeit/ticket/raffle/onboarding),
+    textured static (invoice/commission). img is the hover-base poster. */
+export type WorkKind = "changeit" | "ticket" | "raffle" | "invoice" | "onboarding" | "commission";
+export interface WorkTileMeta {
+  tag: string;
+  title: string;
+  slug: string;
+  kind: WorkKind;
+  /** Poster/base image (also the static image for textured tiles). */
+  img: string;
+  /** Column span + row span at the 4-col breakpoint. */
+  span: 1 | 2;
+  rows: 1 | 2;
+  /** Aspect ratio at the 4-col breakpoint. */
+  aspect: string;
+  /** min-height when stacked (below the 4-col breakpoint). */
+  minH: string;
+}
+
+export const WORK_TILES: WorkTileMeta[] = [
+  { tag: "UX & Conversion", title: "Streamlining game-day sign-up", slug: "change-it", kind: "changeit", img: "/assets/work-changeit.webp", span: 2, rows: 2, aspect: "auto", minH: "420px" },
+  { tag: "Mobile App", title: "Ticket sales for stadium volunteers", slug: "on-site-ticket-sales-app", kind: "ticket", img: "/assets/work-ticket-app.webp", span: 2, rows: 1, aspect: "66 / 34", minH: "340px" },
+  { tag: "Design System", title: "Raffle landing page design system", slug: "raffle-landing-design-system", kind: "raffle", img: "/assets/work-raffle-design-system.webp", span: 1, rows: 1, aspect: "33 / 34", minH: "340px" },
+  { tag: "Finance", title: "Invoice management", slug: "invoice", kind: "invoice", img: "/assets/invoice-draft.webp", span: 1, rows: 1, aspect: "33 / 34", minH: "340px" },
+  { tag: "User Flow & UI", title: "Onboarding for a new revenue stream", slug: "onboarding-revenue-streamline", kind: "onboarding", img: "/assets/work-onboarding.webp", span: 2, rows: 1, aspect: "33 / 20", minH: "400px" },
+  { tag: "UX/UI Design", title: "Replacing the commission spreadsheet", slug: "sales-commission", kind: "commission", img: "/assets/commission.webp", span: 2, rows: 1, aspect: "33 / 20", minH: "400px" },
+];
+
+export const EXPERIENCE_ROWS = [
+  { co: "Ascend", role: "Senior Product Designer", years: "2023—26", desc: "Design direction across point-of-sale, checkout, design systems and a marketing ops platform." },
+  { co: "VanHack", role: "Lead Designer", years: "2019—23", desc: "Both sides of a talent marketplace — 500K+ engineers and the recruiters hiring them." },
+  { co: "Hotmart", role: "Senior Product Designer", years: "2019", desc: "The analytics product every team used to monitor its indicators, built with Data Science." },
+  { co: "Siteware", role: "Lead Product Designer", years: "2012—19", desc: "First designer. Owned the core product for KPIs, goals and action plans." },
+] as const;
+
+export const HOW_I_WORK = [
+  { label: "Listen", text: "Sit with customers, sales and support before opening Figma. The real problem is rarely the one in the ticket." },
+  { label: "Context", text: "Map the business constraints and the engineering reality, so the design survives contact with the codebase." },
+  { label: "Prototype", text: "Make it clickable fast — Figma, code or AI — to kill ambiguity before it becomes a sprint." },
+  { label: "Ship", text: "Stay in the PR. Pair with engineers on the details until it's live and measured." },
+] as const;
+
+export const PROTOTYPE_IN = [
+  { label: "Figma", snippet: "Frame / Checkout v3\n→ 24 variants · auto-layout" },
+  { label: "Code", snippet: '<Checkout\n  step="pay" tips={true} />' },
+  { label: "AI", snippet: '› "Generate 5 empty states for\n  a commission dashboard"' },
+] as const;
+
+export const CLOCKS = {
+  here: { label: "Maple Ridge, CA · based", tz: "America/Vancouver" },
+  home: { label: "Belo Horizonte, BR • born", tz: "America/Sao_Paulo" },
+} as const;
+
+export const OFF_THE_CLOCK = [
+  { img: "/assets/otc-01.webp", label: "Family walk" },
+  { img: "/assets/otc-02.webp", label: "Motorcycle" },
+  { img: "/assets/otc-03.webp", label: "Campfire" },
+  { img: "/assets/otc-04.webp", label: "Brothers" },
+  { img: "/assets/otc-05.webp", label: "Family" },
+  { img: "/assets/otc-06.webp", label: "Slow nights" },
+  { img: "/assets/otc-07.webp", label: "Speaking" },
+  { img: "/assets/otc-08.webp", label: "Drums" },
+  { img: "/assets/otc-09.webp", label: "On stage" },
+] as const;
+
+export const OFF_TITLE = "Light the fire of my utopia.";
+
+export const CONTACT_TILE = {
+  eyebrow: "Got a gnarly B2B problem?",
+  headline: "Let's untangle it together.",
+  email: "hey@brenoaraujo.com",
+  linkedin: CONTACT.linkedin,
+} as const;
+
+export const BENTO_FOOTER = {
+  left: "Thanks for dropping by · © 2026 Breno Araujo",
+  coords: "49.2194° N, 122.5984° W",
+  back: "Back to top ↑",
+} as const;
