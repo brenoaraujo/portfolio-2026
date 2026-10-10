@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { compileMDX } from "next-mdx-remote/rsc";
-import { SiteHeader } from "@/components/site/SiteHeader";
-import { HomeFooter } from "@/components/site/HomeFooter";
+import { BentoHeader } from "@/components/bento/BentoHeader";
+import { BentoFooter } from "@/components/bento/BentoFooter";
 import { TextLink } from "@/components/site/TextLink";
 import { Credits } from "@/components/case-study/Credits";
 import { HeroMedia } from "@/components/case-study/Media";
@@ -66,9 +66,10 @@ export default async function CaseStudyPage({
 
   return (
     <>
-      <main id="main" className="page-column">
+      <main id="main" className="bento">
         <TrackCaseStudyView slug={slug} title={meta.title} />
-        <SiteHeader backLink />
+        <BentoHeader backLink />
+        <div className="page-column case-study-body">
 
       {/* Intro */}
       <section
@@ -157,8 +158,9 @@ export default async function CaseStudyPage({
         </div>
       ) : null}
 
+        </div>
+        <BentoFooter />
       </main>
-      <HomeFooter />
     </>
   );
 }
