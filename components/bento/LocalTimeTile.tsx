@@ -33,12 +33,18 @@ export function LocalTimeTile() {
     <section className="tile local-tile" data-span={1}>
       <span className="bento-node bento-node--tl" aria-hidden="true" />
       <span style={{ fontFamily: "var(--font-serif)", fontSize: 12, color: "var(--rd-muted)" }}>Local time</span>
-      <div className="local-tile__globe">
+      {/* Hovering the globe (or the "born" row) peeks at Belo Horizonte. */}
+      <div
+        className="local-tile__globe"
+        onMouseEnter={() => setCity("home")}
+        onMouseLeave={() => setCity("here")}
+        title="Based in Maple Ridge — hover to see where I'm from"
+      >
         <Globe city={city} spinBump={bump} />
       </div>
       <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
         <div
-          style={{ display: "flex", flexDirection: "column", gap: 2, cursor: "default" }}
+          style={{ display: "flex", flexDirection: "column", gap: 2, cursor: "pointer" }}
           onMouseEnter={() => {
             setBump((b) => b + 1);
             setCity("here");
@@ -53,7 +59,7 @@ export function LocalTimeTile() {
         </div>
         <div
           className="local-tile__row"
-          style={{ cursor: "default" }}
+          style={{ cursor: "pointer" }}
           onMouseEnter={() => setCity("home")}
           onMouseLeave={() => setCity("here")}
         >

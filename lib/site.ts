@@ -256,8 +256,8 @@ export const EXPERIENCE_ROWS = [
 ] as const;
 
 export const HOW_I_WORK = [
-  { label: "Listen", text: "Sit with customers, sales and support before opening Figma. The real problem is rarely the one in the ticket." },
-  { label: "Context", text: "Map the business constraints and the engineering reality, so the design survives contact with the codebase." },
+  { label: "Listen", text: "Gather insights from diverse perspectives and dive deep into problem framing." },
+  { label: "Context", text: "Map the business and tech constraints to ensure frictionless, high-velocity development." },
   { label: "Prototype", text: "Make it clickable fast — Figma, code or AI — to kill ambiguity before it becomes a sprint." },
   { label: "Ship", text: "Stay in the PR. Pair with engineers on the details until it's live and measured." },
 ] as const;

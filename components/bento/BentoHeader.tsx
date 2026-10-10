@@ -18,7 +18,7 @@ export function BentoHeader({ backLink = false }: { backLink?: boolean }) {
   return (
     <header className="bento-header">
       <a href="#main" className="bento-logo">
-        <span className="bento-logo__dot" aria-hidden="true" />
+
         Breno Araujo
       </a>
       <nav className="bento-nav">

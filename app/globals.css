@@ -1672,7 +1672,7 @@ body {
 
 /* ── Local time ── */
 .local-tile { display: flex; flex-direction: column; justify-content: space-between; gap: 20px; min-height: 200px; }
-.local-tile__globe { position: absolute; top: 18px; right: 18px; width: 96px; height: 96px; pointer-events: auto; }
+.local-tile__globe { position: absolute; top: 18px; right: 18px; width: 96px; height: 96px; pointer-events: auto; cursor: pointer; }
 .local-tile__time { font-size: 34px; font-weight: 600; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
 .local-tile__row {
   display: flex;
