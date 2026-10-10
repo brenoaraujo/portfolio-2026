@@ -204,7 +204,7 @@ export const BENTO_NAV = [
 export const BENTO_HERO = {
   eyebrowLeft: "Product designer & design engineer",
   eyebrowRight: "16 yrs · B2B SaaS",
-  headline: "I design complex B2B products that people, businesses and engineers all agree on.",
+  headline: "Designing B2B products for users, business, and engineering.",
   subcopy:
     "Hands-on UI and interaction design, from customer research through shipped implementation. Recently shaped the design direction for point-of-sale, checkout and design systems at Ascend.",
   shippedLabel: "Shipped Globally at",
