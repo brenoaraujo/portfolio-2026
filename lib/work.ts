@@ -14,6 +14,11 @@ export interface CaseStudyMeta {
   years: string;
   /** Intro paragraph beneath the title. */
   lead: string;
+  /** Optional second paragraph beneath the lead. */
+  sublead?: string;
+  /** Optional results strip shown in the header, above the hero. Each label
+      is a list of lines (one <br /> between each). */
+  results?: { before?: string; after: string; unit?: string; label: string[] }[];
   /** Optional live-flow link shown as a TextLink under the intro. */
   liveLink?: string;
   liveLabel?: string;
@@ -64,6 +69,8 @@ export function getCaseStudyMeta(slug: string): CaseStudyMeta {
     eyebrow: data.eyebrow ?? fallback?.eyebrow ?? "",
     years: data.years ?? "",
     lead: data.lead ?? "",
+    sublead: data.sublead,
+    results: Array.isArray(data.results) ? data.results : undefined,
     liveLink: data.liveLink,
     liveLabel: data.liveLabel ?? "See the live flow",
     heroImage: data.heroImage ?? fallback?.image ?? "",
