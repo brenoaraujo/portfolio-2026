@@ -1,5 +1,4 @@
 import type { CSSProperties, ReactNode } from "react";
-import { Experience } from "@/components/content/Experience";
 import { Media } from "@/components/case-study/Media";
 import { BeforeAfterSlider } from "@/components/case-study/BeforeAfterSlider";
 
@@ -11,7 +10,7 @@ import { BeforeAfterSlider } from "@/components/case-study/BeforeAfterSlider";
 
 const PROSE_MEASURE = "var(--measure-prose)"; // 705px
 
-/** A titled section: serif-26 (weight 400) heading, then its content, 48px apart. */
+/** A titled section: serif-26 (weight 400) heading, then its content, 24px apart. */
 export function CaseSection({
   title,
   children,
@@ -24,7 +23,7 @@ export function CaseSection({
       style={{
         display: "flex",
         flexDirection: "column",
-        gap: 48,
+        gap: 24,
         alignItems: "flex-start",
         // Text column keeps the 705px measure but sits centred in the page;
         // media blocks (hero, Media, BeforeAfter) stay full-width.
@@ -191,17 +190,99 @@ export function BeforeAfter({
   );
 }
 
-/** A stack of outcome rows (reuses the Experience row: metric | title + note). */
+/** A stack of outcome rows, hairlines between, closed top and bottom. */
 export function Outcomes({ children }: { children: ReactNode }) {
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 32, alignSelf: "stretch" }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        width: "100%",
+        maxWidth: PROSE_MEASURE,
+        alignSelf: "center",
+        borderBottom: "1px solid var(--color-hairline, rgb(212,212,212))",
+      }}
+    >
       {children}
     </div>
   );
 }
 
-export function Outcome(props: { period?: string; title?: string; description?: string }) {
-  return <Experience {...props} />;
+/** One outcome: a fixed label column (`period`) | the result (`title`), an
+    optional accent tag (`change`, e.g. "50% faster") and an optional note
+    (`description`). The fixed column keeps every title on the same left edge;
+    label and title share a baseline. Stacks on small screens (.outcome-row). */
+export function Outcome({
+  period,
+  title,
+  change,
+  description,
+}: {
+  period?: string;
+  title?: string;
+  change?: string;
+  description?: string;
+}) {
+  return (
+    <div
+      className="outcome-row"
+      style={{
+        display: "grid",
+        columnGap: 32,
+        rowGap: 8,
+        alignItems: "baseline",
+        padding: "28px 0",
+        borderTop: "1px solid var(--color-hairline, rgb(212,212,212))",
+      }}
+    >
+      <span
+        style={{
+          fontFamily: "var(--font-serif)",
+          fontSize: 16,
+          lineHeight: "22px",
+          color: "var(--text-secondary)",
+          textWrap: "pretty",
+        }}
+      >
+        {period}
+      </span>
+      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        <div style={{ display: "flex", flexWrap: "wrap", alignItems: "baseline", columnGap: 16, rowGap: 8 }}>
+          <span
+            style={{
+              fontFamily: "var(--font-sans)",
+              fontWeight: 700,
+              fontSize: 24,
+              lineHeight: "30px",
+              letterSpacing: "-0.01em",
+              color: "var(--text-primary)",
+            }}
+          >
+            {title}
+          </span>
+          {change ? (
+            <span style={{ fontFamily: "var(--font-sans)", fontSize: 14, lineHeight: "20px", marginLeft: "auto" }}>
+              <Stat>{change}</Stat>
+            </span>
+          ) : null}
+        </div>
+        {description ? (
+          <p
+            style={{
+              fontFamily: "var(--font-sans)",
+              fontSize: 16,
+              lineHeight: "27px",
+              color: "var(--text-secondary)",
+              textWrap: "pretty",
+              margin: 0,
+            }}
+          >
+            {description}
+          </p>
+        ) : null}
+      </div>
+    </div>
+  );
 }
 
 /** A light-gray summary plate that sits right under the credits: an eyebrow
@@ -238,15 +319,15 @@ export function TLDR({ label = "TL;DR", children }: { label?: string; children?:
   );
 }
 
-/** Serif-18 sub-heading (weight 400) — the default for markdown `h3` inside a section. */
+/** Serif-26 sub-heading — matches the CaseSection h2 style. */
 export function SubHeading({ children }: { children?: ReactNode }) {
   return (
     <h3
       style={{
         fontFamily: "var(--font-serif)",
         fontWeight: 400,
-        fontSize: "var(--type-title-size)",
-        lineHeight: "23px",
+        fontSize: "var(--type-section-size)",
+        lineHeight: "39px",
         color: "var(--text-primary)",
       }}
     >
@@ -276,6 +357,481 @@ export function BodyList({ children }: { children?: ReactNode }) {
   );
 }
 
+/** Numbered approach item: large accent number + title header, body below, hairline separator. */
+export function ApproachItem({
+  number,
+  title,
+  children,
+  spaceBefore,
+}: {
+  number: string;
+  title: string;
+  children?: ReactNode;
+  /** Extra room above, on top of the parent gap, e.g. "24px". */
+  spaceBefore?: string;
+}) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 8,
+        width: "100%",
+        maxWidth: PROSE_MEASURE,
+        alignSelf: "center",
+        paddingBottom: 48,
+        borderBottom: "1px solid var(--color-hairline, rgb(212,212,212))",
+        marginTop: spaceBefore,
+      }}
+    >
+      <div style={{ display: "grid", gridTemplateColumns: "72px 1fr", gap: 16, alignItems: "flex-start" }}>
+        <span
+          style={{
+            fontFamily: "var(--font-sans)",
+            fontWeight: 700,
+            fontSize: 48,
+            lineHeight: 1,
+            color: "var(--accent-brand)",
+          }}
+        >
+          {number}
+        </span>
+        <span
+          style={{
+            fontFamily: "var(--font-sans)",
+            fontWeight: 400,
+            fontSize: 20,
+            lineHeight: "28px",
+            color: "var(--text-primary)",
+          }}
+        >
+          {title}
+        </span>
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 16, paddingLeft: 88 }}>
+        {children}
+      </div>
+    </div>
+  );
+}
+
+/** Inline decision label + text, used inside ApproachItem. */
+export function Decision({ children }: { children?: ReactNode }) {
+  return (
+    <p
+      style={{
+        fontFamily: "var(--font-sans)",
+        fontSize: 16,
+        lineHeight: "27px",
+        color: "var(--text-secondary)",
+        margin: 0,
+      }}
+    >
+      <span
+        style={{
+          fontFamily: "var(--font-sans)",
+          fontSize: 11,
+          fontWeight: 500,
+          letterSpacing: "0.1em",
+          textTransform: "uppercase",
+          color: "var(--text-muted)",
+          marginRight: 10,
+        }}
+      >
+        Decision
+      </span>
+      {children}
+    </p>
+  );
+}
+
+/** Two-column testimonial card grid, with an optional eyebrow label. Sits
+    32px further from what comes before so quotes read as their own tier. */
+export function Testimonials({ label, children }: { label?: string; children: ReactNode }) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 16,
+        width: "100%",
+        maxWidth: PROSE_MEASURE,
+        alignSelf: "center",
+        marginTop: 32,
+      }}
+    >
+      {label ? (
+        <span
+          style={{
+            fontFamily: "var(--font-sans)",
+            fontSize: 11,
+            fontWeight: 500,
+            letterSpacing: "0.1em",
+            textTransform: "uppercase",
+            color: "var(--text-muted)",
+          }}
+        >
+          {label}
+        </span>
+      ) : null}
+      <div className="testimonials-grid">{children}</div>
+    </div>
+  );
+}
+
+/** Headline result: a big accent figure beside a short statement, on the
+    same light plate as the results strip. Stacks on small screens (.highlight). */
+export function Highlight({
+  value,
+  headline,
+  children,
+}: {
+  value: string;
+  headline: string;
+  children?: ReactNode;
+}) {
+  return (
+    <div
+      className="highlight"
+      style={{
+        display: "grid",
+        columnGap: 32,
+        rowGap: 12,
+        alignItems: "center",
+        width: "100%",
+        maxWidth: PROSE_MEASURE,
+        alignSelf: "center",
+        marginTop: 24,
+        padding: 32,
+        borderRadius: 12,
+        background: "var(--color-overlay-05)",
+      }}
+    >
+      <span
+        style={{
+          fontFamily: "var(--font-sans)",
+          fontWeight: 700,
+          fontSize: 56,
+          lineHeight: 1,
+          letterSpacing: "-0.04em",
+          color: "var(--accent-brand)",
+          whiteSpace: "nowrap",
+        }}
+      >
+        {value}
+      </span>
+      <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+        <span
+          style={{
+            fontFamily: "var(--font-sans)",
+            fontWeight: 700,
+            fontSize: 18,
+            lineHeight: "26px",
+            color: "var(--text-primary)",
+            textWrap: "pretty",
+          }}
+        >
+          {headline}
+        </span>
+        {children ? (
+          <span
+            style={{
+              fontFamily: "var(--font-sans)",
+              fontSize: 16,
+              lineHeight: "27px",
+              color: "var(--text-secondary)",
+            }}
+          >
+            {children}
+          </span>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
+/** Single testimonial card with quote body + small-caps attribution. */
+export function Testimonial({
+  name,
+  role,
+  children,
+}: {
+  name: string;
+  role: string;
+  children?: ReactNode;
+}) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        gap: 24,
+        padding: 24,
+        border: "1px solid rgb(212,212,212)",
+        borderRadius: 12,
+      }}
+    >
+      <p
+        style={{
+          fontFamily: "var(--font-sans)",
+          fontSize: 16,
+          lineHeight: "27px",
+          color: "var(--text-primary)",
+          margin: 0,
+        }}
+      >
+        {children}
+      </p>
+      <span
+        style={{
+          fontFamily: "var(--font-sans)",
+          fontSize: 11,
+          fontWeight: 500,
+          letterSpacing: "0.1em",
+          textTransform: "uppercase",
+          color: "var(--text-muted)",
+        }}
+      >
+        {name} · {role}
+      </span>
+    </div>
+  );
+}
+
+/** Inline highlighted stat — accent background + accent text colour. */
+export function Stat({ children }: { children?: ReactNode }) {
+  return (
+    <span
+      style={{
+        display: "inline",
+        background: "color-mix(in srgb, var(--accent-brand) 14%, var(--color-paper, #f5f0eb))",
+        color: "var(--accent-brand)",
+        fontWeight: 700,
+        padding: "1px 5px",
+        borderRadius: 3,
+      }}
+    >
+      {children}
+    </span>
+  );
+}
+
+/** Left-border callout: bold headline + supporting body text. */
+/** `spaceAfter` adds room below on top of the parent gap, e.g. "24px". A string
+    so it authors in MDX, which blocks JS expressions like style={{ }}. */
+export function Callout({
+  headline,
+  children,
+  spaceAfter,
+}: {
+  headline: string;
+  children?: ReactNode;
+  spaceAfter?: string;
+}) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 4,
+        paddingLeft: 20,
+        borderLeft: "2px solid var(--accent-brand)",
+        width: "100%",
+        maxWidth: PROSE_MEASURE,
+        alignSelf: "center",
+        marginBottom: spaceAfter,
+      }}
+    >
+      <span
+        style={{
+          fontFamily: "var(--font-sans)",
+          fontWeight: 700,
+          fontSize: 16,
+          lineHeight: "27px",
+          color: "var(--text-primary)",
+        }}
+      >
+        {headline}
+      </span>
+      {children && (
+        <span
+          style={{
+            fontFamily: "var(--font-sans)",
+            fontSize: 16,
+            lineHeight: "27px",
+            color: "var(--text-secondary)",
+          }}
+        >
+          {children}
+        </span>
+      )}
+    </div>
+  );
+}
+
+/** Findings, one per row: label + title on the left, body on the right,
+    hairlines between (same columns as the outcome rows). */
+export function Findings({ children }: { children: ReactNode }) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        borderBottom: "1px solid var(--color-hairline, rgb(212,212,212))",
+        width: "100%",
+        maxWidth: PROSE_MEASURE,
+        alignSelf: "center",
+        // 24px on top of the section gap, so the grid reads apart from the prose.
+        marginBlock: 24,
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
+export function Finding({
+  number,
+  title,
+  children,
+}: {
+  number: string;
+  title: string;
+  children?: ReactNode;
+}) {
+  return (
+    <div
+      className="finding-row"
+      style={{
+        display: "grid",
+        columnGap: 32,
+        rowGap: 8,
+        alignItems: "baseline",
+        padding: "24px 0",
+        borderTop: "1px solid var(--color-hairline, rgb(212,212,212))",
+      }}
+    >
+      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        <span
+          style={{
+            fontFamily: "var(--font-sans)",
+            fontSize: 12,
+            lineHeight: 1,
+            letterSpacing: "0.02em",
+            color: "var(--accent-brand)",
+          }}
+        >
+          {number}
+        </span>
+        <span
+          style={{
+            fontFamily: "var(--font-sans)",
+            fontWeight: 700,
+            fontSize: 16,
+            lineHeight: "22px",
+            color: "var(--text-primary)",
+          }}
+        >
+          {title}
+        </span>
+      </div>
+      <span
+        style={{
+          fontFamily: "var(--font-sans)",
+          fontSize: 16,
+          lineHeight: "27px",
+          color: "var(--text-secondary)",
+          textWrap: "pretty",
+        }}
+      >
+        {children}
+      </span>
+    </div>
+  );
+}
+
+/** Headline results strip: big before → after numbers with a short label,
+    on a plate a touch darker than the page. Four across, 2×2 on small
+    screens (.metrics in globals.css). */
+export function Metrics({ children }: { children: ReactNode }) {
+  return (
+    <ul
+      className="metrics"
+      aria-label="Results"
+      style={{
+        width: "100%",
+        alignSelf: "stretch",
+        margin: 0,
+        padding: 0,
+        listStyle: "none",
+        borderRadius: 12,
+        background: "var(--color-overlay-05)",
+        overflow: "hidden",
+      }}
+    >
+      {children}
+    </ul>
+  );
+}
+
+/** One result. `before` is optional: without it, only `after` shows (e.g. $700K).
+    The label is the children, so MDX can set the line break with <br /> and
+    every label in the strip runs exactly two lines. */
+export function Metric({
+  before,
+  after,
+  unit,
+  children,
+}: {
+  before?: string;
+  after: string;
+  unit?: string;
+  children?: ReactNode;
+}) {
+  return (
+    <li className="metric" style={{ display: "flex", flexDirection: "column", gap: 12, padding: "var(--metric-pad)" }}>
+      <span
+        style={{
+          display: "flex",
+          alignItems: "baseline",
+          gap: "0.22em",
+          whiteSpace: "nowrap",
+          fontFamily: "var(--font-sans)",
+          fontWeight: 700,
+          fontSize: "var(--metric-size)",
+          lineHeight: 1,
+          letterSpacing: "-0.04em",
+          color: "var(--text-primary)",
+        }}
+      >
+        {before ? (
+          <>
+            <span>{before}</span>
+            <span aria-hidden="true" style={{ fontWeight: 400, fontSize: "0.78em" }}>
+              →
+            </span>
+            <span className="sr-only">to</span>
+          </>
+        ) : null}
+        <span style={{ color: "var(--accent-brand)" }}>{after}</span>
+        {unit ? <span style={{ fontSize: "0.45em", letterSpacing: "-0.02em", marginLeft: "-0.1em" }}>{unit}</span> : null}
+      </span>
+      <span
+        style={{
+          fontFamily: "var(--font-sans)",
+          fontSize: 14,
+          lineHeight: 1.45,
+          color: "var(--text-secondary)",
+          textWrap: "pretty",
+        }}
+      >
+        {children}
+      </span>
+    </li>
+  );
+}
+
 /** Components exposed to MDX: markdown elements + explicit blocks. */
 export const mdxComponents = {
   p: BodyText,
@@ -296,4 +852,15 @@ export const mdxComponents = {
   Media,
   Outcomes,
   Outcome,
+  Metrics,
+  Metric,
+  Findings,
+  Finding,
+  Callout,
+  ApproachItem,
+  Decision,
+  Stat,
+  Testimonials,
+  Testimonial,
+  Highlight,
 };

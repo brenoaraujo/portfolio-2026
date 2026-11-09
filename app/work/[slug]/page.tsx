@@ -6,7 +6,7 @@ import { BentoFooter } from "@/components/bento/BentoFooter";
 import { TextLink } from "@/components/site/TextLink";
 import { Credits } from "@/components/case-study/Credits";
 import { HeroMedia } from "@/components/case-study/Media";
-import { mdxComponents } from "@/components/case-study/blocks";
+import { mdxComponents, Callout, Metrics, Metric } from "@/components/case-study/blocks";
 import { TrackCaseStudyView } from "@/components/analytics/TrackCaseStudyView";
 import { EVENTS } from "@/lib/analytics-events";
 import {
@@ -57,9 +57,13 @@ export default async function CaseStudyPage({
   const meta = getCaseStudyMeta(slug);
   if (!meta.published) notFound();
 
+  const body = getCaseStudyBody(slug);
+  // Credits sit in the header unless the MDX places them itself with <Credits />
+  // (bound here to this study's frontmatter, since MDX blocks JS expressions).
+  const creditsInBody = /<Credits\b/.test(body);
   const { content } = await compileMDX({
-    source: getCaseStudyBody(slug),
-    components: mdxComponents,
+    source: body,
+    components: { ...mdxComponents, Credits: () => <Credits {...meta.credits} variant="grid" /> },
   });
 
   const next = getNextCaseStudy(slug);
@@ -119,6 +123,7 @@ export default async function CaseStudyPage({
             {meta.lead}
           </p>
         ) : null}
+        {meta.sublead ? <Callout headline={meta.sublead} /> : null}
         {meta.liveLink ? (
           <TextLink
             href={meta.liveLink}
@@ -133,10 +138,34 @@ export default async function CaseStudyPage({
         ) : null}
       </section>
 
+      {/* Header credits: pulled 32px toward both neighbours (48px gaps instead
+          of the page's 80px) so they read as part of the intro. */}
+      {creditsInBody ? null : (
+        <div style={{ alignSelf: "stretch", marginBlock: -32 }}>
+          <Credits {...meta.credits} />
+        </div>
+      )}
+
       {/* Hero — video (autoplay, no controls) if set, otherwise the image */}
       <HeroMedia video={meta.heroVideo} image={meta.heroImage} alt={meta.heroAlt} />
 
-      <Credits {...meta.credits} />
+      {/* Results strip: pulled 32px up so it sits close under the hero. */}
+      {meta.results?.length ? (
+        <div style={{ alignSelf: "stretch", marginTop: -32 }}>
+          <Metrics>
+            {meta.results.map((r, i) => (
+              <Metric key={i} before={r.before} after={r.after} unit={r.unit}>
+                {r.label.map((line, j) => (
+                  <span key={j}>
+                    {j > 0 ? <br /> : null}
+                    {line}
+                  </span>
+                ))}
+              </Metric>
+            ))}
+          </Metrics>
+        </div>
+      ) : null}
 
       {/* Narrative body (MDX) */}
       <div style={{ display: "flex", flexDirection: "column", gap: 80, alignSelf: "stretch" }}>

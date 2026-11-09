@@ -1,92 +1,116 @@
 ---
-title: Membership Sign-Up redesign for a Fast-Moving, In-Person Context
+title: Membership checkout redesign for fast-moving, in-person sales
 eyebrow: UX & Conversion
 years: 2023
-lead: ChangeIt is a membership platform built for college sports. The product pivoted from a charity round-up app into a membership engine for college sports, and sign-ups moved to live activation stands on game day. Here's how we made it fast enough for that setting.
-heroImage: /assets/work/change-it/1.webp
-heroAlt: US college membership
+lead: ChangeIt was Ascend's push for a stable revenue stream. The product pivoted from a charity round-up app to a membership program for college sports, and most sign-ups moved to game-day activation stands. The existing flow took about six minutes, far too slow with a line waiting.
+sublead: Here's how we cut it to 3 minutes and raised conversion from 12% to 19%.
+results:
+  - before: "6"
+    after: "3"
+    unit: min
+    label: ["Sign-up time,", "50% faster"]
+  - before: "12"
+    after: "19"
+    unit: "%"
+    label: ["Start-to-member", "conversion"]
+  - before: "76"
+    after: "62"
+    unit: "%"
+    label: ["Drop-off at", "payment"]
+  - after: "$700K"
+    label: ["Raised by one partner", "in a single season"]
+heroImage: /assets/work/change-it/3.webp
+heroAlt: "Mobile member screens: home, cash-back balance, showcase, and personal information"
 credits:
-  role: Product designer, UX
-  madeWith: Figma, Amplitude, Ux Research
+  role: Lead Product designer
+  team: 2 Engineers, 1 Product Manager
+  madeWith: Figma, Amplitude, UX Research
   shipped: 2023
 published: true
 ---
 
-<TLDR>
-  <Prose>
-   The product pivot meant a significant part of activation now happened on-site, on game day. The existing flow took around six minutes to complete, and every extra step increased the chance of losing someone before activation. Combining on-site observation with Amplitude funnel analysis to understand user behaviour we reduce the completion time  around 6 minutes to 3 minutes. Payment-screen drop-off improved from 76% to 62%.
-
-  </Prose>
-</TLDR>
-
 <CaseSection title="Context">
   <Prose>
-    We're creating a product to validate a new business model for the company that operates in the 50/50 raffles for non-profit market. A team was created to work in a fast and uncertain environment, where all opportunities should be taken into consideration. So we tried different markets and pivoted from a charity round-up app into a membership engine for college sports, and sign-ups moved into a completely different environment: live, game-day activation stands.
-This is how we diagnosed the friction and redesigned the activation flow to make it fast enough for the context.
+    Ascend's business was built on running seasonal raffles and campaigns for over 500 charities, sports teams, and hospitals. ChangeIt was its initiative to build monthly recurring revenue (MRR).
 
-    <PullQuote>The product had changed, the context had changed, but the sign-up flow had not caught up.</PullQuote>
+    The product started on the charity side. Donors linked a credit card, rounded up their purchases, and received benefits in return. Midway through 2024, Ascend saw an opportunity in US college sports and pivoted ChangeIt to a membership model. Members were mostly former students, now parents, who wanted the best for their school and its teams.
   </Prose>
 </CaseSection>
 
-<Media src="/assets/work/change-it/2.webp" alt="Change It member dashboard" caption="The membership product: rewards, drops, and monthly giveaways funded by the round-up mechanic." />
+<Credits />
 
-<CaseSection title="The challenge">
+<CaseSection title="Problem">
   <Prose>
-    The original activation flow worked, people were signing up, but we noticed room for improvement in some parts of the flow. 
+    The round-up product was built for online sign-ups. Users signed up for free, explored the benefits, and only then decided whether to link a credit card. The idea was to show value before the step with the most friction.
 
-    This new scenario, feedback matters, and a blank loading state could cost the sign-up. Also, people want to enjoy the event, so avoiding unnecessary steps is crucial too.
-**“How do we make this flow realistic for someone signing up on their phone, in public, while standing in line?”**
-
-  </Prose>
-
-</CaseSection>  
-<CaseSection title="Aproach">
-<SubHeading> 1. Email sign-up at the top</SubHeading>
-  <Prose>
-The first design direction gave more priority to social login. But the data showed that users were choosing email sign-up more often.
-55% of users chose email sign-up. The sign-up page also had a 33% bounce rate.
-There was room to improve the page, but compared with the rest of the funnel, this was not where the biggest friction was happening.
-
-**What was done:** We made email and password visible on the first screen, treated email as the primary sign-up path, and removed the extra “account info” step that made account creation feel slower than it needed to be.
-</Prose>
-<SubHeading> 2. Tier selection created hesitation</SubHeading>
-<Prose>
-The tiers page was the biggest pre-payment friction point.
-57% of the users dropped off before reaching the billing info page.
-That was a strong signal.
-We were asking people to create an account first, then asking them to choose a membership tier. That meant users were committing to the sign-up process before they fully understood the offer and the pricing.
-
-**What was done:** We moved tier selection before account creation, made the tier cards easier to scan, and added a clearer select button.
-We did not always control every customer landing page, so the flow needed a fallback for cases where a tier could not be passed cleanly into sign-up.
-The solution had to support the ideal path without breaking the less controlled paths.
-</Prose>
-
-<SubHeading>3. Payment needed more clarity and recovery</SubHeading>
-<Prose>
-Payment was the final step before activation, but it had two important issues.
-First, only 24% of users converted from the payment page to membership activated.
-Second, 25% of users went from the payment page back to the tiers page.
-The payment step also included a third-party payment iframe. Sometimes that iframe loaded as a blank space before appearing, which made the flow feel broken even when it was technically working.
-Users who did convert from payment to member took a median of 2 minutes and 46 seconds.
-
-**What was done:** We added a clear loading state for the payment iframe, kept tier details visible inside billing, and made it possible to change tiers without losing progress.
-The goal was to reduce uncertainty without forcing people to restart.
-
+    In the new market, that front door was broken. Most members signed up at game-day stands with a line waiting, and sign-up took about six minutes. Only about 12% of people who started became members, and 76% dropped off at payment. Every lost minute meant lost members and lost MRR.
   </Prose>
 </CaseSection>
 
-<Media src="/assets/work/change-it/3.webp" alt="Sign-up flow map covering billing, tier selection, and the card-linked check" caption="Mapping the funnel end to end — account creation, tier selection, and the billing iframe — to find where people were dropping off." />
+<CaseSection title="Approach">
+  <Prose>
+    Once sales moved to game-day stands, we had data to work from. I had created the tracking plan, defined the naming conventions, and tied the metrics to user and business goals, so we could see exactly where people dropped off.
+
+    But analytics only showed what was happening, not why. To close that gap, I asked our team at the stands to record sign-up sessions with real users. The recordings revealed three problems:
+  </Prose>
+
+  <Findings>
+    <Finding number="Finding 01" title="Sign-in method">In this setting, people preferred to sign in with their own email rather than a social account.</Finding>
+    <Finding number="Finding 02" title="Length">The multi-step sign-up was too long for a stand with a line waiting.</Finding>
+    <Finding number="Finding 03" title="Payment timing">Because payment options appeared only after the benefits, many people left and never came back.</Finding>
+  </Findings>
+
+  <Callout headline="Every change had to earn its place.">We were still validating the new market, so we couldn't afford to disrupt the whole product.</Callout>
+</CaseSection>
+
+<Media src="/assets/work/change-it/1.webp" alt="Change It member dashboard" caption="The membership product: rewards, drops, and monthly giveaways funded by the round-up mechanic." />
+
+<CaseSection title="Design decisions">
+  <Prose>
+    The recordings and the funnel data pointed to three moments in sign-up. I weighed each one against how many people we were losing there, and kept every change targeted, since we were still validating the market.
+  </Prose>
+
+  <ApproachItem number="01" title="Remove doubt at the moment of payment" spaceBefore="24px">
+    <Stat>76%</Stat> of people who reached payment never became members, and <Stat>25%</Stat> went back to the tiers page. The third-party payment form sometimes loaded as a blank space, which made the flow feel broken even when it worked. Even people who converted took a median of <Stat>2 min 46 s</Stat> on this step alone.
+
+    <Decision>We couldn't change the third-party form itself, so I designed around it: a clear loading state, tier details kept visible inside billing, and a way to change tiers without losing progress. Now, everything in one page, different from the first version that was splited in different steps. This give time to load the third-party form and provide all feedback in one page.</Decision>
+  </ApproachItem>
+
+  <ApproachItem number="02" title="Show the offer before asking for commitment">
+    The tiers page was the biggest drop-off before payment. <Stat>57%</Stat> of users left before reaching billing, because we were asking them to create an account before they understood the offer or the price.
+
+    <Decision>Move tier selection ahead of account creation, with easier-to-scan tier cards and a clearer select button. We didn't control every client's landing page, so I designed a fallback for cases where a tier couldn't be passed into sign-up. The ideal path worked without breaking the others.</Decision>
+  </ApproachItem>
+
+  <ApproachItem number="03" title="Lead with the path people actually chose">
+    The original flow put social login first, but <Stat>55%</Stat> of users chose email. The sign-up page had a <Stat>33%</Stat> bounce rate, which was worth fixing.
+
+    <Decision>Make email the primary path, with email and password on the first screen, and remove the extra account info step.</Decision>
+  </ApproachItem>
+</CaseSection>
+
+<Media src="/assets/work/change-it/2.webp" alt="Sign-up flow map covering billing, tier selection, and the card-linked check" caption="Mapping the funnel end to end — account creation, tier selection, and the billing iframe — to find where people were dropping off." />
 
 <Media src="/assets/work/change-it/4.webp" alt="Mobile member screens: home, cash-back balance, showcase, and personal information" caption="The member experience on the phone, the same device people use to sign up at an activation stand." />
 
-<CaseSection title="Conclusion">
+<CaseSection title="Results">
+  <Outcomes>
+    <Outcome period="Sign-up time" title="6 min → 3 min" change="50% faster" />
+    <Outcome period="Drop-off at payment" title="76% → 62%" change="18% fewer drop-offs" />
+    <Outcome period="Start-to-member conversion" title="12% → 19%" change="58% higher conversion" />
+  </Outcomes>
+  <Highlight value="$700K" headline="Raised by Auburn's On To Victory in a single season.">About 13 partners launched on the platform.</Highlight>
+
+  <Testimonials label="Feedback">
+    <Testimonial name="Rui Nunes" role="Director of Marketing">"I want to give a big kudos to Breno for running a Customer Journey session for sign-ups within the ChangeIt product. Learned a lot about how our users are performing."</Testimonial>
+    <Testimonial name="Daniel Lewis" role="CEO">"I want you to know that your work is appreciated and respected… This will come together now. Just you wait."</Testimonial>
+  </Testimonials>
+</CaseSection>
+
+<CaseSection title="Learning">
   <Prose>
-    The redesigned flow reduced the average completion time from around 6 minutes to 3 minutes.
-That was the most important outcome for the activation context. Cutting the time in half made the flow much more realistic for a live event environment.
-The payment step also improved. Payment-screen drop-off improving from 76% to 62%.
-It was not a big redesign, small, data-informed adjustments backed by metrics and research allowed us to improve the user experience and reduce onboarding friction.
+    The biggest lesson was that different contexts need different approaches. Showing value before asking for payment is a sound pattern online, but at a game-day stand with a line waiting, it became friction. The fixes that worked were designed around what we couldn't control, like the third-party payment form and client landing pages. It showed me that the user experience often starts before people reach your product, and that it's important to design around constraints, not against them.
 
-**This project involves many more tests and hypothesis validation. Reach out to me to hear more.**
-
+    ChangeIt closed at the end of 2025. It depended heavily on each client and faced changing regulations on how schools and athletes could raise donations, which made it hard to scale. If I did it again, I would push harder for user research before committing to the market, and move to a checkout-only product sooner.
   </Prose>
 </CaseSection>

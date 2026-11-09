@@ -136,11 +136,82 @@ body {
   grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: 24px;
 }
+/* Desktop: size columns to their content (a short "2023" gives its room to
+   the longer values) so each value wraps to two lines at most inside the
+   padded plate. Tablet/phone keep the fixed 2-up / 1-up grid below. */
+@media (min-width: 769px) {
+  .credits-grid {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: auto;
+    justify-content: space-between;
+  }
+}
 
 .before-after {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 32px;
+}
+
+/* Body credits (<Credits variant="grid">): 2×2, hairlines between cells. */
+.credits-2x2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.credits-2x2 > div:nth-child(even) {
+  border-left: 1px solid rgb(212, 212, 212);
+}
+.credits-2x2 > div:nth-child(n + 3) {
+  border-top: 1px solid rgb(212, 212, 212);
+}
+
+/* Case-study label rows (outcomes, findings): label column + content;
+   stacked on small screens. */
+.outcome-row,
+.finding-row {
+  grid-template-columns: 224px minmax(0, 1fr);
+}
+/* Headline result (<Highlight>): big figure beside its statement. */
+.highlight {
+  grid-template-columns: auto minmax(0, 1fr);
+}
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+@media (max-width: 600px) {
+  .outcome-row,
+  .finding-row,
+  .highlight,
+  .testimonials-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Case-study results strip (<Metrics>): four across, hairlines between. */
+.metrics {
+  --metric-size: 36px;
+  --metric-pad: 28px 18px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.metric + .metric {
+  border-left: 1px solid rgba(0, 0, 0, 0.08);
+}
+@media (max-width: 720px) {
+  .metrics {
+    --metric-size: 26px;
+    --metric-pad: 20px 16px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .metric:nth-child(odd) {
+    border-left: none;
+  }
+  .metric:nth-child(n + 3) {
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+  }
 }
 
 @media (max-width: 768px) {
