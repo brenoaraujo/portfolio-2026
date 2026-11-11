@@ -11,6 +11,7 @@ import { LocalTimeTile } from "@/components/bento/LocalTimeTile";
 import { ContactTile } from "@/components/bento/ContactTile";
 import { BENTO_HERO, NOW_LIST, WORK_TILES, ARTICLES, CONTACT } from "@/lib/site";
 import { EVENTS } from "@/lib/analytics-events";
+import { HeroIntro } from "@/components/bento/HeroIntro";
 
 const node = <span className="bento-node bento-node--tl" aria-hidden="true" />;
 
@@ -23,6 +24,7 @@ export function HomeRedesign() {
   return (
     <>
       <main id="main" className="bento">
+        <HeroIntro />
         <BentoHeader />
 
         <div className="bento-grid">

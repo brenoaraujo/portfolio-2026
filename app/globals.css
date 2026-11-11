@@ -1347,6 +1347,7 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  position: relative;
   border-left: 1px dashed var(--rd-rule);
   border-right: 1px dashed var(--rd-rule);
   box-sizing: border-box;
@@ -1930,7 +1931,49 @@ body {
 /* ── Edge lines (measured; GridEdgeLines) ── */
 .bento-edge { position: absolute; height: 0; border-top: 1px dashed var(--rd-rule); pointer-events: none; }
 
+/* ── Case-study video / reduced-motion fallback swap ── */
+/* [data-case-motion="fallback"] is hidden by default and shown only when the
+   user prefers reduced motion. The video gets the inverse treatment. */
+[data-case-motion="fallback"] { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  [data-case-motion="video"] { display: none; }
+  [data-case-motion="fallback"] { display: block; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .bento-pill__dot { animation: none; }
   .how-tile__bar > span.is-active { animation: none; width: 100%; }
+}
+
+/* ── Hero intro animation ── */
+/* Applied by an inline script before paint; never default-hidden.
+   Border overlays draw via clip-path in HeroIntro.tsx; content elements are
+   hidden here until WAAPI fill:"backwards" takes over. */
+html.hero-anim .bento {
+  border-left-color: transparent;
+  border-right-color: transparent;
+}
+html.hero-anim .bento-grid { border-top-color: transparent; }
+html.hero-anim .hero-tile { border-bottom-color: transparent; }
+html.hero-anim .bento-node { opacity: 0; }
+html.hero-anim .bento-header { opacity: 0; }
+html.hero-anim .hero-tile__eyebrows { opacity: 0; }
+html.hero-anim .hero-tile h1 { opacity: 0; }
+html.hero-anim .hero-tile__sub { opacity: 0; }
+html.hero-anim .hero-tile__cta { opacity: 0; }
+html.hero-anim .work-tile { opacity: 0; }
+html.hero-anim .bento-edge { opacity: 0; }
+/* Overlay elements drawn by HeroIntro over the hidden real borders */
+.hero-border-overlay {
+  position: absolute;
+  pointer-events: none;
+  z-index: 10;
+}
+.hero-border-overlay--h {
+  height: 0;
+  border-top: 1px dashed var(--rd-rule);
+}
+.hero-border-overlay--v {
+  width: 0;
+  border-left: 1px dashed var(--rd-rule);
 }
