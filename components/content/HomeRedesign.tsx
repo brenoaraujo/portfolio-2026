@@ -32,7 +32,7 @@ export function HomeRedesign() {
           <span className="bento-node bento-node--br" aria-hidden="true" />
 
           {/* Hero */}
-          <section className="tile hero-tile" data-rows="2" data-span={3}>
+          <section className="tile hero-tile" data-rows="2" data-span={4} style={{ paddingBottom: 48 }}>
             {node}
             <div className="hero-tile__eyebrows">
               <span>{BENTO_HERO.eyebrowLeft}</span>
@@ -58,38 +58,10 @@ export function HomeRedesign() {
                 </a>
               </div>
             </div>
-            <div className="hero-tile__shipped">
-              <span>{BENTO_HERO.shippedLabel}</span>
-              {BENTO_HERO.shippedAt.map((s) => (
-                <span key={s} className="hero-tile__logo">
-                  {s}
-                </span>
-              ))}
-            </div>
           </section>
 
-          {/* Now */}
-          <section className="tile now-tile" data-rows="2" data-span={1}>
-            {node}
-            <div className="now-tile__head">
-              <span>Now</span>
-              <span>Oct 2026</span>
-            </div>
-            <div className="now-tile__list">
-              {NOW_LIST.map((n) => (
-                <div className="now-tile__item" key={n.k}>
-                  <span className="now-tile__k">{n.k}</span>
-                  <span className="now-tile__v">{n.v}</span>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* Selected Work header */}
-          <section id="work" className="tile work-head" data-span={4}>
-            {node}
-            <h2>Selected Work</h2>
-          </section>
+          {/* Work anchor (no title) */}
+          <span id="work" />
 
           {/* Work tiles */}
           {WORK_TILES.map((t) => (
