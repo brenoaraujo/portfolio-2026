@@ -31,7 +31,7 @@ const TEX: Record<string, { bg: string; inner: CSSProperties }> = {
  * commission) render a gradient+screenshot plate instead of a cover image; the
  * four animated kinds get their rAF thumbnail layered over the poster in M3.
  */
-export function WorkTile({ tile, href }: { tile: WorkTileMeta; href: string }) {
+export function WorkTile({ tile, href, id }: { tile: WorkTileMeta; href: string; id?: string }) {
   const ref = useRef<HTMLAnchorElement>(null);
   const [nearView, setNearView] = useState(false);
   const Thumb = tile.kind in THUMBS ? THUMBS[tile.kind as keyof typeof THUMBS] : null;
@@ -75,6 +75,7 @@ export function WorkTile({ tile, href }: { tile: WorkTileMeta; href: string }) {
   return (
     <a
       ref={ref}
+      id={id}
       href={href}
       className="work-tile tile"
       data-span={tile.span}

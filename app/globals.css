@@ -1499,8 +1499,8 @@ body {
 .hero-tile {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: 40px;
+  justify-content: flex-start;
+  gap: 64px;
   min-height: 460px;
 }
 .hero-tile__eyebrows {
@@ -1512,11 +1512,11 @@ body {
   font-size: 12px;
   color: var(--rd-muted);
 }
-.hero-tile__body { display: flex; flex-direction: column; gap: 22px; }
+.hero-tile__body { display: flex; flex-direction: column; gap: 28px; }
 .hero-tile h1 {
   margin: 0;
   font-weight: 500;
-  font-size: clamp(36px, 5.2vw, 72px);
+  font-size: clamp(36px, 7vw, 96px);
   line-height: 0.97;
   letter-spacing: -0.04em;
   text-wrap: balance;
@@ -1524,13 +1524,16 @@ body {
 }
 .hero-tile__sub {
   margin: 0;
-  font-size: 17px;
+  font-size: 18px;
   line-height: 1.5;
   color: var(--rd-secondary);
-  max-width: 52ch;
+  max-width: 62ch;
   text-wrap: pretty;
 }
-.hero-tile__cta { display: flex; gap: 10px; flex-wrap: wrap; }
+.hero-tile__cta { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px; }
+@media (max-width: 680px) {
+  .hero-tile__eyebrows span:last-child { display: none; }
+}
 .btn-primary,
 .btn-secondary {
   display: flex;

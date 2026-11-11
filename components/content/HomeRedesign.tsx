@@ -32,7 +32,7 @@ export function HomeRedesign() {
           <span className="bento-node bento-node--br" aria-hidden="true" />
 
           {/* Hero */}
-          <section className="tile hero-tile" data-rows="2" data-span={4} style={{ paddingBottom: 48 }}>
+          <section className="tile hero-tile" data-rows="2" data-span={4} style={{ paddingBottom: 64 }}>
             {node}
             <div className="hero-tile__eyebrows">
               <span>{BENTO_HERO.eyebrowLeft}</span>
@@ -53,19 +53,13 @@ export function HomeRedesign() {
                 >
                   Let&apos;s talk on LinkedIn →
                 </a>
-                <a className="btn-secondary" href="#work">
-                  See the work
-                </a>
               </div>
             </div>
           </section>
 
-          {/* Work anchor (no title) */}
-          <span id="work" />
-
           {/* Work tiles */}
-          {WORK_TILES.map((t) => (
-            <WorkTile key={t.slug} tile={t} href={`/work/${t.slug}`} />
+          {WORK_TILES.map((t, i) => (
+            <WorkTile key={t.slug} tile={t} href={`/work/${t.slug}`} id={i === 0 ? "work" : undefined} />
           ))}
 
           {/* Experience */}
