@@ -1527,7 +1527,7 @@ body {
   font-size: 18px;
   line-height: 1.5;
   color: var(--rd-secondary);
-  max-width: 62ch;
+  max-width: 49ch;
   text-wrap: pretty;
 }
 .hero-tile__cta { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px; }
