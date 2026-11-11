@@ -36,7 +36,7 @@ export function HomeRedesign() {
             {node}
             <div className="hero-tile__eyebrows">
               <span>{BENTO_HERO.eyebrowLeft}</span>
-              <span>{BENTO_HERO.eyebrowRight}</span>
+              {BENTO_HERO.eyebrowRight ? <span>{BENTO_HERO.eyebrowRight}</span> : null}
             </div>
             <div className="hero-tile__body">
               <h1>{BENTO_HERO.headline}</h1>
