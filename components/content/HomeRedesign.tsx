@@ -9,7 +9,6 @@ import { PrototypeTile } from "@/components/bento/PrototypeTile";
 import { OffTheClockTile } from "@/components/bento/OffTheClockTile";
 import { LocalTimeTile } from "@/components/bento/LocalTimeTile";
 import { ContactTile } from "@/components/bento/ContactTile";
-import { TrackHomeView } from "@/components/analytics/TrackHomeView";
 import { BENTO_HERO, NOW_LIST, WORK_TILES, ARTICLES, CONTACT } from "@/lib/site";
 import { EVENTS } from "@/lib/analytics-events";
 
@@ -23,7 +22,6 @@ const node = <span className="bento-node bento-node--tl" aria-hidden="true" />;
 export function HomeRedesign() {
   return (
     <>
-      <TrackHomeView />
       <main id="main" className="bento">
         <BentoHeader />
 

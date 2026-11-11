@@ -8,6 +8,7 @@ import { Credits } from "@/components/case-study/Credits";
 import { HeroMedia } from "@/components/case-study/Media";
 import { mdxComponents, Callout, Metrics, Metric } from "@/components/case-study/blocks";
 import { TrackCaseStudyView } from "@/components/analytics/TrackCaseStudyView";
+import { TrackCaseStudyRead } from "@/components/analytics/TrackCaseStudyRead";
 import { EVENTS } from "@/lib/analytics-events";
 import {
   hasCaseStudy,
@@ -167,9 +168,10 @@ export default async function CaseStudyPage({
         </div>
       ) : null}
 
-      {/* Narrative body (MDX) */}
-      <div style={{ display: "flex", flexDirection: "column", gap: 80, alignSelf: "stretch" }}>
+      {/* Narrative body (MDX). The read marker is pinned to its bottom edge. */}
+      <div style={{ display: "flex", flexDirection: "column", gap: 80, alignSelf: "stretch", position: "relative" }}>
         {content}
+        <TrackCaseStudyRead slug={slug} title={meta.title} />
       </div>
 
       {/* Next project */}

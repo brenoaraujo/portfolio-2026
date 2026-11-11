@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useRef, useState, type CSSProperties } from "react";
-import { track } from "@/lib/analytics";
+import { track, EVENTS } from "@/lib/analytics";
 
 const PLATE: CSSProperties = {
   display: "block",
@@ -46,7 +46,9 @@ export function BeforeAfterSlider({
   const captureInteraction = useCallback((interaction_method: "pointer" | "keyboard") => {
     if (hasCapturedInteractionRef.current) return;
     hasCapturedInteractionRef.current = true;
-    track("before_after_comparison_started", { interaction_method });
+    // Slug from the /work/<slug> route, so the event says which case study.
+    const slug = window.location.pathname.split("/")[2] ?? "";
+    track(EVENTS.SLIDER_USE, { interaction_method, slug });
   }, []);
 
   const setFromClientX = useCallback((clientX: number) => {

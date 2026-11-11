@@ -10,7 +10,6 @@ import {
   type CSSProperties,
   type PointerEvent as ReactPointerEvent,
 } from "react";
-import { track, EVENTS } from "@/lib/analytics";
 
 export interface ExperienceProps {
   /** Date range, serif 16 in the first column. */
@@ -186,10 +185,7 @@ export function Experience({
   // row — no extra tab stop needed. The deferred clear absorbs intra-row moves.
   const rowHandlers = hasFan
     ? {
-        onMouseEnter: () => {
-          activateRow();
-          track(EVENTS.EXPERIENCE_ROW_HOVER, { company: title });
-        },
+        onMouseEnter: activateRow,
         onMouseLeave: deactivateRow,
         onFocus: activateRow,
         onBlur: deactivateRow,
@@ -199,13 +195,11 @@ export function Experience({
       }
     : {};
 
-  // A frame becomes active on hover/focus — the moment a visitor actually
-  // engages a thumbnail. Fire once here (shared by pointer and keyboard).
+  // A frame becomes active on hover/focus (shared by pointer and keyboard).
   const activateFrame = (i: number) => {
     setActiveFrame(i);
     setLastFrame(i);
     setHoveredRow(true);
-    track(EVENTS.EXPERIENCE_THUMBNAIL_HOVER, { company: title, index: i });
   };
 
   const count = images?.length ?? 0;
@@ -416,12 +410,6 @@ export function Experience({
                     onMouseLeave={() => setActiveFrame(null)}
                     onFocus={() => activateFrame(i)}
                     onBlur={() => setActiveFrame(null)}
-                    onClick={() =>
-                      track(EVENTS.EXPERIENCE_THUMBNAIL_CLICK, {
-                        company: title,
-                        index: i,
-                      })
-                    }
                   />
                 );
               })}
