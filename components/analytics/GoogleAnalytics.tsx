@@ -7,10 +7,9 @@ const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
 
 /**
  * Google Analytics 4 (gtag.js), loaded after the page is interactive so it
- * never blocks first paint. The site's sole analytics: GA covers both
- * audience/traffic (pageviews) and product events (custom events routed through
- * `track()` in lib/analytics). Mounted once in the root layout. Renders nothing
- * when the ID is unset (e.g. a preview without the env var).
+ * never blocks first paint. Runs alongside PostHog: GA for audience and traffic
+ * reporting, PostHog for the job-search tracking. `track()` in lib/analytics
+ * sends custom events to both. Mounted once in the root layout. Renders nothing when the ID is unset.
  */
 export function GoogleAnalytics() {
   if (!GA_ID) return null;

@@ -5,9 +5,9 @@ import { ANALYTICS_OPTOUT_KEY } from "@/lib/analytics";
 
 /**
  * Reads `?analytics=off|on` from the URL and persists an opt-out flag in
- * localStorage, then strips the param from the address bar. Mounted first in
- * the layout so the flag is written before Google Analytics decides whether
- * to initialise. This is how the site owner excludes their own traffic: load
+ * localStorage, then strips the param from the address bar. PostHog
+ * (instrumentation-client.ts) and the GA snippet also read the param themselves,
+ * since both start before this effect runs. This is how the site owner excludes their own traffic: load
  * the site once per browser/device with `?analytics=off` (undo with `=on`).
  */
 export function AnalyticsOptOut() {

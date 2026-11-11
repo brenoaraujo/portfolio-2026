@@ -4,8 +4,8 @@ import { useEffect } from "react";
 import { track } from "@/lib/analytics";
 
 /**
- * Global click instrumentation. Listens once at the document level and fires a
- * Google Analytics event for any clicked element (or ancestor) carrying a
+ * Global click instrumentation. Listens once at the document level and fires an
+ * analytics event (PostHog and GA) for any clicked element (or ancestor) carrying a
  * `data-track` attribute — its value is the event name — with every other
  * `data-track-*` attribute passed along as an event property (e.g.
  * `data-track-label="Work"` → `{ label: "Work" }`).

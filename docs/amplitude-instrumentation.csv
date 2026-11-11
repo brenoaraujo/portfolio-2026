@@ -1,15 +1,20 @@
 Event Name,Type,Trigger,Properties,Source File,Mechanism,Notes
-Viewed Home Page,Page view,Home route mounts,(none),components/analytics/TrackHomeView.tsx,Manual track(),Renamed from a setup event; prompt_version prop removed
+Opened Tagged Link,Attribution,"First page of a PostHog session while the visitor has a ref (arrived via ?ref= or /for/<company>, or a return visit)",ref; landing_path; via,lib/attribution.ts,PostHog loaded callback,"Once per session. Drives the real-time alert. via = link | return visit"
+$pageview / $pageleave,Auto,Every page; page leave carries scroll depth,"path, referrer, UTMs, $prev_pageview_max_content_percentage",instrumentation-client.ts,PostHog autocapture,"Replaces Viewed Home Page"
 Viewed Case Study,Page view,A case-study route mounts,slug; title,components/analytics/TrackCaseStudyView.tsx,Manual track(),
-Clicked Nav Link,Click,Header nav item clicked (Work / Experience / Let's talk),label,components/site/SiteHeader.tsx,data-track delegation,
-Clicked CTA,Click,"""Let's talk"" or ""See full details on Linkedin"" clicked",label; location; slug,app/page.tsx; app/work/[slug]/page.tsx,data-track delegation,"location = hero | experience | case-study. Case-study live-link variant currently never renders (Contra links removed)"
-Clicked Work Card,Click,A published work card clicked,slug; title,app/page.tsx (WorkItem),data-track delegation,Only published cards carry the attribute; the in-progress card does not fire
-Clicked Writing Link,Click,A Writing article title clicked,title,components/content/Writing.tsx,data-track delegation,Only rows that have an href
-Clicked Contact Link,Click,Footer contact link clicked (Email / Linkedin / Instagram / X),label,components/site/SiteFooter.tsx,data-track delegation,
-Clicked Next Project,Click,"""Next — <title>"" link clicked on a case study",slug; title,app/work/[slug]/page.tsx,data-track delegation,
-Hovered Experience Row,Hover,Mouse enters an experience row that has thumbnails,company,components/content/Experience.tsx,Manual track(),Fires once per mouse-enter; funnel step before thumbnail engagement
-Hovered Experience Thumbnail,Hover/Focus,A thumbnail frame is hovered or keyboard-focused,company; index,components/content/Experience.tsx,Manual track(),index is 0-based within the fan
-Clicked Experience Thumbnail,Click,A thumbnail frame is clicked,company; index,components/content/Experience.tsx,Manual track(),Thumbnails are not links; click is tracked for intent only
-[Amplitude Autocapture],Auto,All page views and element interactions captured automatically,(varies by autocapture),components/analytics/Amplitude.tsx,initAll autocapture:true,Supplements the named events above with generic auto-tracked events
-[Session Replay],Auto,100% of sessions recorded,n/a,components/analytics/Amplitude.tsx,initAll sessionReplay sampleRate:1,No consent gate yet — consider one before wide promotion
-[Opt-out],Config,Owner traffic excluded when localStorage ba-analytics-optout=1,n/a,lib/analytics.ts; components/analytics/AnalyticsOptOut.tsx,analyticsEnabled() guard,"Set via ?analytics=off (undo with ?analytics=on); also disables Smartlook and GA"
+Read Case Study,Engagement,The end of the case-study narrative scrolls into view,slug; title; seconds_on_page,components/analytics/TrackCaseStudyRead.tsx,Manual track() via IntersectionObserver,"The ""they actually read it"" funnel step"
+Clicked Work Card,Click,A work tile on the home page,slug; title,components/bento/WorkTile.tsx,data-track delegation,
+Clicked Next Project,Click,The next-project link at the end of a case study,slug; title,app/work/[slug]/page.tsx,data-track delegation,
+Used Before After Slider,Interaction,First drag or key press on a before/after slider,interaction_method; slug,components/case-study/BeforeAfterSlider.tsx,Manual track(),Renamed from before_after_comparison_started
+Clicked CTA,Click,"Hero LinkedIn button, Experience tile LinkedIn, case-study live link",label; location; slug,components/content/HomeRedesign.tsx; components/bento/ExperienceTile.tsx; app/work/[slug]/page.tsx,data-track delegation,location = hero | experience | case-study
+Clicked Contact Link,Click,Contact tile: Copy email / LinkedIn,label,components/bento/ContactTile.tsx,data-track delegation,Strongest intent signal; part of the Contact intent action
+Clicked Writing Link,Click,A Substack article,title,components/content/HomeRedesign.tsx,data-track delegation,
+Clicked Nav Link,Click,"Header nav (Work / Experience / Writing / Off the clock), Back to work, Substack link",label; location,components/bento/BentoHeader.tsx; components/content/HomeRedesign.tsx,data-track delegation,location = header | case-study | writing
+$exception,Auto,Uncaught errors and the global error boundary,error details; digest,instrumentation-client.ts; app/global-error.tsx,PostHog capture_exceptions + captureException(),
+$autocapture,Auto,"Other clicks (How I work steps, prototype tool switch, Off the clock carousel)",element text and selector,instrumentation-client.ts,PostHog autocapture,Also feeds heatmaps
+[Super properties],Config,Set on load when a ref is present,ref; first_ref; company,lib/attribution.ts,posthog.register / register_once,Also saved as person properties
+[Contact intent],PostHog action,Clicked Contact Link OR Clicked CTA with a LinkedIn label,n/a,PostHog project,Action,Last step of the reader funnel
+[Session Replay],Config,Off,n/a,instrumentation-client.ts; PostHog project settings,disable_session_recording,The first setup's 100% replay was the suspected cause of corporate blocking
+[Proxy],Config,All PostHog traffic goes through /relay on brenoaraujo.com,n/a,next.config.ts,Next.js rewrites,
+[Opt-out],Config,Owner traffic excluded when localStorage ba-analytics-optout=1,n/a,lib/analytics.ts; instrumentation-client.ts; components/analytics/AnalyticsOptOut.tsx,analyticsEnabled() guard,"Set via ?analytics=off (undo with ?analytics=on); PostHog never starts, GA is disabled"
+[Google Analytics],Config,Runs alongside PostHog,n/a,components/analytics/GoogleAnalytics.tsx,gtag,Kept for audience and traffic reporting; track() sends every custom event to both

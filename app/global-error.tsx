@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { track } from "@/lib/analytics";
+import { captureException } from "@/lib/analytics";
 
 export default function GlobalError({
   error,
@@ -11,8 +11,8 @@ export default function GlobalError({
   reset: () => void;
 }>) {
   useEffect(() => {
-    // GA4's standard exception event; description is truncated by GA to 100 chars.
-    track("exception", { description: error.message, fatal: true, digest: error.digest });
+    // PostHog error tracking, plus GA4's standard exception event.
+    captureException(error);
   }, [error]);
 
   return (
