@@ -203,10 +203,10 @@ export const BENTO_NAV = [
 
 export const BENTO_HERO = {
   eyebrowLeft: "Product designer & design engineer",
-  eyebrowRight: "16 yrs · Product design",
+  eyebrowRight: "",
   headline: "From idea to clarity, by design.",
   subcopy:
-    "For 16 years I've shaped what teams build and how it works, sometimes as the only designer in the room and sometimes leading the team. I prototype with AI early and stay until it ships.",
+    "For 16 years I've helped teams decide what to build and designed how it works. Always balancing user needs with business goals.",
   shippedLabel: "Shipped Globally at",
   shippedAt: ["Ascend", "VanHack", "Medimap", "Hotmart", "Prova Fácil", "Siteware", "Estado de Minas"],
 } as const;
