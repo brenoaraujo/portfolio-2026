@@ -1,0 +1,547 @@
+"use client";
+
+import { useRef, useEffect, type ReactNode } from "react";
+import { Nunito_Sans, Montserrat } from "next/font/google";
+
+const nunitoSans = Nunito_Sans({ subsets: ["latin"], weight: ["400", "700"], variable: "--fn-ns", display: "swap" });
+const montserrat = Montserrat({ subsets: ["latin"], weight: ["400", "700"], variable: "--fn-mt", display: "swap" });
+
+// ---- Types ----------------------------------------------------------------
+
+export interface SignupDecisionItem {
+  num: string;
+  title: string;
+  /** May contain **bold** markers for stat-highlighted numbers. */
+  problem: string;
+  change: string;
+  why: string;
+  /** aria-label for the phone while this decision is shown. */
+  phoneLabel: string;
+}
+
+// ---- Default (English) decisions ------------------------------------------
+
+export const EN_DECISIONS: SignupDecisionItem[] = [
+  {
+    num: "01",
+    title: "Payment on one page",
+    problem: "**76%** dropped off at payment",
+    change: "Tier and billing on one page",
+    why: "The third-party card form sometimes loaded blank, so the flow felt broken even when it worked, and **25%** went back to the tiers page. We couldn't change that form, so I designed around it: a clear loading state, the tier kept visible during billing, and a way to change tiers without losing progress.",
+    phoneLabel:
+      "Before: a separate Link Credit Card sheet. After: Become a member, with tier and billing on one page.",
+  },
+  {
+    num: "02",
+    title: "Tiers before sign-up",
+    problem: "**57%** left before billing",
+    change: "Pick a tier before creating an account",
+    why: "We asked people to create an account before they understood the offer or the price. I moved tier selection first, with a fallback for landing pages that couldn't pass a tier, so the ideal path worked without breaking the others.",
+    phoneLabel: "Prototype: pick a tier, open its perks, then go to billing.",
+  },
+  {
+    num: "03",
+    title: "Email first",
+    problem: "**55%** chose email, listed last",
+    change: "Email and password come first",
+    why: "The page led with social login, but most people picked email, and a third of visitors bounced. Putting their choice first and removing a step made the start of sign-up shorter.",
+    phoneLabel:
+      "Before: email was the last sign-up option. After: email and password fields come first.",
+  },
+];
+
+// ---- Helpers ---------------------------------------------------------------
+
+function parseStat(text: string): ReactNode {
+  const parts = text.split(/(\*\*[^*]+\*\*)/g);
+  if (parts.length === 1) return text;
+  return parts.map((part, i) =>
+    part.startsWith("**") && part.endsWith("**") ? (
+      <b key={i} className="sd-stat">
+        {part.slice(2, -2)}
+      </b>
+    ) : (
+      part || null
+    )
+  );
+}
+
+// ---- SVG constants (phone internals) ---------------------------------------
+
+const LOGO = `<svg viewBox="0 0 200 47" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M52.3482 21.4331C53.1573 19.9201 54.2831 18.7473 55.7245 17.9135C57.1659 17.0798 58.8155 16.6624 60.6732 16.6624C63.0793 16.6624 65.0624 17.2465 66.6224 18.4138C68.1825 19.581 69.2132 21.2015 69.7134 23.2729H66.2117C65.8782 22.0822 65.2292 21.141 64.2645 20.4505C63.2998 19.7601 62.1024 19.4142 60.6732 19.4142C58.8155 19.4142 57.3148 20.0521 56.1711 21.3257C55.0273 22.6004 54.4555 24.4044 54.4555 26.7388C54.4555 29.0733 55.0273 30.9198 56.1711 32.2057C57.3148 33.4927 58.8155 34.135 60.6732 34.135C62.1024 34.135 63.2931 33.8016 64.2466 33.1346C65.1989 32.4676 65.8547 31.5152 66.2117 30.2764H69.7134C69.1897 32.2773 68.1411 33.8799 66.5687 35.0829C64.9964 36.286 63.0312 36.8869 60.6732 36.8869C58.8155 36.8869 57.1648 36.4706 55.7245 35.6358C54.2831 34.802 53.1573 33.6225 52.3482 32.0983C51.5379 30.574 51.1328 28.7879 51.1328 26.7377C51.1328 24.6875 51.5379 22.9439 52.3482 21.4309V21.4331Z" fill="#001551"/><path d="M85.9726 17.5744C87.1633 18.2056 88.0989 19.1523 88.777 20.4147C89.4563 21.6782 89.7954 23.2147 89.7954 25.0243V36.5657H86.5791V25.4888C86.5791 23.5359 86.0901 22.0408 85.1142 21.0045C84.1372 19.9682 82.8032 19.45 81.1122 19.45C79.4213 19.45 78.0336 19.9861 77.0208 21.0582C76.008 22.1303 75.5021 23.6903 75.5021 25.7394V36.5669H72.25V10.1234H75.5021V19.7712C76.1456 18.7707 77.0331 17.9963 78.1645 17.4491C79.2959 16.9018 80.5639 16.6276 81.9706 16.6276C83.4478 16.6276 84.7818 16.9432 85.9726 17.5744Z" fill="#001551"/><path d="M93.3337 21.4331C94.1428 19.9201 95.2574 18.7473 96.6742 17.9135C98.091 17.0798 99.6701 16.6624 101.409 16.6624C103.148 16.6624 104.613 17.0317 105.876 17.7703C107.138 18.5089 108.079 19.4378 108.698 20.558V16.9847H111.986V36.5669H108.698V32.9219C108.054 34.0657 107.095 35.0124 105.821 35.7622C104.546 36.5132 103.063 36.8881 101.372 36.8881C99.6813 36.8881 98.0608 36.4594 96.6552 35.6011C95.2496 34.7438 94.1417 33.5408 93.3325 31.992C92.5223 30.4442 92.1172 28.6805 92.1172 26.703C92.1172 24.7256 92.5223 22.945 93.3325 21.432L93.3337 21.4331ZM107.806 22.8801C107.211 21.7845 106.406 20.9452 105.394 20.361C104.382 19.778 103.268 19.4859 102.053 19.4859C100.837 19.4859 99.7305 19.7712 98.73 20.3431C97.7295 20.915 96.9316 21.7487 96.3362 22.8443C95.7409 23.9399 95.4432 25.2269 95.4432 26.703C95.4432 28.1791 95.7409 29.5075 96.3362 30.6154C96.9316 31.7234 97.7295 32.5694 98.73 33.1525C99.7305 33.7366 100.838 34.0276 102.053 34.0276C103.267 34.0276 104.38 33.7366 105.394 33.1525C106.406 32.5694 107.211 31.7234 107.806 30.6154C108.401 29.5075 108.699 28.2161 108.699 26.7388C108.699 25.2616 108.401 23.9758 107.806 22.8801Z" fill="#001551"/><path d="M131.033 18.7887C132.51 20.2301 133.249 22.3083 133.249 25.0244V36.5658H130.032V25.4888C130.032 23.5359 129.543 22.0408 128.567 21.0045C127.59 19.9682 126.256 19.4501 124.565 19.4501C122.874 19.4501 121.486 19.9861 120.474 21.0582C119.461 22.1303 118.955 23.6904 118.955 25.7395V36.5669H115.703V16.9847H118.955V19.7724C119.599 18.7719 120.474 17.9975 121.582 17.4502C122.69 16.903 123.91 16.6288 125.245 16.6288C127.626 16.6288 129.557 17.3495 131.034 18.7909L131.033 18.7887Z" fill="#001551"/><path d="M149.309 17.7703C150.583 18.5089 151.53 19.4378 152.149 20.558V16.9847H155.437V36.9955C155.437 38.7816 155.055 40.3719 154.293 41.7663C153.53 43.1596 152.441 44.2496 151.023 45.0363C149.605 45.8219 147.956 46.2159 146.074 46.2159C143.501 46.2159 141.357 45.6082 139.643 44.394C137.927 43.1786 136.914 41.5234 136.605 39.4273H139.822C140.179 40.6181 140.917 41.5771 142.038 42.3034C143.157 43.0298 144.503 43.3935 146.075 43.3935C147.862 43.3935 149.321 42.8339 150.452 41.7137C151.584 40.5934 152.15 39.0211 152.15 36.9966V32.8872C151.506 34.031 150.554 34.9833 149.292 35.7455C148.028 36.5076 146.552 36.8892 144.861 36.8892C143.17 36.8892 141.544 36.4606 140.126 35.6022C138.708 34.745 137.595 33.5419 136.786 31.9931C135.975 30.4453 135.57 28.6816 135.57 26.7041C135.57 24.7267 135.975 22.9462 136.786 21.4331C137.595 19.9201 138.709 18.7473 140.126 17.9135C141.543 17.0798 143.122 16.6624 144.861 16.6624C146.6 16.6624 148.035 17.0317 149.31 17.7703H149.309ZM151.256 22.8801C150.66 21.7845 149.856 20.9452 148.844 20.361C147.831 19.778 146.718 19.4859 145.504 19.4859C144.289 19.4859 143.181 19.7712 142.18 20.3431C141.178 20.915 140.38 21.7487 139.786 22.8443C139.191 23.9399 138.893 25.2269 138.893 26.703C138.893 28.1791 139.191 29.5075 139.786 30.6154C140.381 31.7234 141.179 32.5694 142.18 33.1525C143.18 33.7366 144.288 34.0276 145.504 34.0276C146.719 34.0276 147.831 33.7366 148.844 33.1525C149.856 32.5694 150.66 31.7234 151.256 30.6154C151.851 29.5075 152.149 28.2161 152.149 26.7388C152.149 25.2616 151.851 23.9758 151.256 22.8801Z" fill="#001551"/><path d="M176.913 27.99H161.262C161.381 29.9193 162.042 31.4268 163.245 32.5101C164.449 33.5945 165.908 34.1361 167.622 34.1361C169.028 34.1361 170.201 33.8093 171.142 33.1535C172.083 32.4989 172.743 31.6237 173.125 30.527H176.627C176.103 32.4093 175.054 33.9392 173.482 35.1187C171.91 36.2983 169.956 36.888 167.621 36.888C165.763 36.888 164.102 36.4717 162.637 35.6369C161.172 34.8031 160.022 33.618 159.189 32.0814C158.355 30.5449 157.938 28.7644 157.938 26.7388C157.938 24.7132 158.343 22.9394 159.153 21.4141C159.962 19.8898 161.1 18.7159 162.565 17.8945C164.03 17.073 165.715 16.6612 167.621 16.6612C169.527 16.6612 171.123 17.0663 172.552 17.8765C173.981 18.6868 175.083 19.8003 175.858 21.2171C176.632 22.635 177.019 24.2365 177.019 26.0237C177.019 26.6437 176.984 27.2984 176.912 27.9888L176.913 27.99ZM172.84 22.1471C172.291 21.254 171.547 20.5747 170.606 20.1103C169.665 19.6459 168.623 19.4131 167.479 19.4131C165.835 19.4131 164.435 19.9368 163.28 20.9854C162.124 22.0341 161.464 23.4867 161.297 25.3444H173.661C173.661 24.1055 173.387 23.0401 172.84 22.146V22.1471Z" fill="#001551"/><path d="M181.539 13.5713C180.955 13.0117 180.664 12.3145 180.664 11.4808C180.664 10.6471 180.955 9.94985 181.539 9.3903C182.122 8.83074 182.855 8.55096 183.737 8.55096C184.619 8.55096 185.351 8.83074 185.935 9.3903C186.518 9.94985 186.81 10.6471 186.81 11.4808C186.81 12.3145 186.518 13.0117 185.935 13.5713C185.351 14.1309 184.619 14.4106 183.737 14.4106C182.855 14.4106 182.123 14.1309 181.539 13.5713ZM186.203 16.7697V36.5657H181.2V16.7697H186.203Z" fill="#71AA73"/><path d="M195.171 20.8791V30.4554C195.171 31.1224 195.332 31.6047 195.653 31.9024C195.974 32.2001 196.516 32.3489 197.279 32.3489H199.601V36.5657H196.457C192.24 36.5657 190.131 34.5178 190.131 30.4196V20.8791H187.773V16.7698H190.131V11.8748H195.17V16.7698H199.6V20.8791H195.17H195.171Z" fill="#71AA73"/><path d="M31.7971 9.29186C32.0008 9.34782 32.2291 9.30529 32.4148 9.44294C35.8438 11.1306 39.2739 12.8182 42.7039 14.5047C42.808 14.555 42.9132 14.6043 43.0207 14.6446C43.0867 14.6703 43.1438 14.7084 43.1986 14.7498C43.3888 14.893 43.4224 14.9993 43.3396 15.2276C43.3206 15.2802 43.3116 15.3295 43.3172 15.3843C43.3855 16.02 43.4538 16.6567 43.5198 17.2924C43.5735 17.8139 43.6227 18.3354 43.6765 18.8569C43.7302 19.3784 43.7884 19.8988 43.8421 20.4203C43.8958 20.9418 43.945 21.4633 43.9988 21.9848C44.0525 22.5063 44.1096 23.0267 44.1644 23.5482C44.198 23.8705 44.2315 24.1917 44.264 24.514C44.2685 24.5599 44.2752 24.608 44.2651 24.6528C44.2427 24.7513 44.2416 24.843 44.2595 24.9449C44.2931 25.1385 44.1342 25.3064 43.9372 25.3153C43.8398 25.3198 43.7559 25.2851 43.672 25.2459C43.1191 24.9908 42.5663 24.7356 42.0135 24.4816C35.8673 21.6547 29.72 18.8289 23.5738 16.0021C23.4899 15.9629 23.4037 15.9271 23.3243 15.8801C23.1519 15.7771 23.0949 15.6025 23.1788 15.4224C23.2113 15.3519 23.2426 15.2858 23.2504 15.2064C23.2594 15.118 23.3142 15.0508 23.3825 14.996C23.4306 14.9568 23.4821 14.9232 23.5324 14.8885C26.1635 13.0801 28.7945 11.2727 31.4255 9.46533C31.4893 9.42168 31.5531 9.37803 31.6191 9.33887C31.6729 9.30753 31.7299 9.28291 31.796 9.28962" fill="#001551"/><path d="M28.0125 36.7851C28.0203 36.935 27.9789 37.0436 27.8827 37.1376C27.7831 37.235 27.6846 37.329 27.5693 37.4095C24.2859 39.6858 21.0046 41.9621 17.7223 44.2395C17.6529 44.2876 17.5846 44.3391 17.5108 44.3805C17.3574 44.4656 17.2052 44.4544 17.0877 44.3279C17.0105 44.2451 16.9199 44.1958 16.8225 44.15C14.0516 42.8518 11.2818 41.5525 8.51197 40.2555C8.3844 40.195 8.26353 40.1335 8.19527 40.0003C8.17624 39.9634 8.12588 39.9421 8.09119 39.9119C7.91325 39.7574 7.91213 39.5269 8.08895 39.3691C8.12924 39.3333 8.17512 39.3053 8.21989 39.274C14.2989 35.0896 20.3779 30.9053 26.4569 26.7209C26.5207 26.6773 26.5823 26.6303 26.6494 26.5933C26.88 26.4646 27.0971 26.5542 27.1799 26.8048C27.2414 26.9906 27.2526 27.182 27.2683 27.3734C27.3388 28.2653 27.4048 29.1572 27.4742 30.048C27.5346 30.8247 27.5962 31.6014 27.6577 32.3769C27.7271 33.2375 27.7988 34.0981 27.867 34.9587C27.9062 35.4511 27.9409 35.9435 27.9778 36.4348C27.9868 36.5579 28.0013 36.6799 28.0103 36.7828" fill="#001551"/><path d="M14.7101 12.5809C14.7291 12.9815 14.7504 13.3822 14.7671 13.7828C14.7906 14.3144 14.8085 14.846 14.8321 15.3775C14.8701 16.2102 14.9104 17.0417 14.9496 17.8743C14.9675 18.2436 14.9831 18.614 14.9988 18.9844C15.0368 19.8786 15.0738 20.7728 15.1118 21.6658C15.142 22.3597 15.1734 23.0535 15.2036 23.7463C15.207 23.8156 15.2103 23.8862 15.2036 23.9544C15.1868 24.1178 15.0894 24.2241 14.9294 24.2532C14.8611 24.2655 14.7918 24.2644 14.7269 24.2946C14.6194 24.345 14.5153 24.3215 14.4146 24.2734C14.3385 24.2364 14.2658 24.1928 14.1908 24.1525C11.6213 22.7771 9.05184 21.4028 6.48235 20.0275C6.44207 20.0051 6.4029 19.9793 6.36037 19.9614C6.1511 19.8719 6.06604 19.6984 6.0459 19.4869C6.0224 19.2486 6.00561 19.0102 5.98547 18.7718C5.94294 18.2727 5.90042 17.7724 5.85789 17.2733C5.82208 16.8503 5.7885 16.4273 5.75269 16.0054C5.71129 15.5141 5.66876 15.0217 5.62623 14.5304C5.59154 14.1152 5.55685 13.7 5.52216 13.2859C5.47963 12.779 5.43487 12.272 5.39346 11.765C5.35653 11.3196 5.32184 10.8731 5.2849 10.4277C5.24574 9.96664 5.20433 9.50556 5.16516 9.04449C5.12823 8.61475 5.09354 8.18389 5.05772 7.75303C5.0331 7.45311 5.0096 7.15319 4.97939 6.85439C4.96148 6.6854 4.97155 6.52984 5.10697 6.40786C5.17747 6.2109 5.34646 6.11577 5.50985 6.01281C8.16214 4.33415 10.8133 2.65548 13.4656 0.975691C13.5305 0.934283 13.5954 0.891757 13.6637 0.857065C13.9177 0.728367 14.1695 0.892876 14.1908 1.1167C14.1986 1.1928 14.2076 1.27002 14.2109 1.34724C14.2512 2.28729 14.2893 3.22734 14.3296 4.1674C14.3564 4.80753 14.3855 5.44654 14.4146 6.08556C14.4527 6.91034 14.4941 7.73401 14.5321 8.55879C14.5534 9.02099 14.5702 9.48318 14.5914 9.94649C14.6295 10.825 14.6687 11.7035 14.7078 12.582" fill="#001551"/><path d="M0.478456 18.6745C0.562389 18.67 0.646322 18.7081 0.728018 18.7517C1.00668 18.9006 1.28645 19.0483 1.56511 19.1971C2.76368 19.8339 3.96225 20.4707 5.1597 21.1074C7.12039 22.1493 9.08107 23.1923 11.0418 24.2354C12.5123 25.0176 13.9828 25.7988 15.4533 26.5799C16.8623 27.3286 18.2712 28.0795 19.6813 28.8271C19.8313 28.9065 19.96 29.0162 20.1077 29.099C20.28 29.1953 20.299 29.4325 20.167 29.5825C20.1122 29.6451 20.0428 29.6977 19.9734 29.7459C19.0815 30.3681 18.1884 30.9881 17.2954 31.6081C15.7185 32.7037 14.1417 33.8004 12.566 34.8971C12.4966 34.9453 12.4261 34.9923 12.3556 35.0404C12.2146 35.1355 12.0736 35.1411 11.9203 35.0605C11.6136 34.8994 11.3014 34.7472 10.9914 34.5905C9.14598 33.6594 7.30168 32.7283 5.45739 31.7972C3.92196 31.0228 2.38766 30.2472 0.852239 29.4728C0.804117 29.4482 0.755995 29.4247 0.708993 29.3967C0.648561 29.3598 0.589248 29.3105 0.574699 29.2434C0.541126 29.0934 0.469503 28.9558 0.463907 28.7969C0.451597 28.4119 0.430334 28.0269 0.412428 27.6419C0.381093 27.0029 0.349758 26.3639 0.318423 25.7249C0.288206 25.1172 0.25799 24.5084 0.227774 23.9007C0.196439 23.2774 0.166223 22.6541 0.134888 22.0296C0.103553 21.3984 0.073337 20.7672 0.0408828 20.1361C0.0285725 19.8977 0.0151432 19.6593 0.00171383 19.4198C-0.00500084 19.3023 0.00507117 19.1882 0.0856472 19.093C0.129293 19.0416 0.124816 18.9789 0.140484 18.9196C0.18301 18.7629 0.299398 18.6756 0.475098 18.6745" fill="#71AA73"/><path d="M28.524 21.2093C28.524 21.0559 28.5184 20.9239 28.5263 20.7941C28.5307 20.7202 28.4949 20.6598 28.4849 20.5915C28.4558 20.3878 28.5733 20.2256 28.7736 20.1864C28.8553 20.1707 28.928 20.1987 28.9974 20.2278C29.1463 20.2893 29.2929 20.3599 29.4406 20.4259C30.6559 20.9754 31.8713 21.5248 33.0867 22.0732C34.499 22.7111 35.9113 23.349 37.3247 23.9847C37.4769 24.0529 37.6045 24.1424 37.703 24.2767C37.7589 24.3551 37.7936 24.4357 37.7981 24.5319C37.8093 24.7624 37.8239 24.9941 37.8373 25.2246C37.8641 25.7014 37.8921 26.1792 37.9179 26.656C37.9358 26.9716 37.9503 27.2872 37.966 27.6027C37.9884 28.0884 38.0085 28.573 38.032 29.0587C38.0622 29.6664 38.0936 30.2752 38.1249 30.8829C38.154 31.4525 38.1853 32.0221 38.2144 32.5917C38.2469 33.2229 38.2782 33.8541 38.3107 34.4853C38.3398 35.0471 38.37 35.6089 38.3991 36.1707C38.4136 36.4404 38.4293 36.709 38.4416 36.9787C38.445 37.057 38.4606 37.1309 38.4931 37.2025C38.5625 37.3592 38.5143 37.4879 38.3991 37.5998C38.361 37.6367 38.3174 37.6703 38.2726 37.6994C36.8234 38.6249 35.373 39.5493 33.9237 40.4748C32.7733 41.21 31.624 41.9464 30.4735 42.6805C30.4086 42.7219 30.3426 42.7622 30.2743 42.7969C30.1535 42.8585 30.0348 42.8428 29.9252 42.769C29.8681 42.7298 29.8188 42.6839 29.7528 42.6548C29.6107 42.5921 29.5536 42.4724 29.5469 42.3202C29.5391 42.1512 29.5234 41.9822 29.5156 41.8132C29.4954 41.3824 29.4798 40.9504 29.4585 40.5195C29.4328 39.9958 29.4048 39.472 29.3768 38.9494C29.3757 38.9181 29.3746 38.8879 29.3734 38.8565C29.3522 38.3328 29.332 37.809 29.3074 37.2853C29.2783 36.6385 29.2459 35.9916 29.2145 35.3448C29.1843 34.7136 29.153 34.0824 29.1228 33.4501C29.0914 32.7876 29.0601 32.1262 29.0288 31.4637C28.9985 30.8403 28.9683 30.2159 28.9381 29.5925C28.9068 28.9378 28.8754 28.2832 28.8441 27.6285C28.8139 26.9973 28.7825 26.3661 28.7523 25.7349C28.721 25.0881 28.6908 24.4413 28.6594 23.7944C28.6281 23.1397 28.5979 22.485 28.5654 21.8315C28.5542 21.6155 28.5375 21.4006 28.524 21.2081" fill="#71AA73"/><path d="M15.7067 7.84035C15.6978 7.64003 15.6854 7.43971 15.6798 7.23939C15.6765 7.0939 15.7268 6.97864 15.8444 6.8768C16.0257 6.72012 16.2226 6.58583 16.4207 6.45377C19.5453 4.36999 22.6698 2.2862 25.7944 0.202412C25.8716 0.150933 25.9477 0.0983345 26.0283 0.0524509C26.1424 -0.0135767 26.2588 -0.0180531 26.3808 0.043498C26.608 0.157647 26.8396 0.263963 27.069 0.372517C28.5172 1.06077 29.9653 1.75014 31.4134 2.4384C32.4788 2.94424 33.5454 3.44896 34.6107 3.9548C34.6589 3.9783 34.7081 4.0018 34.7573 4.02418C34.886 4.08125 34.9733 4.17302 34.9968 4.31403C35.008 4.37782 35.0394 4.42594 35.0707 4.47966C35.177 4.66319 35.149 4.81427 34.9856 4.95081C34.9084 5.01459 34.8223 5.06719 34.7394 5.12315C32.2214 6.79622 29.7034 8.46817 27.1854 10.1412C24.1146 12.1803 21.0437 14.2204 17.9729 16.2594C17.6517 16.4732 17.3305 16.6858 17.0082 16.8984C16.9635 16.9287 16.9187 16.96 16.8717 16.9846C16.7374 17.054 16.6031 17.0574 16.48 16.9645C16.4173 16.9175 16.3535 16.8861 16.2774 16.866C16.1308 16.8268 16.038 16.7295 16.0133 16.5761C16.0021 16.5079 15.9954 16.4385 15.9932 16.3702C15.9865 16.1229 15.9831 15.8767 15.9764 15.6305C15.9607 15.1213 15.9529 14.6132 15.9227 14.1051C15.8981 13.681 15.9037 13.2569 15.8779 12.8338C15.8499 12.3638 15.8567 11.8938 15.8287 11.4237C15.8029 11.0007 15.8108 10.5755 15.785 10.1524C15.7559 9.68241 15.7615 9.21126 15.7369 8.74236C15.7201 8.44132 15.7112 8.14139 15.7078 7.84147" fill="#71AA73"/></svg>`;
+
+const LEVELS = `<svg viewBox="0 0 208 81" fill="none"><rect opacity=".35" x="121.1" y="34.8" width="35.7" height="17.9" rx="5.7" stroke="#000" stroke-width="1.5"/><path opacity=".4" d="M159 41.2v6c1.2-.5 2-1.7 2-3s-.8-2.5-2-3z" fill="#000"/><rect x="123.3" y="37" width="31.2" height="13.4" rx="3.7" fill="#000"/><path d="M97 38.7c3.7 0 7.2 1.4 9.9 3.8.2.2.5.2.7 0l1.9-1.9c.1-.1.2-.2.2-.4 0-.1-.1-.3-.2-.4-7-6.5-18.1-6.5-25.2 0-.1.1-.2.2-.2.4 0 .1.1.3.2.4l1.9 1.9c.2.2.5.2.7 0 2.7-2.4 6.3-3.8 10-3.8zm0 6.2c2 0 4 .8 5.5 2.1.2.2.5.2.7 0l1.9-2c.1-.1.2-.2.2-.4 0-.1-.1-.3-.2-.4-4.6-4.3-11.6-4.3-16.2 0-.1.1-.2.2-.2.4 0 .1.1.3.2.4l1.9 2c.2.2.5.2.7 0 1.5-1.4 3.4-2.1 5.5-2.1zm3.7 4.2c0 .2-.1.3-.2.4l-3.2 3.7c-.1.1-.2.2-.4.2-.1 0-.3-.1-.4-.2l-3.2-3.7c-.1-.1-.2-.3-.2-.4 0-.2.1-.3.2-.4 2.1-2 5.1-2 7.2 0 .1.1.2.3.2.4z" fill="#000"/><path d="M73.1 36.6c0-1-.7-1.7-1.6-1.7h-1.6c-.9 0-1.6.8-1.6 1.7v14.7c0 1 .7 1.7 1.6 1.7h1.6c.9 0 1.6-.8 1.6-1.7V36.6zM62 38.5h1.6c.9 0 1.6.8 1.6 1.7v11.1c0 1-.7 1.7-1.6 1.7H62c-.9 0-1.6-.8-1.6-1.7V40.2c0-1 .7-1.7 1.6-1.7zm-6.4 3.9H54c-.9 0-1.6.8-1.6 1.8v7.1c0 1 .7 1.8 1.6 1.8h1.6c.9 0 1.6-.8 1.6-1.8v-7.1c0-1-.7-1.8-1.6-1.8zm-7.9 3.7h-1.6c-.9 0-1.6.8-1.6 1.7v3.5c0 1 .7 1.7 1.6 1.7h1.6c.9 0 1.6-.8 1.6-1.7v-3.5c0-1-.7-1.7-1.6-1.7z" fill="#000"/></svg>`;
+
+const G = `<svg style="width:calc(27*var(--u));height:calc(27*var(--u))" viewBox="0 0 27 27"><path d="M26.2 13.7c0-.9-.1-1.9-.2-2.7H13.4v5.2h7.2c-.3 1.7-1.3 3.1-2.7 4v3.4h4.3c2.6-2.4 4-5.8 4-9.9z" fill="#4285F4"/><path d="M13.4 26.8c3.6 0 6.6-1.2 8.9-3.2l-4.3-3.4c-1.2.8-2.7 1.3-4.5 1.3-3.5 0-6.4-2.4-7.5-5.5H1.4v3.5c2.2 4.4 6.8 7.3 12 7.3z" fill="#34A853"/><path d="M5.9 15.9c-.3-.8-.4-1.7-.4-2.5s.2-1.7.4-2.5V7.4H1.4C.5 9.2 0 11.2 0 13.4s.5 4.2 1.4 6l4.5-3.5z" fill="#FBBC05"/><path d="M13.4 5.3c2 0 3.7.7 5.1 2l3.8-3.8C20 1.3 17 0 13.4 0 8.2 0 3.6 3 1.4 7.4l4.5 3.5c1-3.2 4-5.6 7.5-5.6z" fill="#EA4335"/></svg>`;
+
+const APPLE = `<svg style="width:calc(23*var(--u));height:calc(29*var(--u))" viewBox="0 0 23 29"><path d="M11.8 6.5c1.3 0 2.9-.9 3.9-2 .9-1 1.5-2.5 1.5-4V0c-1.4.1-3.1 1-4.1 2.2-.8.9-1.5 2.4-1.5 3.8v.5h.2zM7.3 28.3c1.7 0 2.5-1.2 4.7-1.2 2.2 0 2.7 1.1 4.6 1.1 1.9 0 3.2-1.8 4.4-3.5 1.3-2 1.9-3.9 1.9-4-.1 0-3.8-1.5-3.8-5.7 0-3.6 2.9-5.3 3-5.4-1.9-2.7-4.8-2.8-5.6-2.8-2.1 0-3.9 1.3-5 1.3-1.2 0-2.7-1.2-4.6-1.2C3.6 6.9 0 9.8 0 15.3c0 3.4 1.3 7 3 9.4 1.4 2 2.6 3.6 4.3 3.6z" fill="#000"/></svg>`;
+
+const MAIL = `<svg style="width:calc(32*var(--u));height:calc(24*var(--u))" viewBox="7 20 32 25"><path d="M10.6 44.6c-.9 0-1.6-.3-2.2-.9-.6-.6-.9-1.3-.9-2.1V23.8c0-.8.3-1.5.9-2.1.6-.6 1.3-.9 2.2-.9h25c.9 0 1.6.3 2.2.9.6.6.9 1.3.9 2.1v17.8c0 .8-.3 1.5-.9 2.1-.6.6-1.3.9-2.2.9h-25zm12.5-10.4l-12.5-7.4v14.9h25V26.8l-12.5 7.4zm0-3l12.5-7.4h-25l12.5 7.4z" fill="#0F1B32"/></svg>`;
+
+const EYE = `<svg viewBox="0 0 24 24"><path d="M12 5C6.5 5 2.7 9.3 1.5 12c1.2 2.7 5 7 10.5 7s9.3-4.3 10.5-7C21.3 9.3 17.5 5 12 5zm0 11.5A4.5 4.5 0 1 1 12 7.5a4.5 4.5 0 0 1 0 9zm0-7a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5z" fill="#A9B4C2"/></svg>`;
+
+const CLOSE = `<svg style="width:calc(36*var(--u));height:calc(36*var(--u))" viewBox="0 0 36 36"><path d="M9.5 28.3l-2.1-2.1 8.3-8.3-8.3-8.4 2.1-2.1 8.3 8.4 8.4-8.4 2.1 2.1-8.4 8.4 8.4 8.3-2.1 2.1-8.4-8.4-8.3 8.4z" fill="#26374D"/></svg>`;
+
+const ARROW = `<svg style="width:calc(30*var(--u));height:calc(30*var(--u))" viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6" stroke="#001551" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+const TICK = `<svg style="width:calc(22*var(--u));height:calc(22*var(--u))" viewBox="0 0 24 24"><path d="M6 12.5l4 4 8-9" stroke="#0F1B32" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+// ---- Screen spec helpers --------------------------------------------------
+
+interface ElSpec { k: string; x: number; y: number; w: number; h: number; cls: string; html: string; z: number; sty: string; }
+const E = (k: string, x: number, y: number, w: number, h: number, cls = "", html = "", z = 1, sty = ""): ElSpec => ({ k, x, y, w, h, cls, html, z, sty });
+const T = (txt: string, font: string, color: string, extra = "") => `<div style="font:${font.replace(/"/g, "'")};color:${color};${extra}">${txt}</div>`;
+const unit = (s: string) => s.replace(/(-?\d+(?:\.\d+)?)u(?![a-zA-Z])/g, "calc($1 * var(--u))");
+const status = () => E("status", 0, 0, 580, 81, "st", `<span class="tm">9:41</span>${LEVELS}`, 1);
+const logo = () => E("logo", 36, 105, 200, 47, "logo", LOGO, 1);
+
+// ---- Screen specs ---------------------------------------------------------
+
+const LEGAL = "By clicking <b>Continue</b> below you authorize the payment card network (i.e. Visa, Mastercard) to monitor your payment card and share your transaction details (such as date, time, amount and merchant) from purchases as required to participate in the Program as per the <u style=\"color:#3B5998\">Terms Of Use</u> and <u style=\"color:#3B5998\">Privacy Policy</u>. Debit transactions are not monitored. Your transaction data will be shared with the Program provider, Olive, and with Children's Health Foundation Program in order to enable card linked offers, identify offers that may be of interest to you based on location, calculate round up amounts, and to provide Program notifications. You may opt-out of this transaction monitoring at any time by going to your Program settings.";
+
+const signupBefore: ElSpec[] = [
+  status(), logo(),
+  E("title", 36, 246, 420, 46, "", T("Create your account", "700 35.7u Montserrat, Arial, sans-serif", "var(--ci-ink)", "white-space:nowrap")),
+  E("login", 36, 309, 380, 31, "", T("Already have an account? <b class=\"link\">Log In</b>", "400 20.8u Montserrat, Arial, sans-serif", "var(--ci-ink)", "white-space:nowrap")),
+  E("google", 36, 855, 509, 65, "sbtn mont", `${G}Continue with Google`),
+  E("apple", 36, 956, 509, 65, "sbtn mont", `${APPLE}Continue with Apple`),
+  E("emailbtn", 36, 1057, 509, 65, "sbtn mont", `${MAIL}Continue with email`),
+  E("footer", 35, 1158, 510, 62, "", T("By registering, you accept our <span class=\"link\">Terms of Use</span><br>and <span class=\"link\">Privacy Policy</span>", "400 20.8u/31u Montserrat, Arial, sans-serif", "var(--ci-slate)", "text-align:center")),
+];
+
+const signupAfter: ElSpec[] = [
+  status(), logo(),
+  E("title", 36, 204, 420, 46, "", T("Create your account", "700 35.4u \"Nunito Sans\", Arial, sans-serif", "var(--ci-ink)", "white-space:nowrap")),
+  E("efield", 36, 498, 509, 85, "field", "Email"),
+  E("pfield", 36, 606, 509, 78, "field", `Password${EYE}`),
+  E("create", 36, 708, 509, 66, "btn", "Create account"),
+  E("or", 36, 810, 509, 22, "", `<div style="display:flex;align-items:center;gap:calc(28*var(--u));height:100%;font:400 calc(17.9*var(--u)) Montserrat,Arial,sans-serif;color:var(--ci-slate)"><i style="flex:1;height:calc(1.5*var(--u));background:var(--ci-btnline)"></i>OR<i style="flex:1;height:calc(1.5*var(--u));background:var(--ci-btnline)"></i></div>`),
+  E("google", 36, 868, 509, 65, "sbtn nun", `${G}Continue with Google`),
+  E("apple", 36, 969, 509, 65, "sbtn nun", `${APPLE}Continue with Apple`),
+  E("login-new", 100, 1080, 380, 31, "", T("Already have an account? <span class=\"link\">Log In</span>", "400 20.8u \"Nunito Sans\", Arial, sans-serif", "var(--ci-ink)", "text-align:center;white-space:nowrap")),
+  E("rule", 221, 1126, 138, 1.5, "", "", 1, "background:var(--ci-btnline)"),
+  E("footer", 35, 1143, 510, 62, "", T("By registering, you accept our<br><span class=\"link\">Terms of Use</span> and <span class=\"link\">Privacy Policy</span>", "400 20.8u/31u \"Nunito Sans\", Arial, sans-serif", "var(--ci-ink)", "text-align:center")),
+];
+
+const paymentBefore: ElSpec[] = [
+  status(),
+  E("backdrop", 0, 0, 580, 1256, "", "", 2, "background:rgba(38,48,68,.82)"),
+  E("sheet", 0, 182, 580, 1074, "", "", 3, "background:#fff;border-radius:calc(60*var(--u)) calc(60*var(--u)) 0 0"),
+  E("close", 43, 227, 59, 59, "", `<div style="width:100%;height:100%;border:calc(1.3*var(--u)) solid #E2E8F0;border-radius:50%;display:grid;place-items:center">${CLOSE}</div>`, 4),
+  E("title", 123, 333, 335, 40, "", T("Link Credit Card", "700 29.7u Montserrat, Arial, sans-serif", "var(--ci-ink)", "text-align:center;white-space:nowrap"), 4),
+  E("nicklbl", 75, 420, 300, 26, "oldlbl", "Card Nickname", 4),
+  E("nick", 75, 450, 400, 56, "oldfield", "", 4),
+  E("cardlbl", 75, 527, 300, 26, "oldlbl", "Credit Card Number", 4),
+  E("card", 75, 557, 316, 56, "oldfield", "", 4),
+  E("brands", 398, 572, 80, 26, "", `<div style="display:flex;align-items:center;gap:calc(8*var(--u));height:100%"><b style="font:italic 900 calc(17*var(--u)) Arial;color:#1A1F71">VISA</b><span style="display:flex"><i style="width:calc(17*var(--u));height:calc(17*var(--u));border-radius:50%;background:#EB001B"></i><i style="width:calc(17*var(--u));height:calc(17*var(--u));border-radius:50%;background:#F79E1B;margin-left:calc(-7*var(--u));opacity:.9"></i></span></div>`, 4),
+  E("explbl", 75, 629, 200, 26, "oldlbl", "Expiry Date", 4),
+  E("exp", 75, 658, 284, 56, "oldfield", "MM/YY", 4),
+  E("cvvlbl", 367, 629, 80, 26, "oldlbl", "CVV", 4),
+  E("cvv", 367, 658, 78, 56, "oldfield", "", 4),
+  E("help", 455, 673, 27, 27, "", `<div style="width:100%;height:100%;border-radius:50%;background:#6B6B6B;color:#fff;font:700 calc(17*var(--u))/calc(27*var(--u)) Arial;text-align:center">?</div>`, 4),
+  E("check", 71, 765, 18, 18, "", "<div style=\"width:100%;height:100%;border:calc(1.3*var(--u)) solid #777;border-radius:calc(3*var(--u))\"></div>", 4),
+  E("legal", 94, 760, 380, 452, "", T(LEGAL, "400 19.4u/23.6u Arial, sans-serif", "#000", "text-align:justify;hyphens:none"), 4),
+  E("check2", 71, 1237, 18, 18, "", "<div style=\"width:100%;height:100%;border:calc(1.3*var(--u)) solid #777;border-radius:calc(3*var(--u))\"></div>", 4),
+  E("legal2", 94, 1232, 380, 26, "", T("Further by clicking below, you authorize", "400 19.4u/23.6u Arial, sans-serif", "#000", "white-space:nowrap"), 4),
+];
+
+const billingSpecs = (): ElSpec[] => [
+  status(), logo(),
+  E("heading", 36, 218, 420, 50, "", T("Become a member", "700 35.4u \"Nunito Sans\", Arial, sans-serif", "var(--ci-ink)", "white-space:nowrap"), 4),
+  E("email", 36, 272, 420, 34, "", T("nathan.roberts@example.com", "400 24.7u \"Nunito Sans\", Arial, sans-serif", "var(--ci-grey)"), 4),
+  E("tier", 36, 340, 504, 162, "card", `<div style="position:absolute;left:calc(24*var(--u));right:calc(24*var(--u));top:calc(28*var(--u));display:flex;justify-content:space-between;font:700 calc(23.6*var(--u)) 'Nunito Sans',Arial;color:var(--ci-ink)"><span>Heisman</span><span style="color:var(--ci-ink2)">$34/mo</span></div><i style="position:absolute;left:calc(24*var(--u));right:calc(24*var(--u));top:calc(80*var(--u));height:calc(1.5*var(--u));background:#DCE2EF"></i><div style="position:absolute;left:calc(24*var(--u));right:calc(24*var(--u));top:calc(108*var(--u));display:flex;justify-content:space-between;font:400 calc(23.6*var(--u)) 'Nunito Sans',Arial;color:var(--ci-blue)"><span>See details</span><span>Change Tier</span></div>`, 4),
+  E("billingtitle", 36, 536, 200, 36, "", T("Billing Info", "700 25.4u \"Nunito Sans\", Arial, sans-serif", "var(--ci-ink)", "white-space:nowrap"), 4),
+  E("cardlbl", 36, 607, 300, 28, "lbl", "Credit Card Number", 4),
+  E("card", 36, 643, 504, 83, "field", "", 4),
+  E("explbl", 36, 753, 200, 28, "lbl", "Expiry Date", 4),
+  E("exp", 36, 788, 246, 83, "field", "", 4),
+  E("cvvlbl", 294, 753, 100, 28, "lbl", "CVV", 4),
+  E("cvv", 294, 788, 246, 83, "field", "", 4),
+  E("check", 36, 899, 26, 26, "check", "", 4),
+  E("consent", 74, 894, 466, 96, "", T("By clicking Continue below you authorize the payment card network to monitor your payment card and share your transaction details", "400 21.7u/30.5u \"Nunito Sans\", Arial, sans-serif", "var(--ci-ink2)"), 4),
+  E("subscribe", 36, 1146, 504, 66, "btn", "Subscribe", 4),
+];
+
+const TIERS: [string, string][] = [["Donahue", "$24/mo"], ["Heisman", "$34/mo"], ["Thach", "$88/mo"], ["Magnolia", "$210/mo"], ["Samford", "$1089/mo"]];
+const PERKS: string[][] = [["100 Entries to Monthly Giveaway"], ["War Eagle Plus Subscription", "First 3 months Free"], ["1 player meet &amp; greet event", "2 tickets for 1 event"], ["OTV Perks Network"], ["Daily Brew Email"], ["Members-only sticker decal"], ["Monthly On To Victory newsletter"], ["Ability to attend monthly virtual meetings with student-athletes"]];
+
+const tierCard = (name: string, price: string, open: boolean) => `
+  <div style="position:absolute;left:calc(26*var(--u));top:calc(36*var(--u));font:700 calc(26*var(--u)) 'Nunito Sans',Arial;color:var(--ci-ink)">${name}</div>
+  <div style="position:absolute;left:calc(26*var(--u));top:calc(78*var(--u));font:400 calc(19.2*var(--u)) 'Nunito Sans',Arial;color:var(--ci-blue);text-decoration:underline">See details</div>
+  <div style="position:absolute;right:calc(28*var(--u));top:calc(52*var(--u));display:flex;align-items:center;gap:calc(14*var(--u));font:700 calc(25.6*var(--u)) 'Nunito Sans',Arial;color:var(--ci-navy)">${price}${ARROW}</div>
+  ${open ? `<div class="perks" style="position:absolute;left:0;right:0;top:calc(144*var(--u))">
+    <i style="position:absolute;left:calc(39*var(--u));right:0;top:0;height:calc(1.5*var(--u));background:#DCE2EF"></i>
+    <div style="position:absolute;left:calc(39*var(--u));right:calc(39*var(--u));top:calc(30*var(--u));display:flex;flex-direction:column;gap:calc(22*var(--u))">
+      ${PERKS.map(([a, b]) => `<div style="display:flex;gap:calc(12*var(--u));font:400 calc(22.4*var(--u))/calc(30*var(--u)) 'Nunito Sans',Arial;color:var(--ci-ink)"><span style="flex:none;padding-top:calc(4*var(--u))">${TICK}</span><span>${a}${b ? `<br><span style="font-size:calc(17.6*var(--u));color:var(--ci-grey)">${b}</span>` : ""}</span></div>`).join("")}
+    </div>
+    <div class="btn" style="position:absolute;left:calc(39*var(--u));right:calc(39*var(--u));top:calc(596*var(--u));height:calc(66*var(--u))">Select tier</div>
+  </div>` : ""}`;
+
+// ---- CSS ------------------------------------------------------------------
+
+const CSS = `
+.sd-wrap{--ci-navy:#001551;--ci-ink:#0F1B32;--ci-ink2:#26374D;--ci-grey:#7F8692;--ci-slate:#5D7189;--ci-blue:#0099EB;--ci-field:#E2E8F0;--ci-btnline:#CBD5E1;--ci-card:#F2F5FD}
+.sd-plate{position:relative;background:#F3F0EC;border-radius:24px;box-shadow:inset 0 0 0 1px rgb(212,212,212);display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);align-items:center;gap:56px;padding:56px 64px}
+.sd-stage{display:flex;flex-direction:column;align-items:center;gap:18px;min-width:0}
+.sd-phone{container-type:inline-size;position:relative;width:min(330px,72vw);max-width:100%;aspect-ratio:572/1248;border-radius:32px;overflow:hidden;background:#fff;box-shadow:0 0 0 1px rgb(212,212,212),0 30px 60px -30px rgba(60,40,20,.3)}
+.sd-phone .scr{position:absolute;left:calc(-4*var(--u));top:calc(-4*var(--u));width:calc(580*var(--u));height:calc(1256*var(--u));--u:calc(100cqw / 572);background:#fff;overflow:hidden}
+.sd-phone .scr *{box-sizing:border-box}
+.sd-phone .el{position:absolute;will-change:transform,opacity}
+.sd-phone .lay{position:absolute;inset:0}
+.sd-phone .st .tm{position:absolute;left:calc(39*var(--u));top:calc(27*var(--u));font:600 calc(25.3*var(--u))/calc(34*var(--u)) -apple-system,"SF Pro Text","Helvetica Neue",Arial,sans-serif;color:#000;letter-spacing:-.02em}
+.sd-phone .st svg{position:absolute;left:calc(372*var(--u));top:0;width:calc(208*var(--u));height:calc(81*var(--u))}
+.sd-phone .logo svg{width:100%;height:100%;display:block}
+.sd-phone .field{border:calc(1.5*var(--u)) solid #E2E8F0;border-radius:calc(12*var(--u));background:#fff;display:flex;align-items:center;padding:0 calc(20*var(--u));color:#5D7189;font:400 calc(20.8*var(--u)) var(--fn-ns),"Nunito Sans",Arial,sans-serif}
+.sd-phone .field svg{margin-left:auto;width:calc(34*var(--u));height:calc(34*var(--u))}
+.sd-phone .oldfield{border:calc(1.3*var(--u)) solid #C8C8C8;border-radius:calc(4*var(--u));background:#fff;display:flex;align-items:center;padding:0 calc(12*var(--u));color:#9A9A9A;font:400 calc(19*var(--u)) Arial,sans-serif}
+.sd-phone .btn{border-radius:calc(10*var(--u));display:flex;align-items:center;justify-content:center;font:700 calc(20.7*var(--u)) var(--fn-ns),"Nunito Sans",Arial,sans-serif;color:#fff;background:#001551}
+.sd-phone .sbtn{border:calc(1.5*var(--u)) solid #CBD5E1;border-radius:calc(10*var(--u));background:#fff;display:flex;align-items:center;justify-content:center;color:#0F1B32;font-size:calc(20.8*var(--u))}
+.sd-phone .sbtn svg{position:absolute;left:calc(20*var(--u));top:50%;transform:translateY(-50%)}
+.sd-phone .lbl{font:700 calc(20.7*var(--u)) var(--fn-ns),"Nunito Sans",Arial,sans-serif;color:#0F1B32}
+.sd-phone .oldlbl{font:400 calc(20*var(--u)) Arial,sans-serif;color:#000}
+.sd-phone .link{color:#0099EB}
+.sd-phone .card{background:#F2F5FD;border-radius:calc(12*var(--u))}
+.sd-phone .check{width:calc(26*var(--u));height:calc(26*var(--u));border:calc(1.5*var(--u)) solid #CBD5E1;border-radius:calc(4*var(--u));background:#fff}
+.sd-phone .tap{position:absolute;width:calc(60*var(--u));height:calc(60*var(--u));margin:calc(-30*var(--u)) 0 0 calc(-30*var(--u));border-radius:50%;background:rgba(224,51,9,.22);box-shadow:0 0 0 calc(2.5*var(--u)) rgba(224,51,9,.75);opacity:0;pointer-events:none;z-index:50}
+.sd-phone .nun,.sd-phone .sbtn.nun{font-family:var(--fn-ns),"Nunito Sans",Arial,sans-serif}
+.sd-phone .mont,.sd-phone .sbtn.mont{font-family:var(--fn-mt),Montserrat,Arial,sans-serif}
+.sd-list{list-style:none;margin:0;padding:0;min-width:0}
+.sd-item{border-top:1px solid rgb(212,212,212)}
+.sd-item:first-child{border-top:0}
+.sd-head{width:100%;display:grid;grid-template-columns:52px 1fr;align-items:baseline;gap:8px;background:none;border:0;padding:22px 0;cursor:pointer;text-align:left;color:#000;font-family:var(--font-sans)}
+.sd-head:focus-visible,.sd-pause:focus-visible{outline:2px solid #E03309;outline-offset:3px;border-radius:4px}
+.sd-num{font:700 28px/1 var(--font-sans);color:#E03309;font-variant-numeric:tabular-nums;transition:opacity .3s cubic-bezier(.2,0,.2,1)}
+.sd-item:not(.sd-item--active) .sd-num{opacity:.45}
+.sd-ttl{font:400 22px/1.25 var(--font-sans);letter-spacing:-.02em;transition:color .3s cubic-bezier(.2,0,.2,1)}
+.sd-item:not(.sd-item--active) .sd-ttl{color:#666}
+.sd-item:not(.sd-item--active) .sd-head:hover .sd-ttl{color:#000}
+.sd-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .5s cubic-bezier(.2,0,.2,1)}
+.sd-item.sd-item--active .sd-body{grid-template-rows:1fr}
+.sd-body>div{overflow:hidden}
+.sd-facts{display:grid;gap:18px;padding:0 0 26px 60px}
+.sd-fact{display:grid;gap:6px}
+.sd-eyebrow{font:500 11px/1 var(--font-sans);letter-spacing:.1em;text-transform:uppercase;color:rgba(0,0,0,.6)}
+.sd-fact p{margin:0;font:400 16px/27px var(--font-sans);color:#000;max-width:52ch;text-wrap:pretty}
+.sd-stat{font-weight:700;color:#E03309;background:color-mix(in srgb,#E03309 14%,#F3F0EC);padding:1px 5px;border-radius:3px}
+.sd-bar{height:2px;background:transparent;margin:0 0 -1px;position:relative;overflow:hidden}
+.sd-bar i{position:absolute;inset:0;background:#000;transform-origin:left;transform:scaleX(0)}
+.sd-pause{position:absolute;top:18px;right:18px;width:36px;height:36px;border-radius:50%;border:1px solid rgb(212,212,212);background:transparent;cursor:pointer;display:grid;place-items:center;color:#000}
+.sd-pause svg{width:14px;height:14px}
+@media(max-width:860px){
+  .sd-plate{grid-template-columns:1fr;gap:28px;padding:28px 20px 8px}
+  .sd-phone{width:min(280px,70vw)}
+  .sd-head{padding:18px 0;grid-template-columns:44px 1fr}
+  .sd-num{font-size:24px}
+  .sd-ttl{font-size:19px}
+  .sd-facts{padding-left:52px;gap:14px}
+}
+@media(prefers-reduced-motion:reduce){
+  .sd-body,.sd-num,.sd-ttl{transition:none}
+}
+`;
+
+// ---- Component ------------------------------------------------------------
+
+export function SignupDecisions({ decisions = EN_DECISIONS }: { decisions?: SignupDecisionItem[] }) {
+  const phoneRef = useRef<HTMLDivElement>(null);
+  const plateRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLOListElement>(null);
+  const pauseRef = useRef<HTMLButtonElement>(null);
+  const decisionsRef = useRef(decisions);
+
+  useEffect(() => {
+    decisionsRef.current = decisions;
+  }, [decisions]);
+
+  useEffect(() => {
+    if (!phoneRef.current || !plateRef.current || !listRef.current || !pauseRef.current) return;
+    const phone = phoneRef.current;
+    const plate = plateRef.current;
+    const list = listRef.current;
+    const pauseBtn = pauseRef.current;
+
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // ---- Helpers ----
+    const clamp = (v: number) => Math.max(0, Math.min(1, v));
+    const prog = (t: number, a: number, b: number) => clamp((t - a) / (b - a));
+    const eio = (x: number) => x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+    const eout = (x: number) => 1 - Math.pow(1 - x, 3);
+    const lerp = (a: number, b: number, k: number) => a + (b - a) * k;
+    const U = (v: number) => `calc(${v} * var(--u))`;
+
+    function makeScreen(): HTMLDivElement {
+      const s = document.createElement("div");
+      s.className = "scr";
+      s.style.display = "none";
+      phone.appendChild(s);
+      return s;
+    }
+
+    function makeEl(scr: HTMLElement, spec: ElSpec): HTMLDivElement {
+      const d = document.createElement("div");
+      d.className = "el";
+      d.style.zIndex = String(spec.z);
+      const lay = document.createElement("div");
+      lay.className = "lay" + (spec.cls ? " " + spec.cls : "");
+      if (spec.sty) lay.style.cssText = unit(spec.sty);
+      if (spec.html) {
+        lay.innerHTML = unit(spec.html);
+        // Fix font-family references so next/font fonts are used
+        lay.querySelectorAll<HTMLElement>("*").forEach((el) => {
+          const ff = el.style.fontFamily;
+          if (!ff) return;
+          if (ff.includes("Nunito")) el.style.fontFamily = "var(--fn-ns)";
+          else if (ff.includes("Montserrat")) el.style.fontFamily = "var(--fn-mt)";
+        });
+      }
+      d.appendChild(lay);
+      scr.appendChild(d);
+      return d;
+    }
+
+    function box(d: HTMLElement, x: number, y: number, w: number, h: number, op: number) {
+      d.style.left = U(x);
+      d.style.top = U(y);
+      d.style.width = U(w);
+      d.style.height = U(h);
+      d.style.opacity = String(op);
+    }
+
+    // ---- Scene builders ----
+
+    type Scene = { scr: HTMLDivElement; label: string; render: (t: number) => void };
+
+    function morphScene(A: ElSpec[], B: ElSpec[], meta: { label: string }): Scene {
+      const scr = makeScreen();
+      const bk = Object.fromEntries(B.map((b) => [b.k, b]));
+      const ak = Object.fromEntries(A.map((a) => [a.k, a]));
+      const outs: { s: ElSpec; d: HTMLDivElement }[] = [];
+      const ins: { s: ElSpec; d: HTMLDivElement }[] = [];
+      const moves: { a: ElSpec; b: ElSpec; da: HTMLDivElement; db: HTMLDivElement | null }[] = [];
+
+      for (const a of A) {
+        const b = bk[a.k];
+        if (!b) { outs.push({ s: a, d: makeEl(scr, a) }); continue; }
+        const sameLook = a.html === b.html && a.cls === b.cls && a.sty === b.sty;
+        moves.push({ a, b, da: makeEl(scr, a), db: sameLook ? null : makeEl(scr, { ...b, z: Math.max(a.z, b.z) }) });
+      }
+      for (const b of B) if (!ak[b.k]) ins.push({ s: b, d: makeEl(scr, b) });
+
+      const OUT: [number, number] = [1.8, 2.9], MOVE: [number, number] = [2.1, 3.5], IN: [number, number] = [2.5, 3.9];
+
+      return {
+        scr, ...meta,
+        render(t: number) {
+          for (const p of outs) {
+            const { x, y, w, h } = p.s;
+            const st = (y / 1256) * 0.3;
+            const f = eio(clamp((prog(t, ...OUT) - st) / 0.7));
+            box(p.d, x, y - 20 * f, w, h, 1 - f);
+          }
+          for (const p of moves) {
+            const { a, b } = p;
+            const st = (Math.min(a.y, b.y) / 1256) * 0.25;
+            const m = eio(clamp((prog(t, ...MOVE) - st) / 0.75));
+            const x = lerp(a.x, b.x, m), y = lerp(a.y, b.y, m), w = lerp(a.w, b.w, m), h = lerp(a.h, b.h, m);
+            const f = clamp((m - 0.4) / 0.2);
+            box(p.da, x, y, w, h, p.db ? 1 - f : 1);
+            if (p.db) box(p.db, x, y, w, h, f);
+          }
+          for (const p of ins) {
+            const { x, y, w, h } = p.s;
+            const st = (y / 1256) * 0.35;
+            const f = eout(clamp((prog(t, ...IN) - st) / 0.65));
+            box(p.d, x, y + 28 * (1 - f), w, h, f);
+          }
+        },
+      };
+    }
+
+    function protoScene(label: string): Scene {
+      const scr = makeScreen();
+      const tiersEl = document.createElement("div");
+      tiersEl.className = "lay";
+      scr.appendChild(tiersEl);
+      const bill = document.createElement("div");
+      bill.className = "lay";
+      bill.style.background = "#fff";
+      scr.appendChild(bill);
+
+      const headerSpecs = [status(), logo(), E("title", 35, 216, 400, 48, "", T("Pick your tier", "700 35.4u \"Nunito Sans\", Arial, sans-serif", "var(--ci-ink)"))];
+      headerSpecs.forEach((s) => box(makeEl(tiersEl, s), s.x, s.y, s.w, s.h, 1));
+
+      const cards = TIERS.map(([n, p], i) => {
+        const d = makeEl(tiersEl, E("t" + i, 35, 297 + i * 169, 505, 143, "card", tierCard(n, p, i === 0)));
+        (d.firstChild as HTMLElement).style.overflow = "hidden";
+        return d;
+      });
+
+      const perks = cards[0].querySelector<HTMLElement>(".perks")!;
+      billingSpecs().forEach((s) => box(makeEl(bill, s), s.x, s.y, s.w, s.h, 1));
+
+      const tap = document.createElement("div");
+      tap.className = "tap";
+      scr.appendChild(tap);
+
+      return {
+        scr, label,
+        render(t: number) {
+          const e = eio(prog(t, 1.9, 2.7));
+          const extra = 706 * e;
+          cards.forEach((c, i) => box(c, 35, 297 + i * 169 + (i ? extra : 0), 505, 143 + (i ? 0 : extra), 1));
+          if (perks) perks.style.opacity = String(clamp((e - 0.35) / 0.65));
+
+          const p = eio(prog(t, 5.0, 5.7));
+          tiersEl.style.transform = `translateX(${-30 * p}%)`;
+          tiersEl.style.opacity = String(1 - 0.5 * p);
+          bill.style.transform = `translateX(${100 - 100 * p}%)`;
+          bill.style.boxShadow = p > 0 && p < 1 ? "-30px 0 60px rgba(0,0,0,.15)" : "none";
+
+          const taps: [number, number, number][] = [[1.3, 107, 388], [4.3, 290, 1073]];
+          const tp = taps.map(([t0, x, y]) => ({ x, y, q: prog(t, t0, t0 + 0.75) })).find((o) => o.q > 0 && o.q < 1);
+          if (tp) {
+            Object.assign(tap.style, { left: U(tp.x), top: U(tp.y), opacity: String(Math.sin(Math.PI * tp.q)), transform: `scale(${0.6 + 0.6 * tp.q})` });
+          } else {
+            tap.style.opacity = "0";
+          }
+        },
+      };
+    }
+
+    // ---- Build scenes ----
+    const dec = decisionsRef.current;
+    const scenes: Scene[] = [
+      morphScene(paymentBefore, billingSpecs(), { label: dec[0]?.phoneLabel ?? "" }),
+      protoScene(dec[1]?.phoneLabel ?? ""),
+      morphScene(signupBefore, signupAfter, { label: dec[2]?.phoneLabel ?? "" }),
+    ];
+
+    // ---- Controller ----
+    const DUR = 16;
+    const items = [...list.querySelectorAll<HTMLElement>(".sd-item")];
+    const bars = items.map((it) => it.querySelector<HTMLElement>(".sd-bar i")!);
+
+    let cur = -1, t = 0, last: number | null = null;
+    let userPaused = reduce, hover = false, inView = false;
+    let rafId = 0;
+
+    function show(i: number, animate = true) {
+      if (cur >= 0) scenes[cur].scr.style.display = "none";
+      if (animate && !reduce && cur >= 0) {
+        phone.animate(
+          [{ transform: "none" }, { transform: "translateY(10px) scale(.95)", offset: 0.35 }, { transform: "none" }],
+          { duration: 650, easing: "cubic-bezier(0.2,0,0.2,1)" }
+        );
+        scenes[i].scr.animate([{ opacity: 0 }, { opacity: 0, offset: 0.3 }, { opacity: 1 }], { duration: 650, easing: "ease-out" });
+      }
+      cur = i;
+      t = reduce ? DUR : 0;
+      scenes[i].scr.style.display = "";
+      items.forEach((it, j) => {
+        it.classList.toggle("sd-item--active", j === i);
+        it.querySelector("button")?.setAttribute("aria-expanded", String(j === i));
+      });
+      phone.setAttribute("aria-label", scenes[i].label);
+      draw();
+    }
+
+    function draw() {
+      scenes[cur].render(Math.min(t, DUR));
+      bars.forEach((bar, j) => {
+        bar.style.transform = `scaleX(${j === cur && !reduce ? t / DUR : 0})`;
+      });
+    }
+
+    function frame(now: number) {
+      const dt = last == null ? 0 : Math.min(0.1, (now - last) / 1000);
+      last = now;
+      if (!userPaused && !hover && inView && !document.hidden) {
+        t += dt;
+        if (t >= DUR) show((cur + 1) % scenes.length);
+        else draw();
+      }
+      rafId = requestAnimationFrame(frame);
+    }
+
+    const setPaused = (p: boolean) => {
+      userPaused = p;
+      pauseBtn.setAttribute("aria-label", p ? "Play" : "Pause");
+      pauseBtn.innerHTML = p
+        ? `<svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3 1.5v11l9.5-5.5z" fill="currentColor"/></svg>`
+        : `<svg viewBox="0 0 14 14" aria-hidden="true"><rect x="2" y="1" width="3.5" height="12" rx="1" fill="currentColor"/><rect x="8.5" y="1" width="3.5" height="12" rx="1" fill="currentColor"/></svg>`;
+    };
+
+    items.forEach((it, j) => {
+      it.querySelector("button")?.addEventListener("click", () => {
+        if (!reduce) setPaused(false);
+        show(j);
+      });
+    });
+
+    pauseBtn.addEventListener("click", () => setPaused(!userPaused));
+
+    list.addEventListener("pointerenter", (e) => { if ((e as PointerEvent).pointerType === "mouse") hover = true; });
+    list.addEventListener("pointerleave", () => { hover = false; });
+
+    const observer = new IntersectionObserver((es) => { inView = es[0].isIntersecting; }, { threshold: 0.35 });
+    observer.observe(plate);
+
+    const onVisibility = () => { /* handled by !document.hidden in frame */ };
+    document.addEventListener("visibilitychange", onVisibility);
+
+    setPaused(userPaused);
+    show(0, false);
+    rafId = requestAnimationFrame(frame);
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", onVisibility);
+      while (phone.firstChild) phone.removeChild(phone.firstChild as Node);
+    };
+  }, []);
+
+  return (
+    <div className={`${nunitoSans.variable} ${montserrat.variable}`}>
+      <style dangerouslySetInnerHTML={{ __html: CSS }} />
+      <div className="sd-plate" ref={plateRef}>
+        <button className="sd-pause" ref={pauseRef} aria-label="Pause" />
+        <div className="sd-stage">
+          <div className="sd-phone" ref={phoneRef} role="img" aria-label="" />
+        </div>
+        <ol className="sd-list" ref={listRef}>
+          {decisions.map((d, i) => (
+            <li key={d.num} className={`sd-item${i === 0 ? " sd-item--active" : ""}`}>
+              <button className="sd-head" aria-expanded={i === 0}>
+                <span className="sd-num">{d.num}</span>
+                <span className="sd-ttl">{d.title}</span>
+              </button>
+              <div className="sd-body">
+                <div>
+                  <div className="sd-facts">
+                    {(
+                      [
+                        { label: "Problem", text: d.problem },
+                        { label: "Change", text: d.change },
+                        { label: "Why", text: d.why },
+                      ] as const
+                    ).map(({ label, text }) => (
+                      <div key={label} className="sd-fact">
+                        <span className="sd-eyebrow">{label}</span>
+                        <p>{parseStat(text)}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <div className="sd-bar">
+                <i />
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  );
+}

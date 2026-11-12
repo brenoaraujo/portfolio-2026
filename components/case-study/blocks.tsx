@@ -1,6 +1,9 @@
 import type { ComponentProps, CSSProperties, ReactNode } from "react";
 import { Media } from "@/components/case-study/Media";
 import { BeforeAfterSlider } from "@/components/case-study/BeforeAfterSlider";
+import { SignupDecisions, EN_DECISIONS, type SignupDecisionItem } from "@/components/case-study/SignupDecisions";
+
+export type { SignupDecisionItem };
 
 /* ---------------------------------------------------------------------------
    Case-study body blocks. The fixed chrome (intro, hero, credits, next, footer)
@@ -875,6 +878,8 @@ export interface BlockLabels {
   to: string;
   before: string;
   after: string;
+  /** Override the three decisions for localization. Falls back to English. */
+  signupDecisions?: SignupDecisionItem[];
 }
 
 /** mdxComponents with their built-in labels in the case study's language.
@@ -887,6 +892,9 @@ export function localizedMdxComponents(l: BlockLabels) {
     Metric: (p: ComponentProps<typeof Metric>) => <Metric toLabel={l.to} {...p} />,
     BeforeAfterSlider: (p: ComponentProps<typeof BeforeAfterSlider>) => (
       <BeforeAfterSlider beforeLabel={l.before} afterLabel={l.after} beforeAlt={l.before} afterAlt={l.after} {...p} />
+    ),
+    SignupDecisions: (p: ComponentProps<typeof SignupDecisions>) => (
+      <SignupDecisions decisions={l.signupDecisions ?? EN_DECISIONS} {...p} />
     ),
   };
 }
