@@ -12,44 +12,75 @@ function isVideo(src: string) {
 }
 
 /**
- * Autoplaying, muted, looping video with no controls and no poster — a moving
- * screenshot, not a player. Prefers a .webm source, falls back to the original.
+ * Autoplaying, muted, looping video with no controls.
+ * - Pass `poster` for a first-frame placeholder (no layout shift).
+ * - Pass `fallback` to show a static image for prefers-reduced-motion users.
+ *   The swap is done with a CSS media-query so it works without JS.
+ * - Pass `alt` to give the element a semantic label; otherwise it stays
+ *   decorative (aria-hidden).
  */
 export function CaseVideo({
   src,
+  poster,
+  fallback,
+  alt,
   hero = false,
   style,
 }: {
   src: string;
+  poster?: string;
+  fallback?: string;
+  alt?: string;
   hero?: boolean;
   style?: CSSProperties;
 }) {
-  // MDX references the .webm; serve it first and fall back to a same-named .mp4
-  // (H.264) for Safari, which doesn't reliably play VP9/WebM.
   const webm = src.replace(/\.(mp4|mov)(\?|$)/i, ".webm$2");
   const mp4 = src.replace(/\.(webm|mov)(\?|$)/i, ".mp4$2");
+
+  const hasLabel = Boolean(alt);
+  const sharedStyle: CSSProperties = {
+    ...PLATE,
+    ...(hero
+      ? { aspectRatio: "1200 / 700", objectFit: "cover" }
+      : { height: "auto" }),
+    ...style,
+  };
+
   return (
-    <video
-      autoPlay
-      muted
-      loop
-      playsInline
-      // "metadata" so the element gets its dimensions and can autoplay; the
-      // clips are small (~1-2MB) after WebM/MP4 compression.
-      preload="metadata"
-      aria-hidden="true"
-      tabIndex={-1}
-      style={{
-        ...PLATE,
-        ...(hero
-          ? { aspectRatio: "1200 / 700", objectFit: "cover" }
-          : { height: "auto" }),
-        ...style,
-      }}
-    >
-      <source src={webm} type="video/webm" />
-      <source src={mp4} type="video/mp4" />
-    </video>
+    <>
+      <video
+        data-case-motion="video"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        poster={poster}
+        // width/height let the browser reserve space before metadata loads
+        width={2400}
+        height={1400}
+        {...(hasLabel
+          ? { role: "img" as const, "aria-label": alt }
+          : { "aria-hidden": "true" as const, tabIndex: -1 })}
+        style={sharedStyle}
+      >
+        <source src={webm} type="video/webm" />
+        <source src={mp4} type="video/mp4" />
+        {/* Last-resort fallback for browsers that can't play either source */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={fallback ?? poster} alt={alt ?? ""} />
+      </video>
+      {fallback ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          data-case-motion="fallback"
+          src={fallback}
+          alt={alt ?? ""}
+          // Omit `display` so the CSS [data-case-motion] rules control visibility
+          style={{ ...sharedStyle, display: undefined }}
+        />
+      ) : null}
+    </>
   );
 }
 
@@ -58,15 +89,19 @@ export function Media({
   src,
   alt = "",
   caption,
+  poster,
+  fallback,
 }: {
   src: string;
   alt?: string;
   caption?: string;
+  poster?: string;
+  fallback?: string;
 }) {
   return (
     <figure style={{ display: "flex", flexDirection: "column", gap: 24, margin: 0, width: "100%", alignSelf: "stretch" }}>
       {isVideo(src) ? (
-        <CaseVideo src={src} />
+        <CaseVideo src={src} alt={alt || undefined} poster={poster} fallback={fallback} />
       ) : (
         // eslint-disable-next-line @next/next/no-img-element
         <img src={src} alt={alt} style={{ ...PLATE, height: "auto" }} />

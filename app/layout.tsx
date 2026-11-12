@@ -68,6 +68,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${notoSerif.variable} ${dmSans.variable} h-full`}
     >
       <body className="min-h-full">
+        {/* Pre-hide borders/nodes before paint so they draw in via HeroIntro. Only
+            added when session is fresh + JS is running + no reduced-motion. */}
+        <script dangerouslySetInnerHTML={{ __html: `try{if(!matchMedia('(prefers-reduced-motion:reduce)').matches){document.documentElement.classList.add('hero-anim')}}catch(e){}` }} />
         <AnalyticsOptOut />
         <GoogleAnalytics />
         <TrackClicks />
