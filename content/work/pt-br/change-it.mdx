@@ -1,0 +1,127 @@
+---
+title: Redesign do checkout de sócios para vendas presenciais e rápidas
+eyebrow: UX e conversão
+years: 2023
+lead: O ChangeIt era a aposta da Ascend em uma fonte de receita estável. O produto deixou de ser um app de doação por arredondamento de compras para virar um programa de sócios do esporte universitário, e a maioria dos cadastros passou a acontecer em estandes de ativação em dia de jogo. O fluxo existente levava cerca de seis minutos, lento demais com uma fila esperando.
+sublead: Veja como reduzimos esse tempo para 3 minutos e aumentamos a conversão de 12% para 19%.
+results:
+  - before: "6"
+    after: "3"
+    unit: min
+    label: ["Tempo de cadastro,", "50% mais rápido"]
+  - before: "12"
+    after: "19"
+    unit: "%"
+    label: ["Conversão de", "cadastros em sócios"]
+  - before: "76"
+    after: "62"
+    unit: "%"
+    label: ["Abandono no", "pagamento"]
+  - after: "US$ 700"
+    unit: mil
+    label: ["Arrecadados por um parceiro", "em uma única temporada"]
+heroImage: /assets/work/change-it/3.webp
+heroAlt: "Telas do app para sócios: início, saldo de cashback, vitrine e informações pessoais"
+credits:
+  role: Lead Product Designer
+  team: 2 engenheiros, 1 gerente de produto
+  madeWith: Figma, Amplitude, pesquisa com usuários
+  shipped: 2023
+published: true
+---
+
+<CaseSection title="Contexto">
+  <Prose>
+    O negócio da Ascend era baseado em rifas e campanhas sazonais para mais de 500 instituições de caridade, times esportivos e hospitais. O ChangeIt foi a iniciativa da empresa para gerar receita recorrente mensal (MRR).
+
+    O produto começou no lado das doações. Os doadores vinculavam um cartão de crédito, arredondavam o valor das compras e recebiam benefícios em troca. Na metade de 2024, a Ascend viu uma oportunidade no esporte universitário dos Estados Unidos e transformou o ChangeIt em um programa de sócios. Os sócios eram, em sua maioria, ex-alunos, hoje pais, que queriam o melhor para a sua universidade e os times dela.
+  </Prose>
+</CaseSection>
+
+<Credits />
+
+<CaseSection title="Problema">
+  <Prose>
+    O produto de arredondamento foi feito para cadastros online. As pessoas se cadastravam de graça, exploravam os benefícios e só então decidiam se iam vincular um cartão de crédito. A ideia era mostrar valor antes da etapa com mais atrito.
+
+    No novo mercado, essa porta de entrada não funcionava. A maioria dos sócios se cadastrava em estandes em dia de jogo, com uma fila esperando, e o cadastro levava cerca de seis minutos. Só cerca de 12% das pessoas que começavam se tornavam sócias, e 76% desistiam no pagamento. Cada minuto perdido significava menos sócios e menos MRR.
+  </Prose>
+</CaseSection>
+
+<CaseSection title="Abordagem">
+  <Prose>
+    Quando as vendas passaram para os estandes em dia de jogo, passamos a ter dados para trabalhar. Eu tinha criado o plano de tracking, definido as convenções de nomenclatura e ligado as métricas aos objetivos dos usuários e do negócio, então conseguíamos ver exatamente onde as pessoas desistiam.
+
+    Mas o analytics só mostrava o que estava acontecendo, não o porquê. Para fechar essa lacuna, pedi ao nosso time nos estandes que gravasse sessões de cadastro com usuários reais. As gravações revelaram três problemas:
+  </Prose>
+
+  <Findings>
+    <Finding number="Descoberta 01" title="Forma de login">Nesse contexto, as pessoas preferiam entrar com o próprio e-mail em vez de uma conta de rede social.</Finding>
+    <Finding number="Descoberta 02" title="Extensão">O cadastro em várias etapas era longo demais para um estande com fila esperando.</Finding>
+    <Finding number="Descoberta 03" title="Momento do pagamento">Como as opções de pagamento só apareciam depois dos benefícios, muita gente ia embora e não voltava mais.</Finding>
+  </Findings>
+
+  <Callout headline="Cada mudança tinha que justificar seu lugar.">Ainda estávamos validando o novo mercado, então não podíamos nos dar ao luxo de mexer no produto inteiro.</Callout>
+</CaseSection>
+
+<Media
+  src="/assets/work/change-it/onboarding-flow.webm"
+  poster="/assets/work/change-it/onboarding-flow-poster.webp"
+  fallback="/assets/work/change-it/onboarding-flow-fallback.webp"
+  alt="O fluxo de cadastro diminuindo de sete telas para quatro: as telas de informações da conta, de plano e de confirmação saem, e a vinculação do cartão vira a etapa Become a member."
+  caption="De sete telas para quatro: plano e cobrança passaram a ficar em uma única etapa, e a tela extra de informações da conta saiu."
+/>
+
+<CaseSection title="Decisões de design">
+  <Prose>
+    As gravações e os dados do funil apontavam para três momentos do cadastro. Avaliei cada um pelo número de pessoas que estávamos perdendo ali e mantive cada mudança focada, já que ainda estávamos validando o mercado.
+  </Prose>
+
+  <ApproachItem number="01" title="Eliminar a dúvida na hora do pagamento" spaceBefore="24px">
+    <Stat>76%</Stat> das pessoas que chegavam ao pagamento nunca se tornavam sócias, e <Stat>25%</Stat> voltavam para a página de planos. O formulário de pagamento de terceiros às vezes carregava como um espaço em branco, o que fazia o fluxo parecer quebrado mesmo quando funcionava. Até quem convertia levava uma mediana de <Stat>2 min 46 s</Stat> só nessa etapa.
+
+    <Decision>Não podíamos mudar o formulário de terceiros, então desenhei em volta dele: um estado de carregamento claro, os detalhes do plano visíveis dentro da cobrança e uma forma de trocar de plano sem perder o progresso. Agora tudo fica em uma única página, diferente da primeira versão, que era dividida em várias etapas. Isso dá tempo para o formulário de terceiros carregar e concentra todo o feedback em um só lugar.</Decision>
+  </ApproachItem>
+
+  <ApproachItem number="02" title="Mostrar a oferta antes de pedir compromisso">
+    A página de planos tinha o maior abandono antes do pagamento. <Stat>57%</Stat> dos usuários saíam antes de chegar à cobrança, porque pedíamos que criassem uma conta antes de entenderem a oferta ou o preço.
+
+    <Decision>Levar a escolha do plano para antes da criação da conta, com cards de plano mais fáceis de comparar e um botão de seleção mais claro. Não controlávamos a landing page de cada cliente, então desenhei uma alternativa para os casos em que o plano não pudesse ser passado para o cadastro. O caminho ideal funcionava sem quebrar os outros.</Decision>
+  </ApproachItem>
+
+  <ApproachItem number="03" title="Priorizar o caminho que as pessoas realmente escolhiam">
+    O fluxo original colocava o login social em primeiro lugar, mas <Stat>55%</Stat> dos usuários escolhiam o e-mail. A página de cadastro tinha uma taxa de rejeição de <Stat>33%</Stat>, o que valia a pena corrigir.
+
+    <Decision>Tornar o e-mail o caminho principal, com e-mail e senha na primeira tela, e remover a etapa extra de informações da conta.</Decision>
+  </ApproachItem>
+</CaseSection>
+
+<Media src="/assets/work/change-it/1.webp" alt="Painel do sócio no Change It" caption="O produto para sócios: recompensas, drops e sorteios mensais financiados pelo mecanismo de arredondamento." />
+
+<Media src="/assets/work/change-it/2.webp" alt="Mapa do fluxo de cadastro com cobrança, escolha do plano e a verificação do cartão vinculado" caption="Mapeando o funil de ponta a ponta, da criação da conta à escolha do plano e ao iframe de cobrança, para descobrir onde as pessoas desistiam." />
+
+<Media src="/assets/work/change-it/4.webp" alt="Telas do app para sócios: início, saldo de cashback, vitrine e informações pessoais" caption="A experiência do sócio no celular, o mesmo aparelho que as pessoas usam para se cadastrar em um estande de ativação." />
+
+<CaseSection title="Resultados">
+  <Outcomes>
+    <Outcome period="Tempo de cadastro" title="6 min → 3 min" change="50% mais rápido" />
+    <Outcome period="Abandono no pagamento" title="76% → 62%" change="18% menos abandonos" />
+    <Outcome period="Conversão em sócios" title="12% → 19%" change="Conversão 58% maior" />
+  </Outcomes>
+  <Highlight value="US$ 700 mil" headline="Arrecadados pela On To Victory, de Auburn, em uma única temporada.">Cerca de 13 parceiros lançaram campanhas na plataforma.</Highlight>
+
+  <p style={{ fontSize: 13, color: "var(--text-muted)", marginTop: 8 }}>*Resultados do primeiro mês após o lançamento do redesign, junto com as ações contínuas de marketing e vendas.</p>
+
+  <Testimonials label="Depoimentos">
+    <Testimonial name="Rui Nunes" role="Diretor de Marketing">"Quero dar os parabéns ao Breno por conduzir uma sessão de Customer Journey sobre os cadastros no produto ChangeIt. Aprendi muito sobre como nossos usuários estão se saindo."</Testimonial>
+    <Testimonial name="Daniel Lewis" role="CEO">"Quero que você saiba que seu trabalho é valorizado e respeitado… Agora isso vai dar certo. Pode esperar."</Testimonial>
+  </Testimonials>
+</CaseSection>
+
+<CaseSection title="Aprendizados">
+  <Prose>
+    A maior lição foi que contextos diferentes pedem abordagens diferentes. Mostrar valor antes de pedir o pagamento é um bom padrão online, mas em um estande em dia de jogo, com fila esperando, isso virou atrito. As soluções que funcionaram foram desenhadas em torno do que não podíamos controlar, como o formulário de pagamento de terceiros e as landing pages dos clientes. Isso me mostrou que a experiência do usuário muitas vezes começa antes de as pessoas chegarem ao seu produto, e que é importante desenhar a partir das restrições, não contra elas.
+
+    O ChangeIt foi encerrado no fim de 2025. Ele dependia muito de cada cliente e enfrentava regras em constante mudança sobre como escolas e atletas podiam arrecadar doações, o que dificultava a escala. Se eu fizesse de novo, insistiria mais em pesquisa com usuários antes de apostar no mercado e partiria antes para um produto só de checkout.
+  </Prose>
+</CaseSection>

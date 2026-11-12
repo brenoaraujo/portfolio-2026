@@ -17,6 +17,8 @@ export const EVENTS = {
   CASE_STUDY_VIEW: "Viewed Case Study",
   CASE_STUDY_READ: "Read Case Study",
   SLIDER_USE: "Used Before After Slider",
+  LANGUAGE_PROMPT_VIEW: "Viewed Language Prompt",
+  LANGUAGE_SWITCH: "Switched Language",
 } as const;
 
 export type EventName = (typeof EVENTS)[keyof typeof EVENTS];

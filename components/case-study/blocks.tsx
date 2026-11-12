@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode } from "react";
+import type { ComponentProps, CSSProperties, ReactNode } from "react";
 import { Media } from "@/components/case-study/Media";
 import { BeforeAfterSlider } from "@/components/case-study/BeforeAfterSlider";
 
@@ -416,7 +416,7 @@ export function ApproachItem({
 }
 
 /** Inline decision label + text, used inside ApproachItem. */
-export function Decision({ children }: { children?: ReactNode }) {
+export function Decision({ children, label = "Decision" }: { children?: ReactNode; label?: string }) {
   return (
     <p
       style={{
@@ -438,7 +438,7 @@ export function Decision({ children }: { children?: ReactNode }) {
           marginRight: 10,
         }}
       >
-        Decision
+        {label}
       </span>
       {children}
     </p>
@@ -754,11 +754,11 @@ export function Finding({
 /** Headline results strip: big before → after numbers with a short label,
     on a plate a touch darker than the page. Four across, 2×2 on small
     screens (.metrics in globals.css). */
-export function Metrics({ children }: { children: ReactNode }) {
+export function Metrics({ children, label = "Results" }: { children: ReactNode; label?: string }) {
   return (
     <ul
       className="metrics"
-      aria-label="Results"
+      aria-label={label}
       style={{
         width: "100%",
         alignSelf: "stretch",
@@ -782,11 +782,14 @@ export function Metric({
   before,
   after,
   unit,
+  toLabel = "to",
   children,
 }: {
   before?: string;
   after: string;
   unit?: string;
+  /** Screen-reader word read between the before and after numbers. */
+  toLabel?: string;
   children?: ReactNode;
 }) {
   return (
@@ -811,7 +814,7 @@ export function Metric({
             <span aria-hidden="true" style={{ fontWeight: 400, fontSize: "0.78em" }}>
               →
             </span>
-            <span className="sr-only">to</span>
+            <span className="sr-only">{toLabel}</span>
           </>
         ) : null}
         <span style={{ color: "var(--accent-brand)" }}>{after}</span>
@@ -864,3 +867,26 @@ export const mdxComponents = {
   Testimonial,
   Highlight,
 };
+
+/** UI words the blocks print themselves (not authored in the MDX). */
+export interface BlockLabels {
+  decision: string;
+  results: string;
+  to: string;
+  before: string;
+  after: string;
+}
+
+/** mdxComponents with their built-in labels in the case study's language.
+    Props set in the MDX still win (they're spread last). */
+export function localizedMdxComponents(l: BlockLabels) {
+  return {
+    ...mdxComponents,
+    Decision: (p: ComponentProps<typeof Decision>) => <Decision label={l.decision} {...p} />,
+    Metrics: (p: ComponentProps<typeof Metrics>) => <Metrics label={l.results} {...p} />,
+    Metric: (p: ComponentProps<typeof Metric>) => <Metric toLabel={l.to} {...p} />,
+    BeforeAfterSlider: (p: ComponentProps<typeof BeforeAfterSlider>) => (
+      <BeforeAfterSlider beforeLabel={l.before} afterLabel={l.after} beforeAlt={l.before} afterAlt={l.after} {...p} />
+    ),
+  };
+}

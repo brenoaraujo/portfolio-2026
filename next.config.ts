@@ -15,6 +15,11 @@ const nextConfig: NextConfig = {
   },
   // PostHog API paths end in a slash; don't redirect them.
   skipTrailingSlashRedirect: true,
+  experimental: {
+    // The root layout is per language (app/[lang]/layout.tsx), so unmatched
+    // URLs get app/global-not-found.tsx instead of a layout-based 404.
+    globalNotFound: true,
+  },
 };
 
 export default nextConfig;

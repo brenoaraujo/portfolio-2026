@@ -1,6 +1,7 @@
 import { SITE_NAME, SITE_TITLE, SITE_DESCRIPTION, SITE_URL } from "@/lib/config";
 import { getPublishedSlugs, getCaseStudyMeta } from "@/lib/work";
-import { BENTO_HERO, EXPERIENCE_ROWS, ARTICLES, CONTACT_TILE, CONTACT } from "@/lib/site";
+import { ARTICLES, CONTACT_TILE, CONTACT } from "@/lib/site";
+import en from "@/lib/i18n/dictionaries/en";
 
 // Prebuilt at build time; served at /llms.txt. An LLM-readable overview of the
 // portfolio (llmstxt.org) so AI assistants can find and summarise Breno's work.
@@ -19,7 +20,7 @@ export function GET() {
 
   const writing = ARTICLES.map((a) => `- [${a.title}](${a.href}) (${a.year})`).join("\n");
 
-  const experience = EXPERIENCE_ROWS.map(
+  const experience = en.experience.rows.map(
     (e) => `- ${e.co} — ${e.role} (${e.years}): ${e.desc}`,
   ).join("\n");
 
@@ -27,9 +28,10 @@ export function GET() {
 
 > ${SITE_DESCRIPTION}
 
-${SITE_TITLE}. ${BENTO_HERO.headline} ${BENTO_HERO.subcopy}
+${SITE_TITLE}. ${en.hero.headline} ${en.hero.subcopy}
 
 - Home: ${url}/
+- Portuguese (Brazil) version: ${url}/pt-br
 - Based in: Maple Ridge / Vancouver, Canada
 - Focus: hands-on UI & interaction design, design systems, point-of-sale/checkout, AI-assisted prototyping
 - Experience: 16 years in B2B SaaS
