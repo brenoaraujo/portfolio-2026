@@ -5,7 +5,9 @@ export interface CreditsData {
   shipped?: string;
 }
 
-const LABELS: Record<keyof CreditsData, string> = {
+export type CreditsLabels = Record<keyof CreditsData, string>;
+
+const LABELS: CreditsLabels = {
   role: "Role",
   team: "Team",
   madeWith: "Made with",
@@ -28,7 +30,8 @@ export function Credits({
   madeWith,
   shipped,
   variant = "row",
-}: CreditsData & { variant?: "row" | "grid" }) {
+  labels = LABELS,
+}: CreditsData & { variant?: "row" | "grid"; labels?: CreditsLabels }) {
   const entries = Object.entries({ role, team, madeWith, shipped }).filter(
     ([, v]) => Boolean(v),
   ) as [keyof CreditsData, string][];
@@ -65,7 +68,7 @@ export function Credits({
                 color: "var(--text-muted)",
               }}
             >
-              {LABELS[key]}
+              {labels[key]}
             </span>
             <span
               style={{

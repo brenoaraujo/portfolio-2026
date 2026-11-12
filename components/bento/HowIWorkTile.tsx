@@ -1,21 +1,22 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { HOW_I_WORK } from "@/lib/site";
+import type { Dictionary } from "@/lib/i18n/dictionaries/en";
 
 const pad = (n: number) => "0" + n;
 
 /** "How I work" — 4 steps auto-advancing every 4.2s with progress bars. */
-export function HowIWorkTile() {
+export function HowIWorkTile({ t }: { t: Dictionary["howIWork"] }) {
+  const steps = t.steps;
   const [step, setStep] = useState(0);
   const timer = useRef<ReturnType<typeof setInterval> | undefined>(undefined);
 
   useEffect(() => {
     // Respect reduced-motion: no auto-advancing content (manual tabs still work).
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    timer.current = setInterval(() => setStep((s) => (s + 1) % HOW_I_WORK.length), 4200);
+    timer.current = setInterval(() => setStep((s) => (s + 1) % steps.length), 4200);
     return () => clearInterval(timer.current);
-  }, []);
+  }, [steps.length]);
 
   const pick = (i: number) => {
     clearInterval(timer.current);
@@ -26,12 +27,12 @@ export function HowIWorkTile() {
     <section className="tile how-tile" data-span={2}>
       <span className="bento-node bento-node--tl" aria-hidden="true" />
       <div className="how-tile__head">
-        <span>How I work</span>
-        <span>{pad(step + 1)} / 04</span>
+        <span>{t.title}</span>
+        <span>{pad(step + 1)} / {pad(steps.length)}</span>
       </div>
-      <p className="how-tile__text">{HOW_I_WORK[step].text}</p>
+      <p className="how-tile__text">{steps[step].text}</p>
       <div className="how-tile__steps">
-        {HOW_I_WORK.map((s, i) => (
+        {steps.map((s, i) => (
           <button key={s.label} className="how-tile__step" onClick={() => pick(i)} aria-current={i === step}>
             <span className="how-tile__bar">
               {i < step ? (

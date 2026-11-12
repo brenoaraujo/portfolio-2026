@@ -42,7 +42,11 @@ if (!token) {
     person_profiles: "always",
     disable_session_recording: true,
     capture_exceptions: true,
-    // Runs before the initial pageview is sent, so that pageview carries the ref.
-    loaded: applyAttribution,
+    // Runs before the initial pageview is sent, so that pageview carries the ref
+    // and the page language ("en" or "pt-BR", from <html lang>).
+    loaded: (ph) => {
+      ph.register({ site_language: document.documentElement.lang || "en" });
+      applyAttribution(ph);
+    },
   });
 }

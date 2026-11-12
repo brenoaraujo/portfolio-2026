@@ -20,6 +20,16 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Languages (English + Português)
+
+English is the default and keeps the clean URLs (`/`, `/work/<slug>`). Portuguese lives under `/pt-br`. All pages are in `app/[lang]/`; `proxy.ts` serves English for unprefixed URLs and sends visitors who picked Portuguese back to it.
+
+- **Interface copy:** `lib/i18n/dictionaries/en.ts` (source) and `pt-br.ts`. The build fails if a key is missing in a translation.
+- **Case studies:** English in `content/work/<slug>.mdx`, Portuguese in `content/work/pt-br/<slug>.mdx` (same slug, same frontmatter keys). Without a translation, `/pt-br/work/<slug>` shows the English text with a note and stays out of search.
+- **Machine-translation notice:** while `language.machineTranslated` is `true` in `pt-br.ts`, Portuguese pages show the "Tradução automática" toast once per session. Set it to `false` after the manual review.
+- **Who sees the "Prefere ler em português?" prompt:** `PROMPT_SIGNALS` in `lib/i18n/config.ts` (browser language `pt*` or a visitor from Brazil, no saved choice). The choice is kept in the `ba-lang` cookie.
+- `/for/<company>` pages are English only (no switcher, no prompt).
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

@@ -1,23 +1,27 @@
 import Link from "next/link";
-import { BENTO_NAV, BENTO_PILL } from "@/lib/site";
+import { BENTO_NAV } from "@/lib/site";
 import { EVENTS } from "@/lib/analytics-events";
+import { localePath, getDictionary, type Locale } from "@/lib/i18n";
 
 /**
  * Home header: logo dot + wordmark · nav · "open to roles" pill.
  * Case-study pages (`backLink`) get a "← Back to work" link instead.
+ * The EN / PT switch lives in the footer (BentoFooter).
  */
-export function BentoHeader({ backLink = false }: { backLink?: boolean }) {
+export function BentoHeader({ backLink = false, locale }: { backLink?: boolean; locale: Locale }) {
+  const t = getDictionary(locale);
+
   if (backLink) {
     return (
       <header className="bento-header">
         <Link
-          href="/#work"
+          href={localePath(locale, "/#work")}
           className="bento-back"
           data-track={EVENTS.NAV_CLICK}
           data-track-label="Back to work"
           data-track-location="case-study"
         >
-          ← Back to work
+          {t.header.backToWork}
         </Link>
       </header>
     );
@@ -31,18 +35,18 @@ export function BentoHeader({ backLink = false }: { backLink?: boolean }) {
       <nav className="bento-nav">
         {BENTO_NAV.map((n) => (
           <a
-            key={n.label}
+            key={n.id}
             href={n.href}
             data-track={EVENTS.NAV_CLICK}
-            data-track-label={n.label}
+            data-track-label={getDictionary("en").header.nav[n.id]}
             data-track-location="header"
           >
-            {n.label}
+            {t.header.nav[n.id]}
           </a>
         ))}
         <span className="bento-pill">
           <span className="bento-pill__dot" aria-hidden="true" />
-          {BENTO_PILL}
+          {t.header.pill}
         </span>
       </nav>
     </header>

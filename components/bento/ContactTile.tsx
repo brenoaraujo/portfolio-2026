@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { CONTACT_TILE } from "@/lib/site";
+import type { Dictionary } from "@/lib/i18n/dictionaries/en";
 import { TangleBg } from "@/components/bento/TangleBg";
 import { EVENTS } from "@/lib/analytics-events";
 
@@ -29,7 +30,7 @@ async function copy(text: string) {
 }
 
 /** Contact tile — copy-email with inline "Copied ✓" + LinkedIn. Tangle bg (M4). */
-export function ContactTile() {
+export function ContactTile({ t }: { t: Dictionary["contact"] }) {
   const [copied, setCopied] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const onCopy = async () => {
@@ -44,19 +45,19 @@ export function ContactTile() {
         <TangleBg color="#ffffff" />
       </div>
       <span className="bento-node bento-node--tl" aria-hidden="true" />
-      <span className="contact-tile__eyebrow">{CONTACT_TILE.eyebrow}</span>
-      <p className="contact-tile__headline">{CONTACT_TILE.headline}</p>
+      <span className="contact-tile__eyebrow">{t.eyebrow}</span>
+      <p className="contact-tile__headline">{t.headline}</p>
       <div className="contact-tile__actions">
         <button
           className="contact-tile__copy"
           data-copied={copied || undefined}
           onClick={onCopy}
-          aria-label={`Copy email ${CONTACT_TILE.email} to clipboard`}
+          aria-label={t.copyAria.replace("{email}", CONTACT_TILE.email)}
           data-track={EVENTS.CONTACT_CLICK}
           data-track-label="Copy email"
         >
           <span>{CONTACT_TILE.email}</span>
-          <span className="contact-tile__copy-label">{copied ? "Copied ✓" : "Copy"}</span>
+          <span className="contact-tile__copy-label">{copied ? t.copied : t.copy}</span>
         </button>
         <a
           className="contact-tile__linkedin"

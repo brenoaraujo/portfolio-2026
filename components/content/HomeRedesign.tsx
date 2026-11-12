@@ -9,23 +9,42 @@ import { PrototypeTile } from "@/components/bento/PrototypeTile";
 import { OffTheClockTile } from "@/components/bento/OffTheClockTile";
 import { LocalTimeTile } from "@/components/bento/LocalTimeTile";
 import { ContactTile } from "@/components/bento/ContactTile";
-import { BENTO_HERO, NOW_LIST, WORK_TILES, ARTICLES, CONTACT } from "@/lib/site";
+import { LanguageExtras } from "@/components/i18n/LanguageExtras";
+import { WORK_TILES, ARTICLES, CONTACT } from "@/lib/site";
 import { EVENTS } from "@/lib/analytics-events";
 import { HeroIntro } from "@/components/bento/HeroIntro";
+import { getDictionary, localePath, INTL_LOCALE, type Locale } from "@/lib/i18n";
 
 const node = <span className="bento-node bento-node--tl" aria-hidden="true" />;
+
+// Runs before the page paints, so the intro elements start hidden (see
+// HeroIntro and the html.hero-anim rules in globals.css). Home only: other
+// pages have no HeroIntro to remove the class again.
+const HERO_ANIM_SCRIPT = `try{if(!matchMedia('(prefers-reduced-motion:reduce)').matches){document.documentElement.classList.add('hero-anim')}}catch(e){}`;
 
 /**
  * Editorial bento homepage. Server-rendered shell + text; interactive tiles are
  * client islands (still SSR'd). The grid's dashed rules + nodes are static CSS;
  * GridEdgeLines measures the viewport-edge extensions at runtime.
+ *
+ * All copy comes from the locale's dictionary (lib/i18n/dictionaries). Client
+ * tiles get only their own slice of it.
  */
-export function HomeRedesign() {
+export function HomeRedesign({
+  locale,
+  languageUi = true,
+}: {
+  locale: Locale;
+  /** Language switcher + prompt/notice. Off on the English-only /for pages. */
+  languageUi?: boolean;
+}) {
+  const t = getDictionary(locale);
   return (
     <>
+      <script dangerouslySetInnerHTML={{ __html: HERO_ANIM_SCRIPT }} />
       <main id="main" className="bento">
         <HeroIntro />
-        <BentoHeader />
+        <BentoHeader locale={locale} />
 
         <div className="bento-grid">
           <GridEdgeLines />
@@ -37,12 +56,11 @@ export function HomeRedesign() {
           <section className="tile hero-tile" data-rows="2" data-span={4} style={{ paddingBottom: 64 }}>
             {node}
             <div className="hero-tile__eyebrows">
-              <span>{BENTO_HERO.eyebrowLeft}</span>
-              {BENTO_HERO.eyebrowRight ? <span>{BENTO_HERO.eyebrowRight}</span> : null}
+              <span>{t.hero.eyebrow}</span>
             </div>
             <div className="hero-tile__body">
-              <h1>{BENTO_HERO.headline}</h1>
-              <p className="hero-tile__sub">{BENTO_HERO.subcopy}</p>
+              <h1>{t.hero.headline}</h1>
+              <p className="hero-tile__sub">{t.hero.subcopy}</p>
               <div className="hero-tile__cta">
                 <a
                   className="btn-primary"
@@ -53,19 +71,24 @@ export function HomeRedesign() {
                   data-track-label="Let's talk on LinkedIn"
                   data-track-location="hero"
                 >
-                  Let&apos;s talk on LinkedIn →
+                  {t.hero.cta}
                 </a>
               </div>
             </div>
           </section>
 
           {/* Work tiles */}
-          {WORK_TILES.map((t, i) => (
-            <WorkTile key={t.slug} tile={t} href={`/work/${t.slug}`} id={i === 0 ? "work" : undefined} />
+          {WORK_TILES.map((tile, i) => (
+            <WorkTile
+              key={tile.slug}
+              tile={{ ...tile, ...t.work[tile.slug] }}
+              href={localePath(locale, `/work/${tile.slug}`)}
+              id={i === 0 ? "work" : undefined}
+            />
           ))}
 
           {/* Experience */}
-          <ExperienceTile />
+          <ExperienceTile t={t.experience} linkedin={CONTACT.linkedin} />
 
           {/* Writing */}
           <section
@@ -76,7 +99,7 @@ export function HomeRedesign() {
           >
             {node}
             <div className="rows-head">
-              <span className="rows-head__title">Writing</span>
+              <span className="rows-head__title">{t.writing.title}</span>
               <a
                 href="https://brenoaraujo.substack.com"
                 target="_blank"
@@ -85,10 +108,11 @@ export function HomeRedesign() {
                 data-track-label="Substack"
                 data-track-location="writing"
               >
-                Substack ↗
+                {t.writing.substack}
               </a>
             </div>
-            <div className="rows-list">
+            {/* Articles are written in English, so their titles stay English. */}
+            <div className="rows-list" lang="en">
               {ARTICLES.map((p) => (
                 <a
                   key={p.title}
@@ -110,16 +134,17 @@ export function HomeRedesign() {
           </section>
 
           {/* Local time · How I work · Prototype in */}
-          <LocalTimeTile />
-          <HowIWorkTile />
-          <PrototypeTile />
+          <LocalTimeTile t={t.localTime} intlLocale={INTL_LOCALE[locale]} />
+          <HowIWorkTile t={t.howIWork} />
+          <PrototypeTile t={t.prototype} />
 
           {/* Off the clock · Contact */}
-          <OffTheClockTile />
-          <ContactTile />
+          <OffTheClockTile t={t.offTheClock} />
+          <ContactTile t={t.contact} />
         </div>
 
-        <BentoFooter />
+        <BentoFooter locale={locale} path="/" languageSwitch={languageUi} />
+        {languageUi ? <LanguageExtras locale={locale} path="/" /> : null}
       </main>
     </>
   );
