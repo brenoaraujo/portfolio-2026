@@ -503,7 +503,7 @@ export function SignupDecisions({ decisions = EN_DECISIONS }: { decisions?: Sign
   }, []);
 
   return (
-    <div className={`${nunitoSans.variable} ${montserrat.variable}`}>
+    <div className={`sd-wrap ${nunitoSans.variable} ${montserrat.variable}`} style={{ alignSelf: "stretch", width: "100%" }}>
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
       <div className="sd-plate" ref={plateRef}>
         <button className="sd-pause" ref={pauseRef} aria-label="Pause" />
